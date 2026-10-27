@@ -7,6 +7,7 @@ Test whether your IndexedDB data still makes sense after an application upgrade,
 IDBShift runs your old and new storage code in real Chromium documents, preserves the database between stages, and checks the data contract you declare. It produces a text summary, JSON diagnostics, and an HTML report that opens offline.
 
 [![CI](https://img.shields.io/github/actions/workflow/status/0then0/idbshift/ci.yml?branch=main&label=CI)](https://github.com/0then0/idbshift/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/0then0/idbshift)](https://github.com/0then0/idbshift/releases/latest)
 [![Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![npm: not published](https://img.shields.io/badge/npm-not%20published-lightgrey)](CHANGELOG.md)
 [![Verified: macOS arm64 / Chromium](https://img.shields.io/badge/verified-macOS%20arm64%20%2F%20Chromium-16704a)](docs/verification.md)
