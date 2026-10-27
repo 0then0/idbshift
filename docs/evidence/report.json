@@ -6,9 +6,9 @@
       "toolVersion": "0.1.0",
       "history": "dexie-upgrade-original",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:58971",
-      "startedAt": "2026-10-27T21:30:04.638Z",
-      "durationMs": 381,
+      "origin": "http://127.0.0.1:61082",
+      "startedAt": "2026-10-27T21:57:51.677Z",
+      "durationMs": 608,
       "verdict": "passed",
       "stages": [
         {
@@ -16,7 +16,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 294,
+          "durationMs": 509,
           "operations": [
             {
               "name": "save",
@@ -43,7 +43,7 @@
               ]
             }
           ],
-          "documentId": "e3ef84e7-246a-4480-be0c-c17790d917bd",
+          "documentId": "ea29a798-1b36-46e0-aeac-2725dd6c4027",
           "observedAppVersion": "A",
           "databaseVersion": 10
         },
@@ -52,7 +52,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "passed",
-          "durationMs": 77,
+          "durationMs": 87,
           "operations": [],
           "checks": [
             {
@@ -96,7 +96,7 @@
               }
             }
           ],
-          "documentId": "995d8704-6d23-43dd-92bf-ab81531e411b",
+          "documentId": "a02a8303-102f-4b54-b327-48fb0ca02285",
           "observedAppVersion": "B",
           "databaseVersion": 20
         }
@@ -126,9 +126,9 @@
       "toolVersion": "0.1.0",
       "history": "dexie-rollback-original",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:58971",
-      "startedAt": "2026-10-27T21:30:05.020Z",
-      "durationMs": 295,
+      "origin": "http://127.0.0.1:61082",
+      "startedAt": "2026-10-27T21:57:52.286Z",
+      "durationMs": 307,
       "verdict": "contract-violation",
       "stages": [
         {
@@ -136,7 +136,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 70,
+          "durationMs": 88,
           "operations": [
             {
               "name": "save",
@@ -163,7 +163,7 @@
               ]
             }
           ],
-          "documentId": "801e12bf-1fe6-4f3b-b5b8-135a52caf983",
+          "documentId": "63aad267-c968-4b8f-a59f-c24230a42e51",
           "observedAppVersion": "A",
           "databaseVersion": 10
         },
@@ -172,7 +172,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "passed",
-          "durationMs": 81,
+          "durationMs": 73,
           "operations": [],
           "checks": [
             {
@@ -216,7 +216,7 @@
               }
             }
           ],
-          "documentId": "7a8a88e0-5abb-49a3-8ff6-58e4f10968f8",
+          "documentId": "b82fb344-e7b5-4474-b1b1-30fe856febfa",
           "observedAppVersion": "B",
           "databaseVersion": 20
         },
@@ -225,7 +225,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 72,
+          "durationMs": 71,
           "operations": [
             {
               "name": "save",
@@ -266,7 +266,7 @@
               ]
             }
           ],
-          "documentId": "3d1a3f73-3c68-4687-a76c-670e39425a8f",
+          "documentId": "fd54723c-6b34-44e9-b41d-ad4822428b5d",
           "observedAppVersion": "A",
           "databaseVersion": 20
         },
@@ -275,7 +275,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "contract-violation",
-          "durationMs": 68,
+          "durationMs": 72,
           "operations": [],
           "checks": [
             {
@@ -328,7 +328,7 @@
               }
             }
           ],
-          "documentId": "6d66caf6-cd56-418c-aa27-819fd8e8fdd6",
+          "documentId": "01bcc8ec-e0f6-4283-b39a-ace40222d539",
           "observedAppVersion": "B",
           "databaseVersion": 20
         }
@@ -368,9 +368,9 @@
       "toolVersion": "0.1.0",
       "history": "dexie-rollback-repair",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:58971",
-      "startedAt": "2026-10-27T21:30:05.316Z",
-      "durationMs": 282,
+      "origin": "http://127.0.0.1:61082",
+      "startedAt": "2026-10-27T21:57:52.593Z",
+      "durationMs": 304,
       "verdict": "passed",
       "stages": [
         {
@@ -378,7 +378,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 68,
+          "durationMs": 71,
           "operations": [
             {
               "name": "save",
@@ -405,7 +405,7 @@
               ]
             }
           ],
-          "documentId": "90cfc405-0db2-45b1-aba0-80b9eea56cac",
+          "documentId": "5cebd6e9-36f5-440e-92d5-0e6f56edcdfb",
           "observedAppVersion": "A",
           "databaseVersion": 10
         },
@@ -414,7 +414,7 @@
           "version": "B-repair",
           "appVersion": "B-repair",
           "status": "passed",
-          "durationMs": 72,
+          "durationMs": 78,
           "operations": [],
           "checks": [
             {
@@ -458,7 +458,7 @@
               }
             }
           ],
-          "documentId": "313ea6e0-1972-4588-84e6-9321d1457b3f",
+          "documentId": "f28a8902-1698-4636-9a50-576ff8bdc881",
           "observedAppVersion": "B-repair",
           "databaseVersion": 20
         },
@@ -467,7 +467,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 69,
+          "durationMs": 82,
           "operations": [
             {
               "name": "save",
@@ -508,7 +508,7 @@
               ]
             }
           ],
-          "documentId": "fe7aed54-ef55-4703-a2fa-7428c81dc2b4",
+          "documentId": "b564b2f1-f04b-4f23-99d7-a1e16166d8ab",
           "observedAppVersion": "A",
           "databaseVersion": 20
         },
@@ -517,7 +517,7 @@
           "version": "B-repair",
           "appVersion": "B-repair",
           "status": "passed",
-          "durationMs": 70,
+          "durationMs": 71,
           "operations": [],
           "checks": [
             {
@@ -573,7 +573,7 @@
               }
             }
           ],
-          "documentId": "969e8d48-5a5f-4c75-9d67-2991c2c9a2b5",
+          "documentId": "406f2b22-9deb-4a6d-906b-8113e2175524",
           "observedAppVersion": "B-repair",
           "databaseVersion": 20
         }
@@ -603,9 +603,9 @@
       "toolVersion": "0.1.0",
       "history": "native-ledger-upgrade",
       "databaseName": "idbshift-ledger",
-      "origin": "http://127.0.0.1:58971",
-      "startedAt": "2026-10-27T21:30:05.598Z",
-      "durationMs": 124,
+      "origin": "http://127.0.0.1:61082",
+      "startedAt": "2026-10-27T21:57:52.898Z",
+      "durationMs": 122,
       "verdict": "passed",
       "stages": [
         {
@@ -613,7 +613,7 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "passed",
-          "durationMs": 60,
+          "durationMs": 61,
           "operations": [
             {
               "name": "deposit",
@@ -650,7 +650,7 @@
               ]
             }
           ],
-          "documentId": "603d79c2-dbb6-4fc3-99bb-a18a73dad503",
+          "documentId": "acc11621-99e9-492e-bc5d-8f8f0462e277",
           "observedAppVersion": "ledger-A",
           "databaseVersion": 1
         },
@@ -659,7 +659,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 61,
+          "durationMs": 59,
           "operations": [],
           "checks": [
             {
@@ -693,7 +693,7 @@
               "actual": 900
             }
           ],
-          "documentId": "e7c7af4a-b2c1-457d-a24c-94f4213e40d6",
+          "documentId": "8ca75e47-63e2-4cf4-b3be-3f135311bce8",
           "observedAppVersion": "ledger-B",
           "databaseVersion": 2
         }
@@ -723,9 +723,9 @@
       "toolVersion": "0.1.0",
       "history": "native-ledger-refusal",
       "databaseName": "idbshift-ledger",
-      "origin": "http://127.0.0.1:58971",
-      "startedAt": "2026-10-27T21:30:05.723Z",
-      "durationMs": 232,
+      "origin": "http://127.0.0.1:61082",
+      "startedAt": "2026-10-27T21:57:53.021Z",
+      "durationMs": 237,
       "verdict": "expected-refusal",
       "stages": [
         {
@@ -770,7 +770,7 @@
               ]
             }
           ],
-          "documentId": "db4b63b3-c119-4e8b-a69d-48d3e4a2494f",
+          "documentId": "c406021c-95d9-4c37-9857-18e9a5f01866",
           "observedAppVersion": "ledger-A",
           "databaseVersion": 1
         },
@@ -779,7 +779,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 58,
+          "durationMs": 60,
           "operations": [],
           "checks": [
             {
@@ -813,7 +813,7 @@
               "actual": 900
             }
           ],
-          "documentId": "addab0b9-c743-4949-ac80-e879ccb4366c",
+          "documentId": "dd0a2901-8ede-4050-8505-9c7f30e58bc1",
           "observedAppVersion": "ledger-B",
           "databaseVersion": 2
         },
@@ -822,10 +822,10 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "open-refused",
-          "durationMs": 56,
+          "durationMs": 57,
           "operations": [],
           "checks": [],
-          "documentId": "1eb87c2b-fe89-4dda-9fd4-9dbc1dfb7a1e",
+          "documentId": "1be47c24-234d-4718-8def-c894a13e22b5",
           "observedAppVersion": "ledger-A",
           "refusalExpected": true,
           "policyReason": "Native version 1 refuses a version 2 database. No rollback writes occur.",
@@ -841,7 +841,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 57,
+          "durationMs": 59,
           "operations": [],
           "checks": [
             {
@@ -875,7 +875,7 @@
               "actual": 900
             }
           ],
-          "documentId": "88f92ff6-6198-4f48-bd6e-9000aeee7577",
+          "documentId": "07f19faf-1fab-4b4f-9614-77c2a1b7c223",
           "observedAppVersion": "ledger-B",
           "databaseVersion": 2
         }
