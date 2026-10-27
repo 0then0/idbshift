@@ -1,0 +1,10 @@
+name: Feature request
+description: Describe a concrete storage compatibility workflow.
+body:
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Workflow and current limitation
+      description: Explain the version history, invariant, and why the current API is insufficient.
+    validations:
+      required: true

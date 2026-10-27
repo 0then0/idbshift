@@ -1,0 +1,59 @@
+{
+  "name": "idbshift",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reproducible IndexedDB application upgrade and rollback histories in a real browser.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=24.22.1 <25"
+  },
+  "packageManager": "npm@11.19.1",
+  "exports": {
+    ".": "./src/index.ts",
+    "./browser": "./src/browser.ts",
+    "./playwright": "./src/playwright.ts"
+  },
+  "scripts": {
+    "experiment": "tsx src/cli.ts",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint": "biome lint .",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "tsx --test tests/unit/*.test.ts",
+    "test:acceptance": "playwright test",
+    "build": "tsc -p tsconfig.build.json && vite build",
+    "licenses": "node scripts/licenses.mjs",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test:unit && npm run build && npm run test:acceptance && npm run licenses && npm run evidence:check",
+    "examples:record": "node scripts/evidence.mjs record",
+    "evidence:check": "node scripts/evidence.mjs check",
+    "licenses:update": "node scripts/licenses.mjs --write"
+  },
+  "dependencies": {
+    "@playwright/test": "1.64.1",
+    "vite": "8.3.5"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.3",
+    "@types/node": "24.19.2",
+    "dexie": "4.4.7",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0then0/idbshift.git"
+  },
+  "bugs": {
+    "url": "https://github.com/0then0/idbshift/issues"
+  },
+  "homepage": "https://github.com/0then0/idbshift#readme",
+  "keywords": [
+    "indexeddb",
+    "playwright",
+    "rollback",
+    "compatibility-testing",
+    "local-first",
+    "typescript"
+  ]
+}

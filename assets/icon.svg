@@ -1,0 +1,24 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="128"
+  height="128"
+  viewBox="0 0 128 128"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">IDBShift</title>
+  <desc id="desc">Version nodes move forward and back above one continuous local database.</desc>
+  <style
+  >.tile{fill:#edf5f8}.line{stroke:#176885}.node{fill:#fff;stroke:#176885}.data{fill:#d5eaf2;stroke:#176885}.mark{fill:#176885}@media(prefers-color-scheme:dark){.tile{fill:#162b37}.line,.node,.data{stroke:#89cce5}.node{fill:#203f50}.data{fill:#284e60}.mark{fill:#89cce5}}</style>
+  <rect class="tile" x="2" y="2" width="124" height="124" rx="24" />
+  <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path class="line" d="M41 30h41m-7-7 7 7-7 7M86 47H45m7-7-7 7 7 7" />
+    <circle class="node" cx="29" cy="30" r="10" />
+    <circle class="node" cx="99" cy="30" r="10" />
+    <path class="line" d="M29 47v26h13m57-26v26H86" />
+    <path class="data" d="M42 73v27c0 6 44 6 44 0V73" />
+    <ellipse class="data" cx="64" cy="73" rx="22" ry="7" />
+    <path class="line" d="M42 87c0 7 44 7 44 0" />
+  </g>
+  <circle class="mark" cx="64" cy="99" r="2" />
+</svg>

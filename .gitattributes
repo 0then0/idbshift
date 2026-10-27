@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.png binary
+*.zip binary
+docs/evidence/** linguist-generated=true
+docs/dependency-licenses.json linguist-generated=true

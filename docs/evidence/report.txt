@@ -1,0 +1,7 @@
+PASSED dexie-upgrade-original (381 ms)
+CONTRACT-VIOLATION dexie-rollback-original (295 ms)
+  First violation: reopen-B / Stored names and computed normalization match source: Expected and actual values differ
+PASSED dexie-rollback-repair (282 ms)
+PASSED native-ledger-upgrade (124 ms)
+EXPECTED-REFUSAL native-ledger-refusal (232 ms)
+PASS covers only the executed history and declared checks. Expected refusal is a policy result, not successful coexistence.

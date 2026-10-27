@@ -1,0 +1,22 @@
+name: Bug report
+description: Report a runner, adapter contract, or report defect.
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include a synthetic adapter, history and exact command. Never attach a private database.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and observed result
+      description: OS, Node, Playwright, Chromium, expected result, actual verdict and first failing check.
+    validations:
+      required: true
+  - type: textarea
+    id: report
+    attributes:
+      label: Redacted diagnostics
+      description: Selected expected/actual values or a reviewed report. Trace and data sharing are optional.
