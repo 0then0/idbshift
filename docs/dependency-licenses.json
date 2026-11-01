@@ -1,57 +1,57 @@
 [
   {
     "name": "@biomejs/biome",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "license": "MIT OR Apache-2.0"
   },
   {
     "name": "@biomejs/cli-android-arm64",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "license": "MIT OR Apache-2.0"
   },
   {
     "name": "@biomejs/cli-android-x64",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "license": "MIT OR Apache-2.0"
   },
   {
     "name": "@biomejs/cli-darwin-arm64",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "license": "MIT OR Apache-2.0"
   },
   {
     "name": "@biomejs/cli-darwin-x64",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "license": "MIT OR Apache-2.0"
   },
   {
     "name": "@biomejs/cli-linux-arm64",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "license": "MIT OR Apache-2.0"
   },
   {
     "name": "@biomejs/cli-linux-arm64-musl",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "license": "MIT OR Apache-2.0"
   },
   {
     "name": "@biomejs/cli-linux-x64",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "license": "MIT OR Apache-2.0"
   },
   {
     "name": "@biomejs/cli-linux-x64-musl",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "license": "MIT OR Apache-2.0"
   },
   {
     "name": "@biomejs/cli-win32-arm64",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "license": "MIT OR Apache-2.0"
   },
   {
     "name": "@biomejs/cli-win32-x64",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "license": "MIT OR Apache-2.0"
   },
   {
@@ -276,7 +276,7 @@
   },
   {
     "name": "@types/node",
-    "version": "26.6.5",
+    "version": "26.6.6",
     "license": "MIT"
   },
   {
