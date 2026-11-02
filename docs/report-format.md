@@ -4,7 +4,7 @@ Each run writes `report.txt`, `report.json`, and `report.html` to the selected o
 
 ## JSON schema version 1
 
-The envelope is `{ "schemaVersion": "1", "histories": HistoryResult[] }`. Each history also carries `schemaVersion: "1"`. The field definitions are exported from [src/types.ts](../src/types.ts). Consumers should reject unsupported schema versions. Removing a field or changing its meaning requires a new schema version.
+The envelope is `{ "schemaVersion": "1", "histories": HistoryResult[] }`, plus `concurrentHistories: ConcurrentHistoryResult[]` when a run included concurrent histories. See [concurrent records](#concurrent-records). Each history also carries `schemaVersion: "1"`. The field definitions are exported from [src/types.ts](../src/types.ts). Consumers should reject unsupported schema versions. Removing a field or changing its meaning requires a new schema version. Version 0.2 adds the optional `concurrentHistories` array without changing any existing field. `histories` still contains only sequential results and the new key is omitted when empty, so a sequential-only report is byte-for-byte the same shape as before and a consumer that ignores unknown keys keeps working.
 
 A history contains:
 
@@ -43,8 +43,22 @@ An adapter shutdown deadline produces an error in the `close` phase; cancellatio
 
 Read the timeline as well as the final verdict: precedence preserves all earlier evidence and does not hide it. PASS establishes only the executed history and declared checks. Expected refusal is a policy result, not successful cross-version writes.
 
+## Concurrent records
+
+A `ConcurrentHistoryResult` has `kind: "concurrent"`, its own `schemaVersion: "1"`, the common identity, timing, `environment`, `limitations` and `error` fields, and:
+
+- `verdict`: `passed`, `expected-refusal`, `unexpected-operation`, `contract-violation`, `blocked` or `error`, with the precedence described in the [adapter contract](adapter-contract.md#operation-outcomes-and-verdicts). Verdict `blocked` is a deadline or cancellation. The native IndexedDB `blocked` event is the event type `open-blocked`.
+- `participants`: A and B with the version key, declared and observed application version, document UUID, whether the adapter open settled, the first connection's native version, and A's declared `policy`.
+- `steps`: the script in order, each with `status`, duration, the matched event of a wait, the open it settles, operation outcome and error name, oracle native version and checks. `index` is a protocol position.
+- `events`: observed and declared events grouped by participant and ordered by `seq` inside each document. Ids such as `r1` and `c1` are local to one document. No timestamp and no global order is recorded, because the browser provides none. Collection order by the runner is not a causal order.
+- `upgrade`: `state` (`not-requested`, `pending`, `waiting-for-connection`, `completed`, `aborted`), requested and previous versions, the B events that establish it, the step after which the runner first collected the completion, and the first native version read by the oracle.
+- `incomplete`: reasons evidence is missing, for example steps that did not run, a deadline, an upgrade that never settled, or no completed oracle read.
+- `firstViolation` and `firstProblem` use `{ step, check?, message }`. A violation is only a failed oracle comparison.
+
+Causal links appear only where the script establishes them: a wait names the event that released it, and an await names the start it settles. The lanes in the HTML report are ordered only inside each document.
+
 ## Sharing reports
 
-Default exports contain selected assertion diagnostics and tool metadata, not cookies, browser storage state, page logs, stacks, operation payloads, or database dumps. Labels, expected/actual values, and application error messages are caller-controlled: select synthetic or redacted data before sharing. Automatic exception diagnostics truncate multiline stacks and redact current working/home directory prefixes; this is not a general secret scrubber.
+Default exports contain selected assertion diagnostics and tool metadata, not cookies, browser storage state, page logs, stacks, operation payloads, or database dumps. Concurrent reports add event types, ids, versions, signal and error names, and operation names, never input values or full records. Labels, expected/actual values, and application error messages are caller-controlled: select synthetic or redacted data before sharing. Automatic exception diagnostics truncate multiline stacks and redact current working/home directory prefixes; this is not a general secret scrubber.
 
 `--trace` saves separate Playwright artifacts. Traces may contain sensitive browser details and source locations. Review them independently; they supplement assertions rather than proving correctness. See [SECURITY.md](../SECURITY.md).

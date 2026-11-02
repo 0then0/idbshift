@@ -6,7 +6,7 @@ IDBShift is a local developer tool for trusted scenarios and disposable data. It
 
 Use synthetic data and non-persistent browser contexts. Do not connect experiments to production services, personal browser profiles, or user accounts. The local Vite host serves the selected project root on loopback for the duration of the run.
 
-Browser origin/database guards detect ordinary integration mistakes. They do not prevent hostile Node code, overwritten platform APIs, worker-based access, or deliberate exfiltration in diagnostic values. Adapter queries must be read-only; service workers are blocked.
+Browser origin/database guards detect ordinary integration mistakes. They do not prevent hostile Node code, overwritten platform APIs, worker-based access, or deliberate exfiltration in diagnostic values. Adapter queries must be read-only; service workers are blocked. Concurrent histories add an observer inside the test documents. It records IndexedDB event types, versions and ids and declared signal names, not record contents.
 
 Default reports include selected assertions and tool metadata, not cookies, storage-state exports, page logs, operation payloads, or database dumps. Scenario labels and error messages may still contain data you supplied. Review every artifact before sharing.
 
@@ -16,7 +16,7 @@ Playwright traces are opt-in and can contain sensitive browser details and sourc
 
 Use [GitHub private vulnerability reporting](https://github.com/0then0/idbshift/security/advisories/new) when available. Otherwise, contact the [repository owner](https://github.com/0then0) through a private contact route on their profile. Keep exploit details, tokens, private databases, and full traces out of public issues.
 
-Include the affected version, a minimal synthetic reproduction, impact, and relevant redacted diagnostics. Reports affecting the current 0.1.x development line are reviewed without a guaranteed response time.
+Include the affected version, a minimal synthetic reproduction, impact, and relevant redacted diagnostics. Reports affecting the current 0.2.x development line are reviewed without a guaranteed response time.
 
 ## Dependencies
 

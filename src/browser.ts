@@ -1,5 +1,5 @@
 import { assertJson } from './json.js';
-import type { Json } from './types.js';
+import type { Json, ObservedEvent } from './types.js';
 
 export interface StorageSession {
   /** The actual connection used by this adapter, not a reported name or number. */
@@ -38,7 +38,10 @@ export function defineAdapter(adapter: StorageAdapter): StorageAdapter {
   };
 }
 
-/** Use only for intentional application compatibility refusal, not programming errors. */
+/**
+ * Use only for an intentional application refusal, not programming errors. Throw it from `open`
+ * for a compatibility gate, or from an operation to enforce a declared stale-document policy.
+ */
 export class OpenRefusal extends Error {
   readonly idbshiftRefusal = true;
   constructor(message: string, name = 'CompatibilityRefusal') {
@@ -47,9 +50,35 @@ export class OpenRefusal extends Error {
   }
 }
 
+const signalName = /^[a-z0-9][a-z0-9._-]{0,79}$/i;
+/**
+ * Declares an application state change, for example `upgrade-required`, so a history can wait for
+ * it. It carries a name only and has no effect outside an IDBShift run. Declare it after the state
+ * has actually changed.
+ */
+export function signal(name: string): void {
+  if (!signalName.test(name))
+    throw new TypeError('Signal names use 1 to 80 letters, digits, dots, dashes or underscores');
+  window.__idbshiftGuard?.emit?.({ type: 'signal', declared: true, name });
+}
+
 declare global {
   interface Window {
     __idbshift?: { session: StorageSession; documentId: string };
-    __idbshiftGuard?: { violations: string[]; documentId: string };
+    __idbshiftGuard?: {
+      violations: string[];
+      documentId: string;
+      /** Present only in concurrent histories. */
+      events?: ObservedEvent[];
+      waiters?: (() => boolean)[];
+      emit?: (event: Omit<ObservedEvent, 'seq'>) => void;
+    };
+    __idbshiftParticipant?: {
+      opening: Promise<ParticipantOpen>;
+    };
   }
 }
+/** Outcome of a participant's adapter open, collected inside the document. */
+export type ParticipantOpen =
+  | { status: 'opened'; appVersion: string; version: number }
+  | { status: 'refused' | 'failed'; name: string; message: string; appVersion?: string };

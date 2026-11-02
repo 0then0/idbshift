@@ -29,6 +29,8 @@ Browser test results and screenshots are written to `test-results/`. Playwright'
 
 The browser suite verifies isolation of histories at the same origin/database name, preservation between stages, fresh documents and module globals, one-time preparation, origin/database guards, real rollback writes, exact field values, and index query results. The native example checks a separate ledger invariant without Dexie.
 
+Concurrent tests run in real Chromium. They cover the four acceptance histories, an operation on A while B is still opening, a real native `blocked` event followed by an explicit release, two connections of one participant, handler preservation, observer transparency, cancellation during a blocked open, an adapter open and a stalled close, adapter failure before and after an upgrade, a missing or wrong refusal, an oracle mismatch against a successful application operation, unreadable oracle data, wrong database or origin access, late callbacks after a deadline, and mixed offline reports. Static validation of scripts is covered by unit tests.
+
 Failure tests cover intentional and unexpected refusals, incorrect expectations, thrown assertions, unsupported JSON values, stage deadlines, cancellation, and shutdown. Shutdown tests include a renderer occupied by synchronous code or an uninterrupted microtask queue, so deadlines are checked independently of browser timers. Contexts and pages must be released after failure.
 
 Report tests preserve the first failure and its diagnostic snapshots after later mutations, successful stages, or errors. They check the offline HTML's escaped output, JSON download, keyboard/pointer disclosures, and narrow-screen overflow. The icon is rendered on both light and dark backgrounds.
@@ -42,6 +44,11 @@ The [HTML report](evidence/report.html), [JSON](evidence/report.json), and [text
 - **Dexie repair control:** B repairs two rows on reopening and the index returns `[1, 2]`, with exact values `alice updated` and `bob`.
 - **Native ledger upgrade:** original entries remain and the materialized balance equals their sum, 900 cents.
 - **Native ledger refusal:** A raises `VersionError` against native v2, performs no rollback writes, and B verifies the preserved entries and balance afterward.
+- **Concurrent histories** ([recorded](evidence/concurrent/report.html)), using a notes fixture with native v1 and a compatible v2:
+  - **Held connection:** A has no `versionchange` handler. B's open fires the native `blocked` event until a declared command closes A's session. Upgrade completes, the control record is preserved. Result: passed.
+  - **Cached closed connection:** A closes the connection on `versionchange` but keeps its cached `Promise<IDBDatabase>`. B's upgrade completes. A's next write fails with `InvalidStateError`. The oracle finds the control record intact and no partial write. Result: unexpected-operation. This adapts the failure class described in [Alplox/Youtube-Playback-Plox #56](https://github.com/Alplox/Youtube-Playback-Plox/issues/56); it does not reproduce that extension or its full user scenario.
+  - **Declared stale-write refusal:** A reports `upgrade-required` and refuses writes with `UpgradeRequired`. The refusal is expected and the data is preserved. Result: expected-refusal.
+  - **Compatible reconnect:** A invalidates its cache and reopens the installed version, then writes. The oracle confirms both records. This control is valid only for this fixture, where v2 adds an unrelated store. It says nothing about incompatible schema changes.
 
 The runner does not recognize these history names or prescribe their outcomes. Acceptance tests assert the expected experiment results.
 
@@ -51,14 +58,14 @@ Regenerate the examples and their input checksums with:
 npm run examples:record
 ```
 
-This command returns **1** because the original Dexie rollback history violates its contract. It still writes all three reports and `sources.sha256`. Only CLI setup/export errors prevent a new input manifest from being recorded. Use `npm run evidence:check` to detect changed inputs before sharing a recorded report. For a separate output directory, run `npm run examples:record -- --out reports/reference`.
+This command runs the default sequential examples into the output directory and the concurrent examples into its `concurrent/` subdirectory. It returns **1** because the original Dexie rollback history violates its contract and the cached-connection history ends with an unexpected operation. It still writes all reports and `sources.sha256`. Only CLI setup/export errors prevent a new input manifest from being recorded. Use `npm run evidence:check` to detect changed inputs before sharing a recorded report. For a separate output directory, run `npm run examples:record -- --out reports/reference`.
 
 ## Environments
 
 The recorded local run uses macOS 15.7.9 on arm64, Node 24.22.1, Playwright 1.64.1, and Chromium 156.0.8078.4. The [CI workflow](../.github/workflows/ci.yml) runs the same checks on macOS 15 and Ubuntu 24.04. Consult [workflow results](https://github.com/0then0/idbshift/actions/workflows/ci.yml) for completed runs; a configured job alone is not evidence that an environment passed.
 
-Chromium is the supported browser for v0.1. Firefox, WebKit, and Windows have not been validated. New compatibility claims need completed acceptance runs and reproducible results.
+Chromium is the supported browser for v0.1 and v0.2. Firefox, WebKit, and Windows have not been validated. New compatibility claims need completed acceptance runs and reproducible results.
 
 ## Evidence limits
 
-A passing result covers selected synthetic histories and declared invariants. It does not establish general application safety or reproduce the full production context of Dexie #2097. The repair control demonstrates a policy for one derived field, without multi-tab or concurrent-write guarantees. Crash, quota, service-worker, and production-data testing are outside the suite's scope.
+A passing result covers selected synthetic histories and declared invariants. It does not establish general application safety or reproduce the full production context of Dexie #2097. The repair control demonstrates a policy for one derived field, without multi-tab or concurrent-write guarantees. The concurrent histories cover two documents of one origin in one Chromium context. They do not establish behavior of other engines, workers, background throttling, crashes or incompatible schema changes, and the reconnect control is tied to its compatible fixture. Crash, quota, service-worker, and production-data testing are outside the suite's scope.

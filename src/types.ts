@@ -92,3 +92,269 @@ export interface HistoryResult {
   limitations: string[];
   error?: Diagnostic;
 }
+
+/* ------------------------------------------------------------------------------------------ */
+/* Concurrent histories (v0.2): two documents of one origin share one disposable database.     */
+/* ------------------------------------------------------------------------------------------ */
+
+/** A stays open and holds the old application. B is the document that requests the upgrade. */
+export type ParticipantId = 'A' | 'B';
+
+/**
+ * Declared behavior of the old document after another document changes the database version.
+ * IDBShift checks operations against this declaration. It never applies a recovery itself.
+ */
+export type OldTabPolicy =
+  | { kind: 'hold-until-released'; reason: string }
+  | { kind: 'no-policy'; reason: string }
+  | {
+      kind: 'refuse-writes' | 'read-only' | 'reload-required';
+      /** Exact name of the application refusal. Thrown with OpenRefusal. */
+      refusalName: string;
+      reason: string;
+    }
+  | { kind: 'reconnect'; reason: string };
+
+/**
+ * `open-blocked` is the native IndexedDB `blocked` event of an open request. It is unrelated to
+ * the run outcome `blocked`, which means a deadline or cancellation.
+ */
+export type ObservedEventType =
+  | 'open-requested'
+  | 'open-blocked'
+  | 'upgrade-needed'
+  | 'upgrade-transaction-complete'
+  | 'upgrade-transaction-abort'
+  | 'open-succeeded'
+  | 'open-failed'
+  | 'versionchange'
+  | 'connection-close-called'
+  | 'connection-closed-abnormally'
+  | 'signal'
+  | 'operation-started'
+  | 'operation-finished'
+  | 'session-close-started'
+  | 'session-close-finished'
+  | 'page-close';
+
+/** Position `seq` is local to one document. Request and connection ids are local to it as well. */
+export interface ObservedEvent {
+  seq: number;
+  type: ObservedEventType;
+  /** True for protocol or adapter declarations. False for IndexedDB events seen by the observer. */
+  declared?: true;
+  request?: string;
+  connection?: string;
+  /** open-requested: version argument, or null when omitted. open-succeeded: connection version. */
+  version?: number | null;
+  oldVersion?: number;
+  newVersion?: number | null;
+  /** Signal, operation or error name. */
+  name?: string;
+  outcome?: string;
+}
+export interface ParticipantEvent extends ObservedEvent {
+  participant: ParticipantId;
+}
+
+export interface EventMatcher {
+  participant: ParticipantId;
+  type: ObservedEventType;
+  /** Signal name, operation name or error name, depending on the event type. */
+  name?: string;
+  oldVersion?: number;
+  newVersion?: number | null;
+}
+
+export interface OracleSchema {
+  /** Native IndexedDB version this schema describes. */
+  version: number;
+  /** Exact object store set. An unlisted store or a different key path is an oracle error. */
+  stores: Record<string, { keyPath: string | null }>;
+}
+export interface OracleApi {
+  /** Native version seen by a short-lived read-only oracle connection. */
+  version(): Promise<number>;
+  /**
+   * Selected fields of the records with these keys, aligned with `keys`. A missing record is null.
+   * A missing field is null. Fields are required so a count can never stand in for data.
+   */
+  records(store: string, keys: (string | number)[], fields: string[]): Promise<Json>;
+  /** Selected fields of every record ordered by primary key. Fails above 1000 records. */
+  all(store: string, fields: string[]): Promise<Json>;
+}
+export interface OracleCheck {
+  name: string;
+  run(api: OracleApi): Promise<{ expected: Json; actual: Json }>;
+}
+
+interface StepCommon {
+  /** Short protocol explanation shown in the report. */
+  note?: string;
+  /** Applies to this step only. Defaults to the history deadline. */
+  deadlineMs?: number;
+}
+export type ConcurrentStep = StepCommon &
+  (
+    | {
+        /** Opens the participant document and awaits its adapter open. */
+        action: 'open';
+        participant: ParticipantId;
+      }
+    | {
+        /** Opens the document and starts the adapter open without waiting for it to settle. */
+        action: 'start-open';
+        participant: ParticipantId;
+      }
+    | { action: 'await-open'; participant: ParticipantId }
+    | {
+        /** Waits for an observed event or adapter signal. Each event can satisfy one wait. */
+        action: 'wait-for';
+        event: EventMatcher;
+      }
+    | {
+        action: 'operation';
+        participant: ParticipantId;
+        name: string;
+        input?: Json;
+        /** Default: success. policy-refusal needs the participant's declared refusalName. */
+        expect?: 'success' | 'policy-refusal';
+      }
+    | { action: 'close-session'; participant: ParticipantId }
+    | { action: 'close-page'; participant: ParticipantId }
+    | {
+        /** Independent reads from a separate short-lived page. */
+        action: 'oracle';
+        name: string;
+        checks: OracleCheck[];
+      }
+  );
+
+export interface ConcurrentHistory {
+  kind: 'concurrent';
+  id: string;
+  databaseName: string;
+  versions: History['versions'];
+  participants: {
+    A: { version: string; policy: OldTabPolicy };
+    B: { version: string };
+  };
+  oracle: { schemas: OracleSchema[] };
+  steps: ConcurrentStep[];
+  deadlineMs?: number;
+}
+
+export type ConcurrentStepStatus =
+  | 'completed'
+  | 'policy-refusal'
+  | 'unexpected-failure'
+  | 'refusal-missing'
+  | 'violation'
+  | 'error'
+  | 'blocked'
+  | 'not-run';
+
+/**
+ * - passed: every step completed and every oracle check matched.
+ * - expected-refusal: a declared policy refusal happened and nothing else went wrong.
+ * - unexpected-operation: an operation failed or was accepted contrary to the declared policy.
+ * - contract-violation: an oracle check proved a declared data invariant false.
+ * - blocked: deadline or cancellation. Not evidence about data.
+ * - error: adapter, configuration, oracle or infrastructure failure.
+ */
+export type ConcurrentVerdict =
+  | 'passed'
+  | 'expected-refusal'
+  | 'unexpected-operation'
+  | 'contract-violation'
+  | 'blocked'
+  | 'error';
+
+export interface ConcurrentStepResult {
+  /** Position in the declared script. Only this order is a protocol order. */
+  index: number;
+  action: ConcurrentStep['action'];
+  participant?: ParticipantId;
+  note?: string;
+  status: ConcurrentStepStatus;
+  durationMs: number;
+  /** wait-for: the observed event that satisfied the wait. */
+  matched?: { participant: ParticipantId; seq: number; type: ObservedEventType };
+  /** await-open: index of the step that started this open. */
+  startedBy?: number;
+  open?: { observedAppVersion: string; databaseVersion: number };
+  operation?: {
+    name: string;
+    expect: 'success' | 'policy-refusal';
+    outcome: 'completed' | 'refused-by-policy' | 'failed';
+    error?: { name: string; message: string };
+  };
+  oracle?: { nativeVersion?: number };
+  checks?: CheckResult[];
+  error?: Diagnostic;
+  /** not-run: why the step did not execute. */
+  reason?: string;
+}
+
+export type UpgradeState =
+  | 'not-requested'
+  | 'pending'
+  | 'waiting-for-connection'
+  | 'completed'
+  | 'aborted';
+export interface UpgradeSummary {
+  state: UpgradeState;
+  /** Version requested by B's upgrade, when an upgradeneeded event was observed. */
+  requestedVersion?: number;
+  fromVersion?: number;
+  /** B events that establish the state. */
+  evidence: { participant: ParticipantId; seq: number; type: ObservedEventType }[];
+  /** Script step after which the runner first collected the completion event. */
+  confirmedAfterStep?: number;
+  /** First native version read by the independent oracle, when one ran. */
+  oracleNativeVersion?: number;
+}
+
+export interface ParticipantRecord {
+  version: string;
+  appVersion: string;
+  observedAppVersion?: string;
+  documentId?: string;
+  /** True after the adapter open settled successfully. */
+  opened: boolean;
+  /** Version of the first connection when the adapter open settled. */
+  databaseVersion?: number;
+  policy?: OldTabPolicy;
+  pageClosed?: 'step' | 'cleanup';
+}
+
+export interface ConcurrentPoint {
+  /** Script position of the step. */
+  step: number;
+  check?: string;
+  message: string;
+}
+
+export interface ConcurrentHistoryResult {
+  schemaVersion: '1';
+  kind: 'concurrent';
+  toolVersion: string;
+  history: string;
+  databaseName: string;
+  origin: string;
+  startedAt: string;
+  durationMs: number;
+  verdict: ConcurrentVerdict;
+  firstViolation?: ConcurrentPoint;
+  firstProblem?: ConcurrentPoint;
+  participants: Record<ParticipantId, ParticipantRecord>;
+  steps: ConcurrentStepResult[];
+  /** Grouped by participant, ordered by local seq. No global order between participants. */
+  events: ParticipantEvent[];
+  upgrade: UpgradeSummary;
+  /** Why the evidence is incomplete, when it is. */
+  incomplete: string[];
+  environment: HistoryResult['environment'];
+  limitations: string[];
+  error?: Diagnostic;
+}

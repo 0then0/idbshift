@@ -17,14 +17,21 @@ if (positionals.length !== 1 || !['record', 'check'].includes(mode)) {
 const out = resolve(root, values.out);
 
 if (mode === 'record') {
-  const child = spawnSync(process.execPath, ['--import', 'tsx', 'src/cli.ts', '--out', out], {
-    cwd: root,
-    stdio: 'inherit',
-  });
-  if (child.error) throw child.error;
-  if (child.status !== 0 && child.status !== 1) process.exit(child.status ?? 2);
-  // A contract violation is a valid experiment result, not a recorder failure.
-  process.exitCode = child.status;
+  // Sequential examples first, then the concurrent examples in a subdirectory.
+  const runs = [
+    ['--out', out],
+    ['--scenario', 'examples/concurrent.ts', '--out', join(out, 'concurrent')],
+  ];
+  for (const args of runs) {
+    const child = spawnSync(process.execPath, ['--import', 'tsx', 'src/cli.ts', ...args], {
+      cwd: root,
+      stdio: 'inherit',
+    });
+    if (child.error) throw child.error;
+    if (child.status !== 0 && child.status !== 1) process.exit(child.status ?? 2);
+    // A contract violation or an unexpected operation is a valid experiment result.
+    if (child.status === 1) process.exitCode = 1;
+  }
 }
 
 // Pin executable inputs and build/test configuration; exclude generated reports and caches.

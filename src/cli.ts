@@ -2,10 +2,16 @@ import { parseArgs } from 'node:util';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { chromium } from '@playwright/test';
+import { isConcurrentHistory, runConcurrentHistory } from './concurrent.js';
 import { runHistory } from './runner.js';
 import { startAdapterServer } from './server.js';
 import { summarize, writeReports } from './report.js';
-import type { History, HistoryResult } from './types.js';
+import type {
+  ConcurrentHistory,
+  ConcurrentHistoryResult,
+  History,
+  HistoryResult,
+} from './types.js';
 
 async function main() {
   const { values } = parseArgs({
@@ -24,7 +30,7 @@ async function main() {
     return;
   }
   const { histories } = (await import(pathToFileURL(resolve(values.scenario)).href)) as {
-    histories: History[];
+    histories: (History | ConcurrentHistory)[];
   };
   if (!Array.isArray(histories) || !histories.length)
     throw new Error('Scenario must export a nonempty histories array');
@@ -32,7 +38,7 @@ async function main() {
   const cancel = () => controller.abort();
   process.once('SIGINT', cancel);
   process.once('SIGTERM', cancel);
-  const results: HistoryResult[] = [];
+  const results: (HistoryResult | ConcurrentHistoryResult)[] = [];
   const host = await startAdapterServer(resolve(values.root));
   let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
   try {
@@ -40,12 +46,15 @@ async function main() {
     for (const [index, history] of histories.entries()) {
       // Create output directory before tracing. Filenames never contain untrusted history ids.
       if (values.trace) await writeReports(results, resolve(values.out));
+      const runOptions = {
+        origin: host.origin,
+        signal: controller.signal,
+        tracePath: values.trace ? resolve(values.out, `trace-${index + 1}.zip`) : undefined,
+      };
       results.push(
-        await runHistory(browser, history, {
-          origin: host.origin,
-          signal: controller.signal,
-          tracePath: values.trace ? resolve(values.out, `trace-${index + 1}.zip`) : undefined,
-        }),
+        isConcurrentHistory(history)
+          ? await runConcurrentHistory(browser, history, runOptions)
+          : await runHistory(browser, history, runOptions),
       );
       await writeReports(results, resolve(values.out));
       if (controller.signal.aborted) break;

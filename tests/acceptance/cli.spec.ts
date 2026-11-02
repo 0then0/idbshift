@@ -52,6 +52,25 @@ test('CLI does not hide original violation behind exit zero or retries', async (
   ]);
 });
 
+test('CLI runs the concurrent examples and reports an unexpected operation without hiding it', async ({
+  browserName,
+}, testInfo) => {
+  expect(browserName).toBe('chromium');
+  const out = testInfo.outputPath('concurrent');
+  const result = await cli(['--scenario', 'examples/concurrent.ts', '--out', out]);
+  expect(result.code, result.output).toBe(1);
+  const report = JSON.parse(await readFile(join(out, 'report.json'), 'utf8'));
+  expect(report.histories).toEqual([]);
+  expect(report.concurrentHistories.map((h: { verdict: string }) => h.verdict)).toEqual([
+    'passed',
+    'unexpected-operation',
+    'expected-refusal',
+    'passed',
+  ]);
+  expect(await readFile(join(out, 'report.txt'), 'utf8')).toContain('concurrent');
+  expect(JSON.stringify(report)).not.toContain(process.cwd());
+});
+
 test('CLI configuration error uses exit 2', async () => {
   expect((await cli(['--unknown'])).code).toBe(2);
 });
@@ -65,6 +84,8 @@ test('Example recorder captures genuine outcomes and detects changed input manif
   expect(result.code, result.output).toBe(1);
   const report = JSON.parse(await readFile(join(out, 'report.json'), 'utf8'));
   expect(report.histories[1].verdict).toBe('contract-violation');
+  const concurrent = JSON.parse(await readFile(join(out, 'concurrent', 'report.json'), 'utf8'));
+  expect(concurrent.concurrentHistories).toHaveLength(4);
   const hashes = await readFile(join(out, 'sources.sha256'), 'utf8');
   const runnerHash = createHash('sha256')
     .update(await readFile('src/runner.ts'))

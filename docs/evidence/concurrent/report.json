@@ -1,0 +1,1262 @@
+{
+  "schemaVersion": "1",
+  "histories": [],
+  "concurrentHistories": [
+    {
+      "schemaVersion": "1",
+      "kind": "concurrent",
+      "toolVersion": "0.2.0",
+      "history": "held-connection-blocks-upgrade",
+      "databaseName": "idbshift-notes",
+      "origin": "http://127.0.0.1:63676",
+      "startedAt": "2026-11-02T10:21:39.597Z",
+      "durationMs": 243,
+      "verdict": "passed",
+      "participants": {
+        "A": {
+          "version": "old",
+          "appVersion": "notes-holding",
+          "opened": true,
+          "policy": {
+            "kind": "hold-until-released",
+            "reason": "A has no versionchange handler. The history releases its connection explicitly."
+          },
+          "documentId": "b8ba04ef-8c2e-4410-bb60-a082bd17762f",
+          "observedAppVersion": "notes-holding",
+          "databaseVersion": 1,
+          "pageClosed": "cleanup"
+        },
+        "B": {
+          "version": "next",
+          "appVersion": "notes-next",
+          "opened": true,
+          "documentId": "1a37be30-c626-4107-a784-f66c642f9a83",
+          "observedAppVersion": "notes-next",
+          "databaseVersion": 2,
+          "pageClosed": "cleanup"
+        }
+      },
+      "steps": [
+        {
+          "index": 0,
+          "action": "open",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 99,
+          "open": {
+            "observedAppVersion": "notes-holding",
+            "databaseVersion": 1
+          }
+        },
+        {
+          "index": 1,
+          "action": "operation",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 2,
+          "operation": {
+            "name": "save",
+            "expect": "success",
+            "outcome": "completed"
+          }
+        },
+        {
+          "index": 2,
+          "action": "start-open",
+          "participant": "B",
+          "note": "B requests native version 2 and the runner does not wait for it.",
+          "status": "completed",
+          "durationMs": 52
+        },
+        {
+          "index": 3,
+          "action": "wait-for",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 10,
+          "matched": {
+            "participant": "A",
+            "seq": 7,
+            "type": "versionchange"
+          }
+        },
+        {
+          "index": 4,
+          "action": "wait-for",
+          "participant": "B",
+          "note": "The native blocked event of the open request: the upgrade waits for A.",
+          "status": "completed",
+          "durationMs": 1,
+          "matched": {
+            "participant": "B",
+            "seq": 2,
+            "type": "open-blocked"
+          }
+        },
+        {
+          "index": 5,
+          "action": "close-session",
+          "participant": "A",
+          "note": "The explicit command that lets the upgrade continue.",
+          "status": "completed",
+          "durationMs": 2
+        },
+        {
+          "index": 6,
+          "action": "await-open",
+          "participant": "B",
+          "status": "completed",
+          "durationMs": 1,
+          "open": {
+            "observedAppVersion": "notes-next",
+            "databaseVersion": 2
+          },
+          "startedBy": 2
+        },
+        {
+          "index": 7,
+          "action": "oracle",
+          "status": "completed",
+          "durationMs": 60,
+          "checks": [
+            {
+              "name": "The independent oracle reads native version 2",
+              "status": "passed",
+              "expected": 2,
+              "actual": 2
+            },
+            {
+              "name": "Control record is preserved",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "text": "control"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "text": "control"
+                }
+              ]
+            }
+          ],
+          "oracle": {
+            "nativeVersion": 2
+          }
+        }
+      ],
+      "events": [
+        {
+          "participant": "A",
+          "seq": 1,
+          "type": "open-requested",
+          "request": "r1",
+          "version": 1
+        },
+        {
+          "participant": "A",
+          "seq": 2,
+          "type": "upgrade-needed",
+          "request": "r1",
+          "connection": "c1",
+          "oldVersion": 0,
+          "newVersion": 1
+        },
+        {
+          "participant": "A",
+          "seq": 3,
+          "type": "upgrade-transaction-complete",
+          "request": "r1",
+          "connection": "c1"
+        },
+        {
+          "participant": "A",
+          "seq": 4,
+          "type": "open-succeeded",
+          "request": "r1",
+          "connection": "c1",
+          "version": 1
+        },
+        {
+          "participant": "A",
+          "seq": 5,
+          "type": "operation-started",
+          "declared": true,
+          "name": "save"
+        },
+        {
+          "participant": "A",
+          "seq": 6,
+          "type": "operation-finished",
+          "declared": true,
+          "name": "save",
+          "outcome": "completed"
+        },
+        {
+          "participant": "A",
+          "seq": 7,
+          "type": "versionchange",
+          "connection": "c1",
+          "oldVersion": 1,
+          "newVersion": 2
+        },
+        {
+          "participant": "A",
+          "seq": 8,
+          "type": "session-close-started",
+          "declared": true
+        },
+        {
+          "participant": "A",
+          "seq": 9,
+          "type": "connection-close-called",
+          "connection": "c1"
+        },
+        {
+          "participant": "A",
+          "seq": 10,
+          "type": "session-close-finished",
+          "declared": true
+        },
+        {
+          "participant": "B",
+          "seq": 1,
+          "type": "open-requested",
+          "request": "r1",
+          "version": 2
+        },
+        {
+          "participant": "B",
+          "seq": 2,
+          "type": "open-blocked",
+          "request": "r1",
+          "oldVersion": 1,
+          "newVersion": 2
+        },
+        {
+          "participant": "B",
+          "seq": 3,
+          "type": "upgrade-needed",
+          "request": "r1",
+          "connection": "c1",
+          "oldVersion": 1,
+          "newVersion": 2
+        },
+        {
+          "participant": "B",
+          "seq": 4,
+          "type": "upgrade-transaction-complete",
+          "request": "r1",
+          "connection": "c1"
+        },
+        {
+          "participant": "B",
+          "seq": 5,
+          "type": "open-succeeded",
+          "request": "r1",
+          "connection": "c1",
+          "version": 2
+        }
+      ],
+      "upgrade": {
+        "state": "completed",
+        "evidence": [
+          {
+            "participant": "B",
+            "seq": 2,
+            "type": "open-blocked"
+          },
+          {
+            "participant": "B",
+            "seq": 3,
+            "type": "upgrade-needed"
+          },
+          {
+            "participant": "B",
+            "seq": 4,
+            "type": "upgrade-transaction-complete"
+          },
+          {
+            "participant": "B",
+            "seq": 5,
+            "type": "open-succeeded"
+          }
+        ],
+        "oracleNativeVersion": 2,
+        "requestedVersion": 2,
+        "fromVersion": 1,
+        "confirmedAfterStep": 5
+      },
+      "incomplete": [],
+      "environment": {
+        "browser": "chromium",
+        "browserVersion": "156.0.8078.4",
+        "node": "v26.13.0",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed script and its declared oracle checks.",
+        "Two documents of one origin share one disposable Chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
+        "Events are ordered only within one document. Order across participants is a protocol order from wait-for and await-open steps, never a global browser order.",
+        "The observer sees IndexedDB open requests, connections and the declared adapter signals. It does not see every internal browser or application action.",
+        "A deadline or a missing event does not prove that the event cannot occur, and it is not evidence of data loss.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON."
+      ]
+    },
+    {
+      "schemaVersion": "1",
+      "kind": "concurrent",
+      "toolVersion": "0.2.0",
+      "history": "cached-closed-connection-write-fails",
+      "databaseName": "idbshift-notes",
+      "origin": "http://127.0.0.1:63676",
+      "startedAt": "2026-11-02T10:21:39.842Z",
+      "durationMs": 186,
+      "verdict": "unexpected-operation",
+      "participants": {
+        "A": {
+          "version": "old",
+          "appVersion": "notes-cached",
+          "opened": true,
+          "policy": {
+            "kind": "no-policy",
+            "reason": "A caches its connection promise and closes the connection on versionchange. It declares no stale-tab behavior, so later writes are expected to succeed."
+          },
+          "documentId": "912fe717-74a6-42e6-be7e-a51f3067f9ea",
+          "observedAppVersion": "notes-cached",
+          "databaseVersion": 1,
+          "pageClosed": "cleanup"
+        },
+        "B": {
+          "version": "next",
+          "appVersion": "notes-next",
+          "opened": true,
+          "documentId": "7d87fc43-da1a-4cde-bbe9-8c5da084a12b",
+          "observedAppVersion": "notes-next",
+          "databaseVersion": 2,
+          "pageClosed": "cleanup"
+        }
+      },
+      "steps": [
+        {
+          "index": 0,
+          "action": "open",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 61,
+          "open": {
+            "observedAppVersion": "notes-cached",
+            "databaseVersion": 1
+          }
+        },
+        {
+          "index": 1,
+          "action": "operation",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 2,
+          "operation": {
+            "name": "save",
+            "expect": "success",
+            "outcome": "completed"
+          }
+        },
+        {
+          "index": 2,
+          "action": "start-open",
+          "participant": "B",
+          "note": "B requests native version 2 and the runner does not wait for it.",
+          "status": "completed",
+          "durationMs": 50
+        },
+        {
+          "index": 3,
+          "action": "wait-for",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 7,
+          "matched": {
+            "participant": "A",
+            "seq": 7,
+            "type": "versionchange"
+          }
+        },
+        {
+          "index": 4,
+          "action": "await-open",
+          "participant": "B",
+          "status": "completed",
+          "durationMs": 1,
+          "open": {
+            "observedAppVersion": "notes-next",
+            "databaseVersion": 2
+          },
+          "startedBy": 2
+        },
+        {
+          "index": 5,
+          "action": "operation",
+          "participant": "A",
+          "note": "Expected to succeed. A still holds the cached promise of the closed connection.",
+          "status": "unexpected-failure",
+          "durationMs": 1,
+          "operation": {
+            "name": "save",
+            "expect": "success",
+            "outcome": "failed",
+            "error": {
+              "name": "InvalidStateError",
+              "message": "Failed to execute 'transaction' on 'IDBDatabase': The database connection is closing."
+            }
+          }
+        },
+        {
+          "index": 6,
+          "action": "oracle",
+          "status": "completed",
+          "durationMs": 57,
+          "checks": [
+            {
+              "name": "The independent oracle reads native version 2",
+              "status": "passed",
+              "expected": 2,
+              "actual": 2
+            },
+            {
+              "name": "Control record is preserved",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "text": "control"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "text": "control"
+                }
+              ]
+            },
+            {
+              "name": "The failed write left no record",
+              "status": "passed",
+              "expected": [
+                null
+              ],
+              "actual": [
+                null
+              ]
+            }
+          ],
+          "oracle": {
+            "nativeVersion": 2
+          }
+        }
+      ],
+      "events": [
+        {
+          "participant": "A",
+          "seq": 1,
+          "type": "open-requested",
+          "request": "r1",
+          "version": 1
+        },
+        {
+          "participant": "A",
+          "seq": 2,
+          "type": "upgrade-needed",
+          "request": "r1",
+          "connection": "c1",
+          "oldVersion": 0,
+          "newVersion": 1
+        },
+        {
+          "participant": "A",
+          "seq": 3,
+          "type": "upgrade-transaction-complete",
+          "request": "r1",
+          "connection": "c1"
+        },
+        {
+          "participant": "A",
+          "seq": 4,
+          "type": "open-succeeded",
+          "request": "r1",
+          "connection": "c1",
+          "version": 1
+        },
+        {
+          "participant": "A",
+          "seq": 5,
+          "type": "operation-started",
+          "declared": true,
+          "name": "save"
+        },
+        {
+          "participant": "A",
+          "seq": 6,
+          "type": "operation-finished",
+          "declared": true,
+          "name": "save",
+          "outcome": "completed"
+        },
+        {
+          "participant": "A",
+          "seq": 7,
+          "type": "versionchange",
+          "connection": "c1",
+          "oldVersion": 1,
+          "newVersion": 2
+        },
+        {
+          "participant": "A",
+          "seq": 8,
+          "type": "connection-close-called",
+          "connection": "c1"
+        },
+        {
+          "participant": "A",
+          "seq": 9,
+          "type": "operation-started",
+          "declared": true,
+          "name": "save"
+        },
+        {
+          "participant": "A",
+          "seq": 10,
+          "type": "operation-finished",
+          "declared": true,
+          "name": "save",
+          "outcome": "failed:InvalidStateError"
+        },
+        {
+          "participant": "B",
+          "seq": 1,
+          "type": "open-requested",
+          "request": "r1",
+          "version": 2
+        },
+        {
+          "participant": "B",
+          "seq": 2,
+          "type": "upgrade-needed",
+          "request": "r1",
+          "connection": "c1",
+          "oldVersion": 1,
+          "newVersion": 2
+        },
+        {
+          "participant": "B",
+          "seq": 3,
+          "type": "upgrade-transaction-complete",
+          "request": "r1",
+          "connection": "c1"
+        },
+        {
+          "participant": "B",
+          "seq": 4,
+          "type": "open-succeeded",
+          "request": "r1",
+          "connection": "c1",
+          "version": 2
+        }
+      ],
+      "upgrade": {
+        "state": "completed",
+        "evidence": [
+          {
+            "participant": "B",
+            "seq": 2,
+            "type": "upgrade-needed"
+          },
+          {
+            "participant": "B",
+            "seq": 3,
+            "type": "upgrade-transaction-complete"
+          },
+          {
+            "participant": "B",
+            "seq": 4,
+            "type": "open-succeeded"
+          }
+        ],
+        "oracleNativeVersion": 2,
+        "requestedVersion": 2,
+        "fromVersion": 1,
+        "confirmedAfterStep": 3
+      },
+      "incomplete": [],
+      "environment": {
+        "browser": "chromium",
+        "browserVersion": "156.0.8078.4",
+        "node": "v26.13.0",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed script and its declared oracle checks.",
+        "Two documents of one origin share one disposable Chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
+        "Events are ordered only within one document. Order across participants is a protocol order from wait-for and await-open steps, never a global browser order.",
+        "The observer sees IndexedDB open requests, connections and the declared adapter signals. It does not see every internal browser or application action.",
+        "A deadline or a missing event does not prove that the event cannot occur, and it is not evidence of data loss.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON."
+      ],
+      "firstProblem": {
+        "step": 5,
+        "message": "A save failed unexpectedly with InvalidStateError"
+      }
+    },
+    {
+      "schemaVersion": "1",
+      "kind": "concurrent",
+      "toolVersion": "0.2.0",
+      "history": "declared-stale-write-refusal",
+      "databaseName": "idbshift-notes",
+      "origin": "http://127.0.0.1:63676",
+      "startedAt": "2026-11-02T10:21:40.029Z",
+      "durationMs": 181,
+      "verdict": "expected-refusal",
+      "participants": {
+        "A": {
+          "version": "old",
+          "appVersion": "notes-guarded",
+          "opened": true,
+          "policy": {
+            "kind": "refuse-writes",
+            "refusalName": "UpgradeRequired",
+            "reason": "After versionchange A closes its connection and refuses writes until it is reloaded."
+          },
+          "documentId": "f48e497d-83db-43cb-bfdb-f373982f0318",
+          "observedAppVersion": "notes-guarded",
+          "databaseVersion": 1,
+          "pageClosed": "cleanup"
+        },
+        "B": {
+          "version": "next",
+          "appVersion": "notes-next",
+          "opened": true,
+          "documentId": "4189f2da-0b67-4c28-840f-8ad3c3b0b64d",
+          "observedAppVersion": "notes-next",
+          "databaseVersion": 2,
+          "pageClosed": "cleanup"
+        }
+      },
+      "steps": [
+        {
+          "index": 0,
+          "action": "open",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 59,
+          "open": {
+            "observedAppVersion": "notes-guarded",
+            "databaseVersion": 1
+          }
+        },
+        {
+          "index": 1,
+          "action": "operation",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 2,
+          "operation": {
+            "name": "save",
+            "expect": "success",
+            "outcome": "completed"
+          }
+        },
+        {
+          "index": 2,
+          "action": "start-open",
+          "participant": "B",
+          "note": "B requests native version 2 and the runner does not wait for it.",
+          "status": "completed",
+          "durationMs": 50
+        },
+        {
+          "index": 3,
+          "action": "wait-for",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 8,
+          "matched": {
+            "participant": "A",
+            "seq": 9,
+            "type": "signal"
+          }
+        },
+        {
+          "index": 4,
+          "action": "operation",
+          "participant": "A",
+          "note": "Runs while B is still opening. The refusal is the declared behavior.",
+          "status": "policy-refusal",
+          "durationMs": 1,
+          "operation": {
+            "name": "save",
+            "expect": "policy-refusal",
+            "outcome": "refused-by-policy",
+            "error": {
+              "name": "UpgradeRequired",
+              "message": "The database was upgraded by another tab; reload to continue"
+            }
+          }
+        },
+        {
+          "index": 5,
+          "action": "await-open",
+          "participant": "B",
+          "status": "completed",
+          "durationMs": 1,
+          "open": {
+            "observedAppVersion": "notes-next",
+            "databaseVersion": 2
+          },
+          "startedBy": 2
+        },
+        {
+          "index": 6,
+          "action": "oracle",
+          "status": "completed",
+          "durationMs": 54,
+          "checks": [
+            {
+              "name": "The independent oracle reads native version 2",
+              "status": "passed",
+              "expected": 2,
+              "actual": 2
+            },
+            {
+              "name": "Control record is preserved",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "text": "control"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "text": "control"
+                }
+              ]
+            },
+            {
+              "name": "The refused write left no record",
+              "status": "passed",
+              "expected": [
+                null
+              ],
+              "actual": [
+                null
+              ]
+            }
+          ],
+          "oracle": {
+            "nativeVersion": 2
+          }
+        }
+      ],
+      "events": [
+        {
+          "participant": "A",
+          "seq": 1,
+          "type": "open-requested",
+          "request": "r1",
+          "version": 1
+        },
+        {
+          "participant": "A",
+          "seq": 2,
+          "type": "upgrade-needed",
+          "request": "r1",
+          "connection": "c1",
+          "oldVersion": 0,
+          "newVersion": 1
+        },
+        {
+          "participant": "A",
+          "seq": 3,
+          "type": "upgrade-transaction-complete",
+          "request": "r1",
+          "connection": "c1"
+        },
+        {
+          "participant": "A",
+          "seq": 4,
+          "type": "open-succeeded",
+          "request": "r1",
+          "connection": "c1",
+          "version": 1
+        },
+        {
+          "participant": "A",
+          "seq": 5,
+          "type": "operation-started",
+          "declared": true,
+          "name": "save"
+        },
+        {
+          "participant": "A",
+          "seq": 6,
+          "type": "operation-finished",
+          "declared": true,
+          "name": "save",
+          "outcome": "completed"
+        },
+        {
+          "participant": "A",
+          "seq": 7,
+          "type": "versionchange",
+          "connection": "c1",
+          "oldVersion": 1,
+          "newVersion": 2
+        },
+        {
+          "participant": "A",
+          "seq": 8,
+          "type": "connection-close-called",
+          "connection": "c1"
+        },
+        {
+          "participant": "A",
+          "seq": 9,
+          "type": "signal",
+          "declared": true,
+          "name": "upgrade-required"
+        },
+        {
+          "participant": "A",
+          "seq": 10,
+          "type": "operation-started",
+          "declared": true,
+          "name": "save"
+        },
+        {
+          "participant": "A",
+          "seq": 11,
+          "type": "operation-finished",
+          "declared": true,
+          "name": "save",
+          "outcome": "failed:UpgradeRequired"
+        },
+        {
+          "participant": "B",
+          "seq": 1,
+          "type": "open-requested",
+          "request": "r1",
+          "version": 2
+        },
+        {
+          "participant": "B",
+          "seq": 2,
+          "type": "upgrade-needed",
+          "request": "r1",
+          "connection": "c1",
+          "oldVersion": 1,
+          "newVersion": 2
+        },
+        {
+          "participant": "B",
+          "seq": 3,
+          "type": "upgrade-transaction-complete",
+          "request": "r1",
+          "connection": "c1"
+        },
+        {
+          "participant": "B",
+          "seq": 4,
+          "type": "open-succeeded",
+          "request": "r1",
+          "connection": "c1",
+          "version": 2
+        }
+      ],
+      "upgrade": {
+        "state": "completed",
+        "evidence": [
+          {
+            "participant": "B",
+            "seq": 2,
+            "type": "upgrade-needed"
+          },
+          {
+            "participant": "B",
+            "seq": 3,
+            "type": "upgrade-transaction-complete"
+          },
+          {
+            "participant": "B",
+            "seq": 4,
+            "type": "open-succeeded"
+          }
+        ],
+        "oracleNativeVersion": 2,
+        "requestedVersion": 2,
+        "fromVersion": 1,
+        "confirmedAfterStep": 3
+      },
+      "incomplete": [],
+      "environment": {
+        "browser": "chromium",
+        "browserVersion": "156.0.8078.4",
+        "node": "v26.13.0",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed script and its declared oracle checks.",
+        "Two documents of one origin share one disposable Chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
+        "Events are ordered only within one document. Order across participants is a protocol order from wait-for and await-open steps, never a global browser order.",
+        "The observer sees IndexedDB open requests, connections and the declared adapter signals. It does not see every internal browser or application action.",
+        "A deadline or a missing event does not prove that the event cannot occur, and it is not evidence of data loss.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON."
+      ]
+    },
+    {
+      "schemaVersion": "1",
+      "kind": "concurrent",
+      "toolVersion": "0.2.0",
+      "history": "compatible-reconnect",
+      "databaseName": "idbshift-notes",
+      "origin": "http://127.0.0.1:63676",
+      "startedAt": "2026-11-02T10:21:40.211Z",
+      "durationMs": 179,
+      "verdict": "passed",
+      "participants": {
+        "A": {
+          "version": "old",
+          "appVersion": "notes-reconnecting",
+          "opened": true,
+          "policy": {
+            "kind": "reconnect",
+            "reason": "A drops the closed connection and reopens the installed version. Safe here because schema 2 only adds an unrelated store."
+          },
+          "documentId": "2cbf03df-cdb9-4228-bef7-98a36ef62146",
+          "observedAppVersion": "notes-reconnecting",
+          "databaseVersion": 1,
+          "pageClosed": "cleanup"
+        },
+        "B": {
+          "version": "next",
+          "appVersion": "notes-next",
+          "opened": true,
+          "documentId": "15e48eb2-627f-4353-8ea6-c9bfbe3e3227",
+          "observedAppVersion": "notes-next",
+          "databaseVersion": 2,
+          "pageClosed": "cleanup"
+        }
+      },
+      "steps": [
+        {
+          "index": 0,
+          "action": "open",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 57,
+          "open": {
+            "observedAppVersion": "notes-reconnecting",
+            "databaseVersion": 1
+          }
+        },
+        {
+          "index": 1,
+          "action": "operation",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 1,
+          "operation": {
+            "name": "save",
+            "expect": "success",
+            "outcome": "completed"
+          }
+        },
+        {
+          "index": 2,
+          "action": "start-open",
+          "participant": "B",
+          "note": "B requests native version 2 and the runner does not wait for it.",
+          "status": "completed",
+          "durationMs": 49
+        },
+        {
+          "index": 3,
+          "action": "wait-for",
+          "participant": "A",
+          "status": "completed",
+          "durationMs": 7,
+          "matched": {
+            "participant": "A",
+            "seq": 9,
+            "type": "signal"
+          }
+        },
+        {
+          "index": 4,
+          "action": "await-open",
+          "participant": "B",
+          "status": "completed",
+          "durationMs": 1,
+          "open": {
+            "observedAppVersion": "notes-next",
+            "databaseVersion": 2
+          },
+          "startedBy": 2
+        },
+        {
+          "index": 5,
+          "action": "operation",
+          "participant": "A",
+          "note": "A reconnects before writing. The write is expected to succeed.",
+          "status": "completed",
+          "durationMs": 2,
+          "operation": {
+            "name": "save",
+            "expect": "success",
+            "outcome": "completed"
+          }
+        },
+        {
+          "index": 6,
+          "action": "oracle",
+          "status": "completed",
+          "durationMs": 55,
+          "checks": [
+            {
+              "name": "The independent oracle reads native version 2",
+              "status": "passed",
+              "expected": 2,
+              "actual": 2
+            },
+            {
+              "name": "Both records are preserved",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "text": "control"
+                },
+                {
+                  "id": 2,
+                  "text": "after-upgrade"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "text": "control"
+                },
+                {
+                  "id": 2,
+                  "text": "after-upgrade"
+                }
+              ]
+            }
+          ],
+          "oracle": {
+            "nativeVersion": 2
+          }
+        }
+      ],
+      "events": [
+        {
+          "participant": "A",
+          "seq": 1,
+          "type": "open-requested",
+          "request": "r1",
+          "version": 1
+        },
+        {
+          "participant": "A",
+          "seq": 2,
+          "type": "upgrade-needed",
+          "request": "r1",
+          "connection": "c1",
+          "oldVersion": 0,
+          "newVersion": 1
+        },
+        {
+          "participant": "A",
+          "seq": 3,
+          "type": "upgrade-transaction-complete",
+          "request": "r1",
+          "connection": "c1"
+        },
+        {
+          "participant": "A",
+          "seq": 4,
+          "type": "open-succeeded",
+          "request": "r1",
+          "connection": "c1",
+          "version": 1
+        },
+        {
+          "participant": "A",
+          "seq": 5,
+          "type": "operation-started",
+          "declared": true,
+          "name": "save"
+        },
+        {
+          "participant": "A",
+          "seq": 6,
+          "type": "operation-finished",
+          "declared": true,
+          "name": "save",
+          "outcome": "completed"
+        },
+        {
+          "participant": "A",
+          "seq": 7,
+          "type": "versionchange",
+          "connection": "c1",
+          "oldVersion": 1,
+          "newVersion": 2
+        },
+        {
+          "participant": "A",
+          "seq": 8,
+          "type": "connection-close-called",
+          "connection": "c1"
+        },
+        {
+          "participant": "A",
+          "seq": 9,
+          "type": "signal",
+          "declared": true,
+          "name": "connection-invalidated"
+        },
+        {
+          "participant": "A",
+          "seq": 10,
+          "type": "operation-started",
+          "declared": true,
+          "name": "save"
+        },
+        {
+          "participant": "A",
+          "seq": 11,
+          "type": "open-requested",
+          "request": "r2",
+          "version": null
+        },
+        {
+          "participant": "A",
+          "seq": 12,
+          "type": "open-succeeded",
+          "request": "r2",
+          "connection": "c2",
+          "version": 2
+        },
+        {
+          "participant": "A",
+          "seq": 13,
+          "type": "operation-finished",
+          "declared": true,
+          "name": "save",
+          "outcome": "completed"
+        },
+        {
+          "participant": "B",
+          "seq": 1,
+          "type": "open-requested",
+          "request": "r1",
+          "version": 2
+        },
+        {
+          "participant": "B",
+          "seq": 2,
+          "type": "upgrade-needed",
+          "request": "r1",
+          "connection": "c1",
+          "oldVersion": 1,
+          "newVersion": 2
+        },
+        {
+          "participant": "B",
+          "seq": 3,
+          "type": "upgrade-transaction-complete",
+          "request": "r1",
+          "connection": "c1"
+        },
+        {
+          "participant": "B",
+          "seq": 4,
+          "type": "open-succeeded",
+          "request": "r1",
+          "connection": "c1",
+          "version": 2
+        }
+      ],
+      "upgrade": {
+        "state": "completed",
+        "evidence": [
+          {
+            "participant": "B",
+            "seq": 2,
+            "type": "upgrade-needed"
+          },
+          {
+            "participant": "B",
+            "seq": 3,
+            "type": "upgrade-transaction-complete"
+          },
+          {
+            "participant": "B",
+            "seq": 4,
+            "type": "open-succeeded"
+          }
+        ],
+        "oracleNativeVersion": 2,
+        "requestedVersion": 2,
+        "fromVersion": 1,
+        "confirmedAfterStep": 3
+      },
+      "incomplete": [],
+      "environment": {
+        "browser": "chromium",
+        "browserVersion": "156.0.8078.4",
+        "node": "v26.13.0",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed script and its declared oracle checks.",
+        "Two documents of one origin share one disposable Chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
+        "Events are ordered only within one document. Order across participants is a protocol order from wait-for and await-open steps, never a global browser order.",
+        "The observer sees IndexedDB open requests, connections and the declared adapter signals. It does not see every internal browser or application action.",
+        "A deadline or a missing event does not prove that the event cannot occur, and it is not evidence of data loss.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON."
+      ]
+    }
+  ]
+}

@@ -1,22 +1,11 @@
-import { createRequire } from 'node:module';
 import { performance } from 'node:perf_hooks';
 import { isDeepStrictEqual } from 'node:util';
 import type { Browser, BrowserContext, Page } from '@playwright/test';
 import type { StorageAdapter } from './browser.js';
+import { RunFailure, dependencies, diagnostic, safeMessage, toolVersion } from './common.js';
+import { installGuards } from './guards.js';
 import { assertJson } from './json.js';
-import type { Diagnostic, History, HistoryResult, Json, StageResult } from './types.js';
-
-const require = createRequire(import.meta.url);
-const toolVersion = '0.1.0';
-const dependencies = Object.fromEntries(
-  ['@playwright/test', 'playwright', 'playwright-core', 'vite', 'dexie'].map((name) => {
-    try {
-      return [name, (require(`${name}/package.json`) as { version: string }).version];
-    } catch {
-      return [name, 'not installed'];
-    }
-  }),
-);
+import type { History, HistoryResult, Json, StageResult } from './types.js';
 
 export interface RunOptions {
   origin: string;
@@ -24,33 +13,6 @@ export interface RunOptions {
   /** Opt-in: traces can contain sensitive data and source locations. */
   tracePath?: string;
   step?: <T>(name: string, body: () => Promise<T>) => Promise<T>;
-}
-
-class RunFailure extends Error {
-  constructor(
-    readonly kind: string,
-    message: string,
-  ) {
-    super(message);
-  }
-}
-
-function safeMessage(message: string): string {
-  let safe = message.split('\n')[0] ?? 'Unknown error';
-  for (const path of [process.cwd(), process.env.HOME, process.env.USERPROFILE]) {
-    if (path) safe = safe.replaceAll(path, '[local path]');
-  }
-  return safe.slice(0, 2000);
-}
-
-function diagnostic(error: unknown, phase: string): Diagnostic {
-  // No stack, page logs, cookies, storage state, or database dump in default diagnostics.
-  return {
-    kind: error instanceof RunFailure ? error.kind : error instanceof Error ? error.name : 'Error',
-    message:
-      error instanceof Error ? safeMessage(error.message) : 'Non-Error thrown by adapter or check',
-    phase,
-  };
 }
 
 function validate(history: History, origin: string) {
@@ -99,30 +61,6 @@ function validate(history: History, origin: string) {
         'Expected refusals require an exact name and a policy reason',
       );
   }
-}
-
-async function installGuards(context: BrowserContext, databaseName: string) {
-  await context.addInitScript(
-    ({ databaseName }) => {
-      const violations: string[] = [];
-      window.__idbshiftGuard = { violations, documentId: crypto.randomUUID() };
-      const originalOpen = IDBFactory.prototype.open;
-      IDBFactory.prototype.open = function (name, version) {
-        if (String(name) !== databaseName) {
-          violations.push('Adapter attempted to open a different database');
-          throw new Error('IDBShift database identity guard');
-        }
-        return version === undefined
-          ? originalOpen.call(this, name)
-          : originalOpen.call(this, name, version);
-      };
-      IDBFactory.prototype.deleteDatabase = () => {
-        violations.push('Database deletion is forbidden within a history');
-        throw new Error('IDBShift database deletion guard');
-      };
-    },
-    { databaseName },
-  );
 }
 
 async function closeStage(
@@ -211,7 +149,10 @@ export async function runHistory(
   try {
     validate(history, options.origin);
     if (browser.browserType().name() !== 'chromium')
-      throw new RunFailure('configuration', 'v0.1 has only been acceptance-tested with Chromium');
+      throw new RunFailure(
+        'configuration',
+        'IDBShift has only been acceptance-tested with Chromium',
+      );
     context = await browser.newContext({ serviceWorkers: 'block', acceptDownloads: false });
     await installGuards(context, history.databaseName);
     let networkViolation: string | undefined;

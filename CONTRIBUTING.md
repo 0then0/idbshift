@@ -20,11 +20,11 @@ On Linux, install browser prerequisites with `npx playwright install --with-deps
 
 Keep changes focused on a concrete history or failure. Add a regression test that checks observable behavior, especially data meaning, lifecycle boundaries, or error classification. Acceptance tests must use real IndexedDB and disposable browser contexts.
 
-The original Dexie rollback example is expected to violate its contract. Its CLI exit 1 is part of the experiment; the test suite passes when it detects that violation. Do not change the example or add retries to turn the counterexample into PASS.
+The original Dexie rollback example is expected to violate its contract, and the cached-connection concurrent example is expected to end in an unexpected operation. Its CLI exit 1 is part of the experiment; the test suite passes when it detects that violation. Do not change the example or add retries to turn the counterexample into PASS.
 
 New examples should use the public adapter/history API without changing the runner. Keep the core independent of storage libraries. Discuss consequential contract changes or new browser/storage integrations in an issue first. Any repair policy must belong to an explicitly selected application version, not the verifier.
 
-After changes to source, tests, or configuration, run `npm run examples:record` to refresh sample reports and their input hashes, then run `npm run check`. The recorder returns 1 for the included counterexample; inspect the generated outcomes before committing. Do not commit `reports/`, `test-results/`, `playwright-report/`, browser profiles, or dependency caches.
+After changes to source, tests, or configuration, run `npm run examples:record` to refresh sample reports (sequential and concurrent) and their input hashes, then run `npm run check`. The recorder returns 1 for the included counterexamples; inspect the generated outcomes before committing. Do not commit `reports/`, `test-results/`, `playwright-report/`, browser profiles, or dependency caches.
 
 See [testing and compatibility](docs/verification.md) for coverage and supported environments, and [dependency policy](docs/dependency-policy.md) before updating versions or the license inventory.
 
