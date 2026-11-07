@@ -2,7 +2,7 @@ import { createRequire } from 'node:module';
 import type { Diagnostic } from './types.js';
 
 const require = createRequire(import.meta.url);
-export const toolVersion = '0.2.0';
+export const toolVersion = '0.3.0';
 export const dependencies = Object.fromEntries(
   ['@playwright/test', 'playwright', 'playwright-core', 'vite', 'dexie'].map((name) => {
     try {

@@ -1,10 +1,10 @@
-PASSED dexie-upgrade-original (205 ms)
-CONTRACT-VIOLATION dexie-rollback-original (280 ms)
+PASSED dexie-upgrade-original (461 ms)
+CONTRACT-VIOLATION dexie-rollback-original (290 ms)
   First violation: reopen-B / Stored names and computed normalization match source: Expected and actual values differ
-PASSED dexie-rollback-repair (298 ms)
-PASSED native-ledger-upgrade (133 ms)
-EXPECTED-REFUSAL native-ledger-refusal (242 ms)
-PASSED native-aborted-migration-recovery (286 ms)
+PASSED dexie-rollback-repair (281 ms)
+PASSED native-ledger-upgrade (121 ms)
+EXPECTED-REFUSAL native-ledger-refusal (230 ms)
+PASSED native-aborted-migration-recovery (247 ms)
   Expected open error at abort-B: expected AbortError, observed AbortError: Version change transaction was aborted in upgradeneeded event handler. (expected)
     Reason: B-abort completes its v2 writes, then aborts its own upgrade transaction. The browser must reject the open request with AbortError and roll everything back.
     The error alone does not establish recovery. Later stages must:

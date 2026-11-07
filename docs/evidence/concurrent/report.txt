@@ -1,4 +1,4 @@
-PASSED held-connection-blocks-upgrade (257 ms, concurrent)
+PASSED held-connection-blocks-upgrade (242 ms, concurrent)
   Upgrade: completed (B requested v2 from v1; collected after step 6; oracle read native v2)
   A policy: hold-until-released: A has no versionchange handler. The history releases its connection explicitly.
   1. Open A: completed
@@ -9,7 +9,7 @@ PASSED held-connection-blocks-upgrade (257 ms, concurrent)
   6. Close A session: completed
   7. Await B open: completed
   8. Independent oracle: completed
-UNEXPECTED-OPERATION cached-closed-connection-write-fails (187 ms, concurrent)
+UNEXPECTED-OPERATION cached-closed-connection-write-fails (186 ms, concurrent)
   Upgrade: completed (B requested v2 from v1; collected after step 4; oracle read native v2)
   A policy: no-policy: A caches its connection promise and closes the connection on versionchange. It declares no stale-tab behavior, so later writes are expected to succeed.
   1. Open A: completed
@@ -20,7 +20,7 @@ UNEXPECTED-OPERATION cached-closed-connection-write-fails (187 ms, concurrent)
   6. save on A: unexpected-failure
   7. Independent oracle: completed
   First problem: step 6: A save failed unexpectedly with InvalidStateError
-EXPECTED-REFUSAL declared-stale-write-refusal (177 ms, concurrent)
+EXPECTED-REFUSAL declared-stale-write-refusal (179 ms, concurrent)
   Upgrade: completed (B requested v2 from v1; collected after step 4; oracle read native v2)
   A policy: refuse-writes (UpgradeRequired): After versionchange A closes its connection and refuses writes until it is reloaded.
   1. Open A: completed
@@ -30,7 +30,7 @@ EXPECTED-REFUSAL declared-stale-write-refusal (177 ms, concurrent)
   5. save on A: policy-refusal
   6. Await B open: completed
   7. Independent oracle: completed
-PASSED compatible-reconnect (181 ms, concurrent)
+PASSED compatible-reconnect (175 ms, concurrent)
   Upgrade: completed (B requested v2 from v1; collected after step 4; oracle read native v2)
   A policy: reconnect: A drops the closed connection and reopens the installed version. Safe here because schema 2 only adds an unrelated store.
   1. Open A: completed
