@@ -17,6 +17,14 @@ export interface Stage {
   checks: Check[];
   /** Exact error name. An expected refusal is a policy result, never a compatibility PASS. */
   expectOpenRefusal?: { name: string; reason: string };
+  /**
+   * Exact error name of an adapter open that is expected to fail, for example `AbortError` after
+   * the adapter deliberately aborted its own upgrade transaction. `reason` explains why. The stage
+   * never opens, so it declares no operations or checks. The error alone does not establish
+   * recovery: a later stage with checks must. A compatibility refusal (`OpenRefusal`,
+   * `VersionError`) is a different outcome and is declared with `expectOpenRefusal`.
+   */
+  expectOpenError?: { name: string; reason: string };
   deadlineMs?: number;
 }
 
@@ -32,10 +40,13 @@ export type StageStatus =
   | 'passed'
   | 'contract-violation'
   | 'open-refused'
+  /** The adapter open failed with the error declared by `expectOpenError`. Not a recovery PASS. */
+  | 'expected-open-error'
   | 'blocked'
   | 'error'
   | 'not-run';
-export type Verdict = Exclude<StageStatus, 'not-run'> | 'expected-refusal';
+/** An expected open error is a stage outcome only. It never becomes a history verdict. */
+export type Verdict = Exclude<StageStatus, 'not-run' | 'expected-open-error'> | 'expected-refusal';
 
 export interface Diagnostic {
   kind: string;
@@ -48,6 +59,19 @@ export interface CheckResult {
   expected?: Json;
   actual?: Json;
   error?: Diagnostic;
+}
+/** Present only on a stage that declared `expectOpenError`. */
+export interface OpenErrorResult {
+  expected: { name: string; reason: string };
+  /** Absent when the adapter opened. */
+  actual?: { name: string; message: string };
+  /**
+   * - expected: the declared error name was observed.
+   * - name-mismatch: another error was observed.
+   * - refused: an application compatibility refusal, which is never an expected open error.
+   * - opened: the adapter opened although a failure was declared.
+   */
+  outcome: 'expected' | 'name-mismatch' | 'refused' | 'opened';
 }
 export interface StageResult {
   id: string;
@@ -62,6 +86,7 @@ export interface StageResult {
   checks: CheckResult[];
   refusalExpected?: boolean;
   policyReason?: string;
+  openError?: OpenErrorResult;
   error?: Diagnostic;
   cleanupError?: Diagnostic;
 }

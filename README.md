@@ -9,7 +9,6 @@ IDBShift runs your old and new storage code in real Chromium documents, preserve
 [![CI](https://img.shields.io/github/actions/workflow/status/0then0/idbshift/ci.yml?branch=main&label=CI)](https://github.com/0then0/idbshift/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/0then0/idbshift)](https://github.com/0then0/idbshift/releases/latest)
 [![Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
-[![npm: not published](https://img.shields.io/badge/npm-not%20published-lightgrey)](CHANGELOG.md)
 [![Verified: macOS arm64 / Chromium](https://img.shields.io/badge/verified-macOS%20arm64%20%2F%20Chromium-16704a)](docs/verification.md)
 
 ## Why test rollback?
@@ -43,6 +42,7 @@ The default experiment exits **1** because it includes an actual contract violat
 - **Dexie repair control:** the rollback history passes with an explicit B policy that repairs the derived field when opening.
 - **Native IndexedDB ledger:** A → B preserves signed entries and their balance.
 - **Native rollback refusal:** A → B → A-refusal → B accepts a declared `VersionError` policy, without allowing rollback writes.
+- **Native aborted migration:** A → B-abort → A-check → B-retry. B-abort writes inside its upgrade, then aborts its own transaction. The declared `AbortError` is only the starting point; the A-check and B-retry results show whether version, records, schema and index recovered.
 
 [Browse the example histories](examples/histories.ts) or inspect the [recorded results](docs/verification.md).
 
@@ -137,6 +137,7 @@ Vite serves these local entrypoints and their imports. IDBShift does not automat
 - **`contract-violation`**: expected and actual data differed. Later stages can still add evidence; the first violation remains recorded.
 - **`open-refused`**: the application declined the database unexpectedly, or native IndexedDB raised `VersionError`.
 - **`expected-refusal`**: the declared refusal policy matched. This is not proof that both versions can write safely.
+- **`passed` with an `expected-open-error` stage**: a stage declared `expectOpenError` and the adapter failed with that exact error name. Only the checks of later stages establish recovery. See the [adapter contract](docs/adapter-contract.md#expected-open-errors).
 - **`blocked`**: cancellation or a stage deadline prevented completion. This does not establish data loss.
 - **`error`**: adapter, assertion code, configuration, shutdown, or infrastructure failed.
 

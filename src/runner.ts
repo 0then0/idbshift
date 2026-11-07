@@ -26,7 +26,7 @@ function validate(history: History, origin: string) {
   if (!history.id || !history.databaseName || !history.stages.length)
     throw new RunFailure('configuration', 'History id, database name and stages are required');
   const ids = new Set<string>();
-  for (const stage of history.stages) {
+  for (const [index, stage] of history.stages.entries()) {
     if (!stage.id || ids.has(stage.id))
       throw new RunFailure('configuration', 'Stage ids must be unique');
     ids.add(stage.id);
@@ -60,6 +60,33 @@ function validate(history: History, origin: string) {
         'configuration',
         'Expected refusals require an exact name and a policy reason',
       );
+    const expectedError = stage.expectOpenError;
+    if (expectedError) {
+      if (!expectedError.name?.trim() || !expectedError.reason?.trim())
+        throw new RunFailure(
+          'configuration',
+          'Expected open errors require an exact name and a reason',
+        );
+      if (stage.expectOpenRefusal || expectedError.name === 'VersionError')
+        throw new RunFailure(
+          'configuration',
+          'An expected open error is separate from a refusal policy; declare refusals with expectOpenRefusal',
+        );
+      if (stage.operations?.length || stage.checks.length)
+        throw new RunFailure(
+          'configuration',
+          'A stage with an expected open error never opens, so it cannot declare operations or checks',
+        );
+      // The error alone is not evidence of recovery; a later opened stage must verify the data.
+      const verifies = history.stages
+        .slice(index + 1)
+        .some((later) => later.checks.length && !later.expectOpenRefusal && !later.expectOpenError);
+      if (!verifies)
+        throw new RunFailure(
+          'configuration',
+          'An expected open error needs a later stage with checks that verifies recovery',
+        );
+    }
   }
 }
 
@@ -148,6 +175,10 @@ export async function runHistory(
   let stopReason: string | undefined;
   try {
     validate(history, options.origin);
+    if (history.stages.some((stage) => stage.expectOpenError))
+      result.limitations.push(
+        'An expected open error is a declared outcome, not evidence of recovery. Only the checks of later stages establish it.',
+      );
     if (browser.browserType().name() !== 'chromium')
       throw new RunFailure(
         'configuration',
@@ -222,30 +253,14 @@ export async function runHistory(
           );
         phase = 'adapter';
         const opened = await page.evaluate(
-          async ({ entrypoint, databaseName, appVersion }) => {
+          async ({ entrypoint, databaseName, appVersion, expectsError }) => {
             const module = await import(/* @vite-ignore */ entrypoint);
             const adapter = module.default as StorageAdapter;
             if (adapter?.protocolVersion !== 1 || adapter.appVersion !== appVersion)
               throw new Error('Adapter protocol or declared app version mismatch');
+            let session: Awaited<ReturnType<StorageAdapter['open']>>;
             try {
-              const session = await adapter.open({ databaseName });
-              window.__idbshift = { session, documentId: window.__idbshiftGuard?.documentId ?? '' };
-              if (
-                !(session.database instanceof IDBDatabase) ||
-                session.database.name !== databaseName
-              )
-                throw new Error(
-                  'Adapter must expose the actual IDBDatabase with the requested name',
-                );
-              // A transaction on the connection also detects an already-closed handle.
-              const store = session.database.objectStoreNames[0];
-              if (!store) throw new Error('Adapter database has no object stores');
-              session.database.transaction(store, 'readonly');
-              return {
-                refused: false as const,
-                appVersion: adapter.appVersion,
-                version: session.database.version,
-              };
+              session = await adapter.open({ databaseName });
             } catch (error) {
               if (
                 error instanceof Error &&
@@ -258,18 +273,52 @@ export async function runHistory(
                   message: error.message,
                   appVersion: adapter.appVersion,
                 };
+              // Only a failure of the adapter's own open is classified. Anything the runner checks
+              // after a successful open is never absorbed by a declared open error.
+              if (expectsError && error instanceof Error)
+                return {
+                  refused: false as const,
+                  failed: true as const,
+                  name: error.name,
+                  message: error.message,
+                  appVersion: adapter.appVersion,
+                };
               throw error;
             }
+            window.__idbshift = { session, documentId: window.__idbshiftGuard?.documentId ?? '' };
+            if (
+              !(session.database instanceof IDBDatabase) ||
+              session.database.name !== databaseName
+            )
+              throw new Error('Adapter must expose the actual IDBDatabase with the requested name');
+            // A transaction on the connection also detects an already-closed handle.
+            const store = session.database.objectStoreNames[0];
+            if (!store) throw new Error('Adapter database has no object stores');
+            session.database.transaction(store, 'readonly');
+            return {
+              refused: false as const,
+              failed: false as const,
+              appVersion: adapter.appVersion,
+              version: session.database.version,
+            };
           },
           {
             entrypoint: entry.entrypoint,
             databaseName: history.databaseName,
             appVersion: entry.appVersion,
+            expectsError: stage.expectOpenError !== undefined,
           },
         );
         sr.observedAppVersion = opened.appVersion;
         phase = 'open';
+        const expectedError = stage.expectOpenError;
         if (opened.refused) {
+          if (expectedError)
+            sr.openError = {
+              expected: expectedError,
+              actual: { name: opened.name, message: safeMessage(opened.message) },
+              outcome: 'refused',
+            };
           sr.status = 'open-refused';
           sr.refusalExpected = opened.name === stage.expectOpenRefusal?.name;
           sr.policyReason = stage.expectOpenRefusal?.reason;
@@ -279,9 +328,35 @@ export async function runHistory(
           sr.databaseVersion = before.database?.version;
           return;
         }
+        if (opened.failed) {
+          if (!expectedError) throw new RunFailure('configuration', 'Undeclared open error');
+          // The installed version is read before the open, so cleanup can prove it did not change.
+          sr.databaseVersion = before.database?.version;
+          const actual = { name: opened.name, message: safeMessage(opened.message) };
+          const matches = actual.name === expectedError.name;
+          sr.openError = {
+            expected: expectedError,
+            actual,
+            outcome: matches ? 'expected' : 'name-mismatch',
+          };
+          if (!matches)
+            throw new RunFailure(
+              'open-error-mismatch',
+              `Expected open error ${expectedError.name}, observed ${actual.name}`,
+            );
+          sr.status = 'expected-open-error';
+          return;
+        }
         sr.databaseVersion = opened.version;
         if (stage.expectOpenRefusal)
           throw new RunFailure('unexpected-open', 'Application opened despite expected refusal');
+        if (expectedError) {
+          sr.openError = { expected: expectedError, outcome: 'opened' };
+          throw new RunFailure(
+            'unexpected-open-success',
+            `Application opened although open error ${expectedError.name} was expected`,
+          );
+        }
         const activePage = page;
         const ensureActive = () => {
           if (stageFinished) throw new RunFailure('deadline', 'Stage is no longer active');
@@ -429,7 +504,8 @@ export async function runHistory(
         }
         sr.durationMs = Math.round(performance.now() - stageStart);
       }
-      const accepted = sr.status === 'open-refused' && sr.refusalExpected;
+      const accepted =
+        (sr.status === 'open-refused' && sr.refusalExpected) || sr.status === 'expected-open-error';
       if (sr.status !== 'passed' && !accepted) {
         recordProblem(sr.error?.message ?? 'Declared data contract violated');
         if (sr.status !== 'contract-violation')

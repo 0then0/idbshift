@@ -6,9 +6,9 @@
       "toolVersion": "0.2.0",
       "history": "dexie-upgrade-original",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:63645",
-      "startedAt": "2026-11-02T10:21:37.681Z",
-      "durationMs": 227,
+      "origin": "http://127.0.0.1:54731",
+      "startedAt": "2026-11-07T17:25:38.714Z",
+      "durationMs": 205,
       "verdict": "passed",
       "stages": [
         {
@@ -16,7 +16,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 124,
+          "durationMs": 120,
           "operations": [
             {
               "name": "save",
@@ -51,7 +51,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "passed",
-          "durationMs": 93,
+          "durationMs": 74,
           "operations": [],
           "checks": [
             {
@@ -124,9 +124,9 @@
       "toolVersion": "0.2.0",
       "history": "dexie-rollback-original",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:63645",
-      "startedAt": "2026-11-02T10:21:37.908Z",
-      "durationMs": 294,
+      "origin": "http://127.0.0.1:54731",
+      "startedAt": "2026-11-07T17:25:38.920Z",
+      "durationMs": 280,
       "verdict": "contract-violation",
       "stages": [
         {
@@ -134,7 +134,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 72,
+          "durationMs": 69,
           "operations": [
             {
               "name": "save",
@@ -221,7 +221,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 72,
+          "durationMs": 69,
           "operations": [
             {
               "name": "save",
@@ -270,7 +270,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "contract-violation",
-          "durationMs": 75,
+          "durationMs": 67,
           "operations": [],
           "checks": [
             {
@@ -362,9 +362,9 @@
       "toolVersion": "0.2.0",
       "history": "dexie-rollback-repair",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:63645",
-      "startedAt": "2026-11-02T10:21:38.202Z",
-      "durationMs": 289,
+      "origin": "http://127.0.0.1:54731",
+      "startedAt": "2026-11-07T17:25:39.201Z",
+      "durationMs": 298,
       "verdict": "passed",
       "stages": [
         {
@@ -372,7 +372,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 70,
+          "durationMs": 67,
           "operations": [
             {
               "name": "save",
@@ -407,7 +407,7 @@
           "version": "B-repair",
           "appVersion": "B-repair",
           "status": "passed",
-          "durationMs": 75,
+          "durationMs": 70,
           "operations": [],
           "checks": [
             {
@@ -459,7 +459,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 70,
+          "durationMs": 80,
           "operations": [
             {
               "name": "save",
@@ -508,7 +508,7 @@
           "version": "B-repair",
           "appVersion": "B-repair",
           "status": "passed",
-          "durationMs": 71,
+          "durationMs": 78,
           "operations": [],
           "checks": [
             {
@@ -593,9 +593,9 @@
       "toolVersion": "0.2.0",
       "history": "native-ledger-upgrade",
       "databaseName": "idbshift-ledger",
-      "origin": "http://127.0.0.1:63645",
-      "startedAt": "2026-11-02T10:21:38.492Z",
-      "durationMs": 124,
+      "origin": "http://127.0.0.1:54731",
+      "startedAt": "2026-11-07T17:25:39.500Z",
+      "durationMs": 133,
       "verdict": "passed",
       "stages": [
         {
@@ -603,7 +603,7 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "passed",
-          "durationMs": 61,
+          "durationMs": 69,
           "operations": [
             {
               "name": "deposit",
@@ -648,7 +648,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 61,
+          "durationMs": 62,
           "operations": [],
           "checks": [
             {
@@ -711,9 +711,9 @@
       "toolVersion": "0.2.0",
       "history": "native-ledger-refusal",
       "databaseName": "idbshift-ledger",
-      "origin": "http://127.0.0.1:63645",
-      "startedAt": "2026-11-02T10:21:38.617Z",
-      "durationMs": 238,
+      "origin": "http://127.0.0.1:54731",
+      "startedAt": "2026-11-07T17:25:39.634Z",
+      "durationMs": 242,
       "verdict": "expected-refusal",
       "stages": [
         {
@@ -721,7 +721,7 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "passed",
-          "durationMs": 60,
+          "durationMs": 61,
           "operations": [
             {
               "name": "deposit",
@@ -766,7 +766,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 59,
+          "durationMs": 58,
           "operations": [],
           "checks": [
             {
@@ -808,7 +808,7 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "open-refused",
-          "durationMs": 59,
+          "durationMs": 57,
           "operations": [],
           "checks": [],
           "observedAppVersion": "ledger-A",
@@ -826,7 +826,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 58,
+          "durationMs": 63,
           "operations": [],
           "checks": [
             {
@@ -882,6 +882,355 @@
         "Sequential documents only. No multi-tab, service worker, crash, quota or eviction testing.",
         "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON.",
         "A trace supplements semantic assertions; it does not establish data correctness."
+      ]
+    },
+    {
+      "schemaVersion": "1",
+      "toolVersion": "0.2.0",
+      "history": "native-aborted-migration-recovery",
+      "databaseName": "idbshift-recovery",
+      "origin": "http://127.0.0.1:54731",
+      "startedAt": "2026-11-07T17:25:39.876Z",
+      "durationMs": 286,
+      "verdict": "passed",
+      "stages": [
+        {
+          "id": "seed-A",
+          "version": "A",
+          "appVersion": "recovery-A",
+          "status": "passed",
+          "durationMs": 67,
+          "operations": [
+            {
+              "name": "put",
+              "status": "completed"
+            },
+            {
+              "name": "put",
+              "status": "completed"
+            },
+            {
+              "name": "put",
+              "status": "completed"
+            }
+          ],
+          "checks": [
+            {
+              "name": "A stores the original records",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "final"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "final"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                }
+              ]
+            }
+          ],
+          "observedAppVersion": "recovery-A",
+          "databaseVersion": 1
+        },
+        {
+          "id": "abort-B",
+          "version": "B-abort",
+          "appVersion": "recovery-B-abort",
+          "status": "expected-open-error",
+          "durationMs": 64,
+          "operations": [],
+          "checks": [],
+          "observedAppVersion": "recovery-B-abort",
+          "databaseVersion": 1,
+          "openError": {
+            "expected": {
+              "name": "AbortError",
+              "reason": "B-abort completes its v2 writes, then aborts its own upgrade transaction. The browser must reject the open request with AbortError and roll everything back."
+            },
+            "actual": {
+              "name": "AbortError",
+              "message": "Version change transaction was aborted in upgradeneeded event handler."
+            },
+            "outcome": "expected"
+          }
+        },
+        {
+          "id": "check-A-after-abort",
+          "version": "A",
+          "appVersion": "recovery-A",
+          "status": "passed",
+          "durationMs": 80,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Native version is still 1",
+              "status": "passed",
+              "expected": 1,
+              "actual": 1
+            },
+            {
+              "name": "Original records are exact",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "final"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "final"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                }
+              ]
+            },
+            {
+              "name": "Record added by the aborted upgrade is absent",
+              "status": "passed",
+              "expected": null,
+              "actual": null
+            },
+            {
+              "name": "Index created by the aborted upgrade is absent",
+              "status": "passed",
+              "expected": {
+                "notes": {
+                  "keyPath": "id",
+                  "indexes": []
+                }
+              },
+              "actual": {
+                "notes": {
+                  "keyPath": "id",
+                  "indexes": []
+                }
+              }
+            },
+            {
+              "name": "Reopening A ran no upgrade",
+              "status": "passed",
+              "expected": {
+                "upgradeEvents": 0,
+                "oldVersion": null,
+                "newVersion": null
+              },
+              "actual": {
+                "upgradeEvents": 0,
+                "oldVersion": null,
+                "newVersion": null
+              }
+            }
+          ],
+          "observedAppVersion": "recovery-A",
+          "databaseVersion": 1
+        },
+        {
+          "id": "retry-B",
+          "version": "B",
+          "appVersion": "recovery-B",
+          "status": "passed",
+          "durationMs": 72,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Migration ran again, from version 1 to 2",
+              "status": "passed",
+              "expected": {
+                "upgradeEvents": 1,
+                "oldVersion": 1,
+                "newVersion": 2
+              },
+              "actual": {
+                "upgradeEvents": 1,
+                "oldVersion": 1,
+                "newVersion": 2
+              }
+            },
+            {
+              "name": "Final records are exact",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "archived"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                },
+                {
+                  "id": 4,
+                  "title": "Delta",
+                  "tag": "migrated"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "archived"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                },
+                {
+                  "id": 4,
+                  "title": "Delta",
+                  "tag": "migrated"
+                }
+              ]
+            },
+            {
+              "name": "Schema has the by-tag index at version 2",
+              "status": "passed",
+              "expected": {
+                "version": 2,
+                "stores": {
+                  "notes": {
+                    "keyPath": "id",
+                    "indexes": [
+                      {
+                        "name": "by-tag",
+                        "keyPath": "tag",
+                        "unique": false,
+                        "multiEntry": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "actual": {
+                "version": 2,
+                "stores": {
+                  "notes": {
+                    "keyPath": "id",
+                    "indexes": [
+                      {
+                        "name": "by-tag",
+                        "keyPath": "tag",
+                        "unique": false,
+                        "multiEntry": false
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "name": "Data is reachable through the by-tag index",
+              "status": "passed",
+              "expected": {
+                "draft": [
+                  1,
+                  3
+                ],
+                "final": [],
+                "archived": [
+                  2
+                ],
+                "migrated": [
+                  4
+                ]
+              },
+              "actual": {
+                "draft": [
+                  1,
+                  3
+                ],
+                "final": [],
+                "archived": [
+                  2
+                ],
+                "migrated": [
+                  4
+                ]
+              }
+            }
+          ],
+          "observedAppVersion": "recovery-B",
+          "databaseVersion": 2
+        }
+      ],
+      "environment": {
+        "browser": "chromium",
+        "browserVersion": "156.0.8078.4",
+        "node": "v26.13.0",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed history and its declared checks.",
+        "Sequential documents only. No multi-tab, service worker, crash, quota or eviction testing.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON.",
+        "A trace supplements semantic assertions; it does not establish data correctness.",
+        "An expected open error is a declared outcome, not evidence of recovery. Only the checks of later stages establish it."
       ]
     }
   ]

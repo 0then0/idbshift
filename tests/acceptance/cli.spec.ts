@@ -49,7 +49,24 @@ test('CLI does not hide original violation behind exit zero or retries', async (
     'passed',
     'passed',
     'expected-refusal',
+    'passed',
   ]);
+  // The aborted-migration history runs through the standard CLI in real Chromium.
+  const recovery = report.histories[5];
+  expect(recovery.history).toBe('native-aborted-migration-recovery');
+  expect(recovery.stages.map((s: { status: string }) => s.status)).toEqual([
+    'passed',
+    'expected-open-error',
+    'passed',
+    'passed',
+  ]);
+  expect(recovery.stages[1].openError.actual.name).toBe('AbortError');
+  const text = await readFile(join(out, 'report.txt'), 'utf8');
+  expect(text).toContain('expected AbortError, observed AbortError');
+  expect(text).toContain('retry-B / Final records are exact: passed');
+  const html = await readFile(join(out, 'report.html'), 'utf8');
+  expect(html).toContain('Recovery evidence after abort-B');
+  expect(html).toContain('Index created by the aborted upgrade is absent');
 });
 
 test('CLI runs the concurrent examples and reports an unexpected operation without hiding it', async ({

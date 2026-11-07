@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Features
+
+- Sequential stages can declare `expectOpenError: { name, reason }` for an adapter open that is expected to fail with an exact error name, such as `AbortError` after the application aborted its own upgrade. The stage ends as `expected-open-error`, the history continues, and later stages must verify recovery. This is separate from `expectOpenRefusal`.
+- Native example `recoveryHistory()`: A → B-abort → A-check → B-retry. The failure injection is in the example adapter, not the runner.
+- Text and HTML reports show the expected and observed error and the results of the later checks.
+
+### Compatibility
+
+- Report schema 1 gains the optional stage field `openError` and the stage status `expected-open-error`. Both appear only when a history declares `expectOpenError`; history verdicts, exit codes, refusal policies and concurrent histories are unchanged.
+
 ## [0.2.0](https://github.com/0then0/idbshift/releases/tag/v0.2.0) — 2026-11-02
 
 ### Features

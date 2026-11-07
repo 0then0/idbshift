@@ -24,9 +24,11 @@ Each stage records its id, version key, declared application version, observed a
 
 `operations` lists names and outcomes of operations that started. It omits input payloads and return values. `checks` lists names, `passed`/`failed`/`error` status, and captured expected/actual values for completed assertions. Failed or unfinished checks include a short error diagnostic where available. These values are snapshots from check completion, not references to later mutable scenario state.
 
-Refused stages include `refusalExpected` and the declared `policyReason`. `error` describes the stage failure; `cleanupError` retains a separate shutdown failure. Diagnostics contain `kind`, `message`, and `phase`. Missing observations are absent, not fabricated. Unexecuted stages have status `not-run` and explain why execution stopped.
+Refused stages include `refusalExpected` and the declared `policyReason`. A stage that declared `expectOpenError` includes `openError`: `expected` (`name`, `reason`), `actual` (`name`, `message`; absent when the adapter opened) and `outcome` (`expected`, `name-mismatch`, `refused` or `opened`). Its status is `expected-open-error` only for outcome `expected`; the other outcomes are `error` or `open-refused`. The field and the status appear only in histories that use the declaration, so other reports are unchanged. `expected-open-error` is a stage status and never a history `verdict`.
 
-`firstProblem` is captured at the first unexpected event. A later verifier exception or cleanup failure cannot supply a new message for an earlier failed check. `firstViolation` remains visible even when an operational error determines the final verdict.
+The error alone does not establish recovery. The text and HTML reports list the checks of the stages after it, and the history's limitations say so. The JSON carries those results in the ordinary `stages[].checks`. Recovery was shown only when those checks are `passed`. `error` describes the stage failure; `cleanupError` retains a separate shutdown failure. Diagnostics contain `kind`, `message`, and `phase`. Missing observations are absent, not fabricated. Unexecuted stages have status `not-run` and explain why execution stopped.
+
+`firstProblem` is captured at the first unexpected event. An expected open error is not a problem. A name mismatch, an unexpected successful open or a cleanup failure after it is. A later verifier exception or cleanup failure cannot supply a new message for an earlier failed check. `firstViolation` remains visible even when an operational error determines the final verdict.
 
 ## Verdicts and precedence
 

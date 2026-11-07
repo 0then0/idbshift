@@ -1,4 +1,5 @@
 import { defineAdapter, OpenRefusal } from 'idbshift/browser';
+import type { StorageSession } from 'idbshift/browser';
 import type { Json } from 'idbshift';
 
 const mode = new URL(import.meta.url).searchParams.get('mode');
@@ -27,6 +28,38 @@ export default defineAdapter({
         indexedDB.deleteDatabase(databaseName);
       } catch {}
     }
+    if (mode === 'abort-open' || mode === 'abort-delete') {
+      // The application aborts its own upgrade; the open request fails with AbortError.
+      const upgrading = indexedDB.open(databaseName, 2);
+      upgrading.onupgradeneeded = () => {
+        upgrading.result.createObjectStore('extra');
+        upgrading.transaction?.abort();
+      };
+      try {
+        await request(upgrading);
+      } catch (error) {
+        if (mode === 'abort-delete') {
+          try {
+            indexedDB.deleteDatabase(databaseName);
+          } catch {}
+        }
+        throw error;
+      }
+    }
+    if (mode === 'commit-then-abort-error') {
+      // The upgrade commits, but the application still reports the failure it declared.
+      const upgraded = indexedDB.open(databaseName, 2);
+      upgraded.onupgradeneeded = () => upgraded.result.createObjectStore('extra');
+      (await request(upgraded)).close();
+      throw new DOMException('Simulated failure after a committed upgrade', 'AbortError');
+    }
+    if (mode === 'bad-session')
+      return {
+        database: {} as IDBDatabase,
+        close() {},
+        operations: {} as StorageSession['operations'],
+        queries: {} as StorageSession['queries'],
+      };
     const opening = indexedDB.open(databaseName, 1);
     opening.onupgradeneeded = () => opening.result.createObjectStore('data');
     const db = await request(opening);

@@ -8,9 +8,9 @@
       "toolVersion": "0.2.0",
       "history": "held-connection-blocks-upgrade",
       "databaseName": "idbshift-notes",
-      "origin": "http://127.0.0.1:63676",
-      "startedAt": "2026-11-02T10:21:39.597Z",
-      "durationMs": 243,
+      "origin": "http://127.0.0.1:54928",
+      "startedAt": "2026-11-07T17:25:40.859Z",
+      "durationMs": 257,
       "verdict": "passed",
       "participants": {
         "A": {
@@ -21,7 +21,7 @@
             "kind": "hold-until-released",
             "reason": "A has no versionchange handler. The history releases its connection explicitly."
           },
-          "documentId": "b8ba04ef-8c2e-4410-bb60-a082bd17762f",
+          "documentId": "d971eb79-cc68-4f5c-9b4a-f541a425c4a5",
           "observedAppVersion": "notes-holding",
           "databaseVersion": 1,
           "pageClosed": "cleanup"
@@ -30,7 +30,7 @@
           "version": "next",
           "appVersion": "notes-next",
           "opened": true,
-          "documentId": "1a37be30-c626-4107-a784-f66c642f9a83",
+          "documentId": "24bf224a-f3bd-457f-8d84-4ee032fc3151",
           "observedAppVersion": "notes-next",
           "databaseVersion": 2,
           "pageClosed": "cleanup"
@@ -42,7 +42,7 @@
           "action": "open",
           "participant": "A",
           "status": "completed",
-          "durationMs": 99,
+          "durationMs": 101,
           "open": {
             "observedAppVersion": "notes-holding",
             "databaseVersion": 1
@@ -66,7 +66,7 @@
           "participant": "B",
           "note": "B requests native version 2 and the runner does not wait for it.",
           "status": "completed",
-          "durationMs": 52
+          "durationMs": 57
         },
         {
           "index": 3,
@@ -86,7 +86,7 @@
           "participant": "B",
           "note": "The native blocked event of the open request: the upgrade waits for A.",
           "status": "completed",
-          "durationMs": 1,
+          "durationMs": 2,
           "matched": {
             "participant": "B",
             "seq": 2,
@@ -106,7 +106,7 @@
           "action": "await-open",
           "participant": "B",
           "status": "completed",
-          "durationMs": 1,
+          "durationMs": 2,
           "open": {
             "observedAppVersion": "notes-next",
             "databaseVersion": 2
@@ -117,7 +117,7 @@
           "index": 7,
           "action": "oracle",
           "status": "completed",
-          "durationMs": 60,
+          "durationMs": 63,
           "checks": [
             {
               "name": "The independent oracle reads native version 2",
@@ -318,9 +318,9 @@
       "toolVersion": "0.2.0",
       "history": "cached-closed-connection-write-fails",
       "databaseName": "idbshift-notes",
-      "origin": "http://127.0.0.1:63676",
-      "startedAt": "2026-11-02T10:21:39.842Z",
-      "durationMs": 186,
+      "origin": "http://127.0.0.1:54928",
+      "startedAt": "2026-11-07T17:25:41.118Z",
+      "durationMs": 187,
       "verdict": "unexpected-operation",
       "participants": {
         "A": {
@@ -331,7 +331,7 @@
             "kind": "no-policy",
             "reason": "A caches its connection promise and closes the connection on versionchange. It declares no stale-tab behavior, so later writes are expected to succeed."
           },
-          "documentId": "912fe717-74a6-42e6-be7e-a51f3067f9ea",
+          "documentId": "9a47fab5-cf6f-49e5-a1ca-2ad2192e5c32",
           "observedAppVersion": "notes-cached",
           "databaseVersion": 1,
           "pageClosed": "cleanup"
@@ -340,7 +340,7 @@
           "version": "next",
           "appVersion": "notes-next",
           "opened": true,
-          "documentId": "7d87fc43-da1a-4cde-bbe9-8c5da084a12b",
+          "documentId": "257765bb-6ad9-4ef7-9414-ed49eecb2f88",
           "observedAppVersion": "notes-next",
           "databaseVersion": 2,
           "pageClosed": "cleanup"
@@ -408,7 +408,7 @@
           "participant": "A",
           "note": "Expected to succeed. A still holds the cached promise of the closed connection.",
           "status": "unexpected-failure",
-          "durationMs": 1,
+          "durationMs": 2,
           "operation": {
             "name": "save",
             "expect": "success",
@@ -628,9 +628,9 @@
       "toolVersion": "0.2.0",
       "history": "declared-stale-write-refusal",
       "databaseName": "idbshift-notes",
-      "origin": "http://127.0.0.1:63676",
-      "startedAt": "2026-11-02T10:21:40.029Z",
-      "durationMs": 181,
+      "origin": "http://127.0.0.1:54928",
+      "startedAt": "2026-11-07T17:25:41.306Z",
+      "durationMs": 177,
       "verdict": "expected-refusal",
       "participants": {
         "A": {
@@ -642,7 +642,7 @@
             "refusalName": "UpgradeRequired",
             "reason": "After versionchange A closes its connection and refuses writes until it is reloaded."
           },
-          "documentId": "f48e497d-83db-43cb-bfdb-f373982f0318",
+          "documentId": "1f9dcf0f-998b-4fa2-bb65-645e68c24300",
           "observedAppVersion": "notes-guarded",
           "databaseVersion": 1,
           "pageClosed": "cleanup"
@@ -651,7 +651,7 @@
           "version": "next",
           "appVersion": "notes-next",
           "opened": true,
-          "documentId": "4189f2da-0b67-4c28-840f-8ad3c3b0b64d",
+          "documentId": "85a9e523-9cc9-481a-a117-367548cdc4f9",
           "observedAppVersion": "notes-next",
           "databaseVersion": 2,
           "pageClosed": "cleanup"
@@ -663,7 +663,7 @@
           "action": "open",
           "participant": "A",
           "status": "completed",
-          "durationMs": 59,
+          "durationMs": 57,
           "open": {
             "observedAppVersion": "notes-guarded",
             "databaseVersion": 1
@@ -687,14 +687,14 @@
           "participant": "B",
           "note": "B requests native version 2 and the runner does not wait for it.",
           "status": "completed",
-          "durationMs": 50
+          "durationMs": 48
         },
         {
           "index": 3,
           "action": "wait-for",
           "participant": "A",
           "status": "completed",
-          "durationMs": 8,
+          "durationMs": 9,
           "matched": {
             "participant": "A",
             "seq": 9,
@@ -734,7 +734,7 @@
           "index": 6,
           "action": "oracle",
           "status": "completed",
-          "durationMs": 54,
+          "durationMs": 53,
           "checks": [
             {
               "name": "The independent oracle reads native version 2",
@@ -942,9 +942,9 @@
       "toolVersion": "0.2.0",
       "history": "compatible-reconnect",
       "databaseName": "idbshift-notes",
-      "origin": "http://127.0.0.1:63676",
-      "startedAt": "2026-11-02T10:21:40.211Z",
-      "durationMs": 179,
+      "origin": "http://127.0.0.1:54928",
+      "startedAt": "2026-11-07T17:25:41.485Z",
+      "durationMs": 181,
       "verdict": "passed",
       "participants": {
         "A": {
@@ -955,7 +955,7 @@
             "kind": "reconnect",
             "reason": "A drops the closed connection and reopens the installed version. Safe here because schema 2 only adds an unrelated store."
           },
-          "documentId": "2cbf03df-cdb9-4228-bef7-98a36ef62146",
+          "documentId": "99a28f65-8787-4a15-aa01-b43088a3df62",
           "observedAppVersion": "notes-reconnecting",
           "databaseVersion": 1,
           "pageClosed": "cleanup"
@@ -964,7 +964,7 @@
           "version": "next",
           "appVersion": "notes-next",
           "opened": true,
-          "documentId": "15e48eb2-627f-4353-8ea6-c9bfbe3e3227",
+          "documentId": "8d54e227-2631-4645-85cd-cb9c8b443dd9",
           "observedAppVersion": "notes-next",
           "databaseVersion": 2,
           "pageClosed": "cleanup"
@@ -976,7 +976,7 @@
           "action": "open",
           "participant": "A",
           "status": "completed",
-          "durationMs": 57,
+          "durationMs": 61,
           "open": {
             "observedAppVersion": "notes-reconnecting",
             "databaseVersion": 1
@@ -987,7 +987,7 @@
           "action": "operation",
           "participant": "A",
           "status": "completed",
-          "durationMs": 1,
+          "durationMs": 2,
           "operation": {
             "name": "save",
             "expect": "success",
@@ -1000,7 +1000,7 @@
           "participant": "B",
           "note": "B requests native version 2 and the runner does not wait for it.",
           "status": "completed",
-          "durationMs": 49
+          "durationMs": 48
         },
         {
           "index": 3,
@@ -1043,7 +1043,7 @@
           "index": 6,
           "action": "oracle",
           "status": "completed",
-          "durationMs": 55,
+          "durationMs": 54,
           "checks": [
             {
               "name": "The independent oracle reads native version 2",

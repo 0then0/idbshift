@@ -49,6 +49,19 @@ Throw `new OpenRefusal(message, name?)` from an application gate. Its default na
 
 A missing expected refusal is an error. In a concurrent history, `OpenRefusal` can also be thrown from an operation; see below. A blocked upgrade that reaches its deadline is `blocked`, not a refusal or evidence of data loss.
 
+## Expected open errors
+
+Declare an adapter open that is expected to fail, for example after the application aborted its own upgrade transaction, with `expectOpenError: { name, reason }`. This is separate from a refusal policy:
+
+- `name` is the exact error name, such as `AbortError`. `reason` is required and appears in every report. `VersionError` and `OpenRefusal` errors are compatibility refusals and cannot be declared this way; they keep their `expectOpenRefusal` behavior.
+- The stage never opens, so it cannot declare `operations` or `checks`. The history needs a later stage with checks, because the error alone does not establish recovery. A history without one is a configuration error.
+- Only a rejection of `adapter.open()` is classified. A missing or broken adapter module, an app version mismatch, a session that is not the live `IDBDatabase`, a deadline, cancellation and a cleanup failure are reported as before and are not absorbed.
+- The expected name lets the history continue after shutdown succeeds. The native database version must be unchanged by the failed open, as for any stage; a changed version is a `database-identity` cleanup error.
+- Success while the error was expected, a different error name and an adapter that already failed for another reason are errors (`unexpected-open-success`, `open-error-mismatch`) and stop the remaining stages.
+- The stage ends as `expected-open-error`. It does not change the history verdict. When every later check passes the verdict is `passed`; a later data mismatch gives `contract-violation` and stays the first violation.
+
+Failure injection belongs to the adapter. IDBShift does not know which migrations to abort and does not retry. Write the adapter so that the error name appears only after the injected failure really happened. [examples/recovery/storage.ts](../examples/recovery/storage.ts) waits for the browser to confirm its writes, calls `abort()`, and throws a different error if the open failed earlier. The matching history is `recoveryHistory()` in [examples/histories.ts](../examples/histories.ts): A creates v1, B-abort fails, A verifies version, records and schema, and B-retry migrates to v2 with the index. Sequential histories have no oracle; concurrent histories do not support this declaration.
+
 ## Lifecycle and isolation
 
 One history owns one fresh, non-persistent browser context. Its stages use the exact same origin, including port, and database name. Each stage creates a new document and destroys it before the next one opens. Browser globals, modules, and singletons are therefore recreated while IndexedDB persists.
@@ -59,7 +72,7 @@ The guards detect accidental adapter mistakes. For sequential histories, workers
 
 The stage deadline is controlled by Node. After execution, application shutdown has a separate **1000 ms** deadline, also controlled by Node, so a stalled renderer cannot disable its timer. Cancellation remains active during shutdown. A timed-out or cancelled page is destroyed, and the history's context is closed in the final cleanup. Node verifier code must remain asynchronous and cooperative: an infinite synchronous loop in Node prevents its own timers from running.
 
-A data mismatch allows subsequent stages to run. An operational error, unexpected refusal, or incomplete stage stops the sequence and marks the rest `not-run`. The earliest unexpected problem and earliest semantic violation are recorded separately and are never replaced by later events.
+A data mismatch allows subsequent stages to run. An operational error, unexpected refusal, unexpected open error, or incomplete stage stops the sequence and marks the rest `not-run`. The earliest unexpected problem and earliest semantic violation are recorded separately and are never replaced by later events.
 
 ## Standalone runner
 

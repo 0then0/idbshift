@@ -1,7 +1,20 @@
-PASSED dexie-upgrade-original (227 ms)
-CONTRACT-VIOLATION dexie-rollback-original (294 ms)
+PASSED dexie-upgrade-original (205 ms)
+CONTRACT-VIOLATION dexie-rollback-original (280 ms)
   First violation: reopen-B / Stored names and computed normalization match source: Expected and actual values differ
-PASSED dexie-rollback-repair (289 ms)
-PASSED native-ledger-upgrade (124 ms)
-EXPECTED-REFUSAL native-ledger-refusal (238 ms)
+PASSED dexie-rollback-repair (298 ms)
+PASSED native-ledger-upgrade (133 ms)
+EXPECTED-REFUSAL native-ledger-refusal (242 ms)
+PASSED native-aborted-migration-recovery (286 ms)
+  Expected open error at abort-B: expected AbortError, observed AbortError: Version change transaction was aborted in upgradeneeded event handler. (expected)
+    Reason: B-abort completes its v2 writes, then aborts its own upgrade transaction. The browser must reject the open request with AbortError and roll everything back.
+    The error alone does not establish recovery. Later stages must:
+    check-A-after-abort / Native version is still 1: passed
+    check-A-after-abort / Original records are exact: passed
+    check-A-after-abort / Record added by the aborted upgrade is absent: passed
+    check-A-after-abort / Index created by the aborted upgrade is absent: passed
+    check-A-after-abort / Reopening A ran no upgrade: passed
+    retry-B / Migration ran again, from version 1 to 2: passed
+    retry-B / Final records are exact: passed
+    retry-B / Schema has the by-tag index at version 2: passed
+    retry-B / Data is reachable through the by-tag index: passed
 PASS covers only the executed history and declared checks. Expected refusal is a policy result, not successful coexistence.

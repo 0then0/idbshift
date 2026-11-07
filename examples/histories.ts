@@ -152,10 +152,138 @@ export function nativeHistory(rollback: boolean): History {
   };
 }
 
+/**
+ * A → B-abort → A → B in one database. B-abort runs the real v2 migration, then aborts its own
+ * upgrade transaction. The AbortError is declared, but only the later stages can show recovery.
+ */
+export function recoveryHistory(): History {
+  const original = [
+    { id: 1, title: 'Alpha', tag: 'draft' },
+    { id: 2, title: 'Beta', tag: 'final' },
+    { id: 3, title: 'Gamma', tag: 'draft' },
+  ];
+  const migrated = [
+    { id: 1, title: 'Alpha', tag: 'draft' },
+    { id: 2, title: 'Beta', tag: 'archived' },
+    { id: 3, title: 'Gamma', tag: 'draft' },
+    { id: 4, title: 'Delta', tag: 'migrated' },
+  ];
+  const notes = (indexes: Json[]): Json => ({ notes: { keyPath: 'id', indexes } });
+  const byTag = { name: 'by-tag', keyPath: 'tag', unique: false, multiEntry: false };
+  const stages: Stage[] = [
+    {
+      id: 'seed-A',
+      version: 'A',
+      operations: original.map((note) => ({ name: 'put', input: note })),
+      checks: [
+        {
+          name: 'A stores the original records',
+          run: async ({ query }) => ({ expected: original, actual: await query('records') }),
+        },
+      ],
+    },
+    {
+      id: 'abort-B',
+      version: 'B-abort',
+      expectOpenError: {
+        name: 'AbortError',
+        reason:
+          'B-abort completes its v2 writes, then aborts its own upgrade transaction. The browser must reject the open request with AbortError and roll everything back.',
+      },
+      checks: [],
+    },
+    {
+      id: 'check-A-after-abort',
+      version: 'A',
+      checks: [
+        {
+          name: 'Native version is still 1',
+          run: async ({ query }) => ({
+            expected: 1,
+            actual: ((await query('schema')) as { version: number }).version,
+          }),
+        },
+        {
+          name: 'Original records are exact',
+          run: async ({ query }) => ({ expected: original, actual: await query('records') }),
+        },
+        {
+          name: 'Record added by the aborted upgrade is absent',
+          run: async ({ query }) => ({ expected: null, actual: await query('record', 4) }),
+        },
+        {
+          name: 'Index created by the aborted upgrade is absent',
+          run: async ({ query }) => ({
+            expected: notes([]),
+            actual: ((await query('schema')) as { stores: Json }).stores,
+          }),
+        },
+        {
+          name: 'Reopening A ran no upgrade',
+          run: async ({ query }) => ({
+            expected: { upgradeEvents: 0, oldVersion: null, newVersion: null },
+            actual: await query('lifecycle'),
+          }),
+        },
+      ],
+    },
+    {
+      id: 'retry-B',
+      version: 'B',
+      checks: [
+        {
+          name: 'Migration ran again, from version 1 to 2',
+          run: async ({ query }) => ({
+            expected: { upgradeEvents: 1, oldVersion: 1, newVersion: 2 },
+            actual: await query('lifecycle'),
+          }),
+        },
+        {
+          name: 'Final records are exact',
+          run: async ({ query }) => ({ expected: migrated, actual: await query('records') }),
+        },
+        {
+          name: 'Schema has the by-tag index at version 2',
+          run: async ({ query }) => {
+            const schema = (await query('schema')) as { version: number; stores: Json };
+            return {
+              expected: { version: 2, stores: notes([byTag]) },
+              actual: { version: schema.version, stores: schema.stores },
+            };
+          },
+        },
+        {
+          name: 'Data is reachable through the by-tag index',
+          run: async ({ query }) => ({
+            expected: { draft: [1, 3], final: [], archived: [2], migrated: [4] },
+            actual: {
+              draft: await query('byTag', 'draft'),
+              final: await query('byTag', 'final'),
+              archived: await query('byTag', 'archived'),
+              migrated: await query('byTag', 'migrated'),
+            },
+          }),
+        },
+      ],
+    },
+  ];
+  return {
+    id: 'native-aborted-migration-recovery',
+    databaseName: 'idbshift-recovery',
+    versions: {
+      A: { appVersion: 'recovery-A', entrypoint: '/examples/recovery/A.ts' },
+      'B-abort': { appVersion: 'recovery-B-abort', entrypoint: '/examples/recovery/B-abort.ts' },
+      B: { appVersion: 'recovery-B', entrypoint: '/examples/recovery/B.ts' },
+    },
+    stages,
+  };
+}
+
 export const histories: History[] = [
   dexieHistory(false, false),
   dexieHistory(true, false),
   dexieHistory(true, true),
   nativeHistory(false),
   nativeHistory(true),
+  recoveryHistory(),
 ];
