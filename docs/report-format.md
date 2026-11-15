@@ -13,7 +13,7 @@ A history contains:
 - `verdict` and ordered `stages`.
 - `firstViolation`, the first semantic mismatch, when present.
 - `firstProblem`, the first unexpected failure of any kind, when present.
-- `environment`, containing browser/build, Node/platform, and installed tool dependency versions.
+- `environment`, containing the engine that ran the history (`browser`: `chromium`, `firefox` or `webkit`) and its `browserVersion`, Node/platform, and installed tool dependency versions. Results of failed or blocked histories carry the same fields. A CLI run that cannot launch its engine exits 2 without a report.
 - `limitations`, describing the scope of the evidence, plus an optional setup or context-cleanup `error`.
 
 Dependency versions include Playwright Test, Playwright, playwright-core, Vite, and the optional Dexie example. An unavailable dependency is labeled `not installed`. Applications can expose additional selected version metadata through their own diagnostic queries.

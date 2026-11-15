@@ -7,20 +7,27 @@ import { parseArgs } from 'node:util';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const { values, positionals } = parseArgs({
-  options: { out: { type: 'string', default: 'docs/evidence' } },
+  options: {
+    out: { type: 'string', default: 'docs/evidence' },
+    browser: { type: 'string', default: 'chromium' },
+  },
   allowPositionals: true,
 });
 const mode = positionals[0];
 if (positionals.length !== 1 || !['record', 'check'].includes(mode)) {
-  throw new Error('Usage: node scripts/evidence.mjs record|check [--out directory]');
+  throw new Error(
+    'Usage: node scripts/evidence.mjs record|check [--out directory] [--browser chromium|firefox|webkit]',
+  );
 }
 const out = resolve(root, values.out);
 
 if (mode === 'record') {
   // Sequential examples first, then the concurrent examples in a subdirectory.
+  // One engine per recording; the CLI rejects an unknown name before running anything.
+  const engine = ['--browser', values.browser];
   const runs = [
-    ['--out', out],
-    ['--scenario', 'examples/concurrent.ts', '--out', join(out, 'concurrent')],
+    [...engine, '--out', out],
+    [...engine, '--scenario', 'examples/concurrent.ts', '--out', join(out, 'concurrent')],
   ];
   for (const args of runs) {
     const child = spawnSync(process.execPath, ['--import', 'tsx', 'src/cli.ts', ...args], {

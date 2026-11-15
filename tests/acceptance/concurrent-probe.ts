@@ -91,7 +91,8 @@ export default defineAdapter({
           setTimeout(() => signal('late-callback'), 300);
         },
         outside: async () => {
-          await fetch('http://127.0.0.1:1/').catch(() => {});
+          // Not a banned port, so every engine routes the request to the origin guard.
+          await fetch('http://127.0.0.1:4999/').catch(() => {});
         },
       },
       queries: {},

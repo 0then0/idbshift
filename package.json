@@ -27,7 +27,7 @@
     "licenses": "node scripts/licenses.mjs",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run test:unit && npm run build && npm run test:acceptance && npm run licenses && npm run evidence:check",
     "examples:record": "node scripts/evidence.mjs record",
-    "evidence:check": "node scripts/evidence.mjs check",
+    "evidence:check": "node scripts/evidence.mjs check && node scripts/evidence.mjs check --out docs/evidence/firefox && node scripts/evidence.mjs check --out docs/evidence/webkit",
     "licenses:update": "node scripts/licenses.mjs --write"
   },
   "dependencies": {

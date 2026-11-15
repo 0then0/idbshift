@@ -8,9 +8,9 @@
       "toolVersion": "0.3.0",
       "history": "held-connection-blocks-upgrade",
       "databaseName": "idbshift-notes",
-      "origin": "http://127.0.0.1:60410",
-      "startedAt": "2026-11-07T17:32:00.052Z",
-      "durationMs": 242,
+      "origin": "http://127.0.0.1:57735",
+      "startedAt": "2026-11-15T08:38:26.807Z",
+      "durationMs": 265,
       "verdict": "passed",
       "participants": {
         "A": {
@@ -21,7 +21,7 @@
             "kind": "hold-until-released",
             "reason": "A has no versionchange handler. The history releases its connection explicitly."
           },
-          "documentId": "6c24dbc8-0f3d-4448-8d05-65e00c1dd2cb",
+          "documentId": "53b1e89e-33ae-4785-aad4-47edab973f12",
           "observedAppVersion": "notes-holding",
           "databaseVersion": 1,
           "pageClosed": "cleanup"
@@ -30,7 +30,7 @@
           "version": "next",
           "appVersion": "notes-next",
           "opened": true,
-          "documentId": "c6bfb7e9-e63c-40d9-84ff-43acb78b47c2",
+          "documentId": "22f09e11-f8ca-4376-9aaa-252b9e45080e",
           "observedAppVersion": "notes-next",
           "databaseVersion": 2,
           "pageClosed": "cleanup"
@@ -42,7 +42,7 @@
           "action": "open",
           "participant": "A",
           "status": "completed",
-          "durationMs": 95,
+          "durationMs": 102,
           "open": {
             "observedAppVersion": "notes-holding",
             "databaseVersion": 1
@@ -66,14 +66,14 @@
           "participant": "B",
           "note": "B requests native version 2 and the runner does not wait for it.",
           "status": "completed",
-          "durationMs": 56
+          "durationMs": 55
         },
         {
           "index": 3,
           "action": "wait-for",
           "participant": "A",
           "status": "completed",
-          "durationMs": 10,
+          "durationMs": 11,
           "matched": {
             "participant": "A",
             "seq": 7,
@@ -86,7 +86,7 @@
           "participant": "B",
           "note": "The native blocked event of the open request: the upgrade waits for A.",
           "status": "completed",
-          "durationMs": 1,
+          "durationMs": 2,
           "matched": {
             "participant": "B",
             "seq": 2,
@@ -106,7 +106,7 @@
           "action": "await-open",
           "participant": "B",
           "status": "completed",
-          "durationMs": 1,
+          "durationMs": 2,
           "open": {
             "observedAppVersion": "notes-next",
             "databaseVersion": 2
@@ -117,7 +117,7 @@
           "index": 7,
           "action": "oracle",
           "status": "completed",
-          "durationMs": 61,
+          "durationMs": 72,
           "checks": [
             {
               "name": "The independent oracle reads native version 2",
@@ -293,7 +293,7 @@
       "environment": {
         "browser": "chromium",
         "browserVersion": "156.0.8078.4",
-        "node": "v26.13.0",
+        "node": "v24.22.1",
         "platform": "darwin/arm64",
         "dependencies": {
           "@playwright/test": "1.64.1",
@@ -305,7 +305,7 @@
       },
       "limitations": [
         "PASS applies only to this executed script and its declared oracle checks.",
-        "Two documents of one origin share one disposable Chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
+        "Two documents of one origin share one disposable chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
         "Events are ordered only within one document. Order across participants is a protocol order from wait-for and await-open steps, never a global browser order.",
         "The observer sees IndexedDB open requests, connections and the declared adapter signals. It does not see every internal browser or application action.",
         "A deadline or a missing event does not prove that the event cannot occur, and it is not evidence of data loss.",
@@ -318,9 +318,9 @@
       "toolVersion": "0.3.0",
       "history": "cached-closed-connection-write-fails",
       "databaseName": "idbshift-notes",
-      "origin": "http://127.0.0.1:60410",
-      "startedAt": "2026-11-07T17:32:00.296Z",
-      "durationMs": 186,
+      "origin": "http://127.0.0.1:57735",
+      "startedAt": "2026-11-15T08:38:27.073Z",
+      "durationMs": 188,
       "verdict": "unexpected-operation",
       "participants": {
         "A": {
@@ -331,7 +331,7 @@
             "kind": "no-policy",
             "reason": "A caches its connection promise and closes the connection on versionchange. It declares no stale-tab behavior, so later writes are expected to succeed."
           },
-          "documentId": "5143e80d-03d6-4ebd-8d95-01ddc3cb027b",
+          "documentId": "73366ff2-eb72-4fe6-9b5c-290bbd877566",
           "observedAppVersion": "notes-cached",
           "databaseVersion": 1,
           "pageClosed": "cleanup"
@@ -340,7 +340,7 @@
           "version": "next",
           "appVersion": "notes-next",
           "opened": true,
-          "documentId": "2c56d488-fcbe-49b4-af4d-584800b99542",
+          "documentId": "b8d542dd-8a0e-4c96-af9d-caab544e76da",
           "observedAppVersion": "notes-next",
           "databaseVersion": 2,
           "pageClosed": "cleanup"
@@ -352,7 +352,7 @@
           "action": "open",
           "participant": "A",
           "status": "completed",
-          "durationMs": 61,
+          "durationMs": 62,
           "open": {
             "observedAppVersion": "notes-cached",
             "databaseVersion": 1
@@ -376,14 +376,14 @@
           "participant": "B",
           "note": "B requests native version 2 and the runner does not wait for it.",
           "status": "completed",
-          "durationMs": 51
+          "durationMs": 52
         },
         {
           "index": 3,
           "action": "wait-for",
           "participant": "A",
           "status": "completed",
-          "durationMs": 7,
+          "durationMs": 8,
           "matched": {
             "participant": "A",
             "seq": 7,
@@ -599,7 +599,7 @@
       "environment": {
         "browser": "chromium",
         "browserVersion": "156.0.8078.4",
-        "node": "v26.13.0",
+        "node": "v24.22.1",
         "platform": "darwin/arm64",
         "dependencies": {
           "@playwright/test": "1.64.1",
@@ -611,7 +611,7 @@
       },
       "limitations": [
         "PASS applies only to this executed script and its declared oracle checks.",
-        "Two documents of one origin share one disposable Chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
+        "Two documents of one origin share one disposable chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
         "Events are ordered only within one document. Order across participants is a protocol order from wait-for and await-open steps, never a global browser order.",
         "The observer sees IndexedDB open requests, connections and the declared adapter signals. It does not see every internal browser or application action.",
         "A deadline or a missing event does not prove that the event cannot occur, and it is not evidence of data loss.",
@@ -628,9 +628,9 @@
       "toolVersion": "0.3.0",
       "history": "declared-stale-write-refusal",
       "databaseName": "idbshift-notes",
-      "origin": "http://127.0.0.1:60410",
-      "startedAt": "2026-11-07T17:32:00.483Z",
-      "durationMs": 179,
+      "origin": "http://127.0.0.1:57735",
+      "startedAt": "2026-11-15T08:38:27.262Z",
+      "durationMs": 187,
       "verdict": "expected-refusal",
       "participants": {
         "A": {
@@ -642,7 +642,7 @@
             "refusalName": "UpgradeRequired",
             "reason": "After versionchange A closes its connection and refuses writes until it is reloaded."
           },
-          "documentId": "b2b11860-65a4-4f83-8240-d3a9b44c7647",
+          "documentId": "37ac41ec-ac76-4d3f-9905-b6ab0d103e32",
           "observedAppVersion": "notes-guarded",
           "databaseVersion": 1,
           "pageClosed": "cleanup"
@@ -651,7 +651,7 @@
           "version": "next",
           "appVersion": "notes-next",
           "opened": true,
-          "documentId": "a47a7ab2-66e8-47c8-b7fc-d3549b2f148e",
+          "documentId": "b516a173-d800-4c0c-88c5-5d06fbdbea9f",
           "observedAppVersion": "notes-next",
           "databaseVersion": 2,
           "pageClosed": "cleanup"
@@ -687,7 +687,7 @@
           "participant": "B",
           "note": "B requests native version 2 and the runner does not wait for it.",
           "status": "completed",
-          "durationMs": 48
+          "durationMs": 51
         },
         {
           "index": 3,
@@ -707,7 +707,7 @@
           "participant": "A",
           "note": "Runs while B is still opening. The refusal is the declared behavior.",
           "status": "policy-refusal",
-          "durationMs": 1,
+          "durationMs": 2,
           "operation": {
             "name": "save",
             "expect": "policy-refusal",
@@ -734,7 +734,7 @@
           "index": 6,
           "action": "oracle",
           "status": "completed",
-          "durationMs": 53,
+          "durationMs": 57,
           "checks": [
             {
               "name": "The independent oracle reads native version 2",
@@ -917,7 +917,7 @@
       "environment": {
         "browser": "chromium",
         "browserVersion": "156.0.8078.4",
-        "node": "v26.13.0",
+        "node": "v24.22.1",
         "platform": "darwin/arm64",
         "dependencies": {
           "@playwright/test": "1.64.1",
@@ -929,7 +929,7 @@
       },
       "limitations": [
         "PASS applies only to this executed script and its declared oracle checks.",
-        "Two documents of one origin share one disposable Chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
+        "Two documents of one origin share one disposable chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
         "Events are ordered only within one document. Order across participants is a protocol order from wait-for and await-open steps, never a global browser order.",
         "The observer sees IndexedDB open requests, connections and the declared adapter signals. It does not see every internal browser or application action.",
         "A deadline or a missing event does not prove that the event cannot occur, and it is not evidence of data loss.",
@@ -942,9 +942,9 @@
       "toolVersion": "0.3.0",
       "history": "compatible-reconnect",
       "databaseName": "idbshift-notes",
-      "origin": "http://127.0.0.1:60410",
-      "startedAt": "2026-11-07T17:32:00.663Z",
-      "durationMs": 175,
+      "origin": "http://127.0.0.1:57735",
+      "startedAt": "2026-11-15T08:38:27.450Z",
+      "durationMs": 186,
       "verdict": "passed",
       "participants": {
         "A": {
@@ -955,7 +955,7 @@
             "kind": "reconnect",
             "reason": "A drops the closed connection and reopens the installed version. Safe here because schema 2 only adds an unrelated store."
           },
-          "documentId": "cc3f6bfa-666a-4447-8bc3-bdc5104980c7",
+          "documentId": "1a15e431-0dae-43e5-b843-47ada6c4f9c0",
           "observedAppVersion": "notes-reconnecting",
           "databaseVersion": 1,
           "pageClosed": "cleanup"
@@ -964,7 +964,7 @@
           "version": "next",
           "appVersion": "notes-next",
           "opened": true,
-          "documentId": "023ba7f4-5017-4c49-8ca1-ae17ff163ed2",
+          "documentId": "fe282907-b2c7-4481-8e75-e16028e74228",
           "observedAppVersion": "notes-next",
           "databaseVersion": 2,
           "pageClosed": "cleanup"
@@ -976,7 +976,7 @@
           "action": "open",
           "participant": "A",
           "status": "completed",
-          "durationMs": 56,
+          "durationMs": 60,
           "open": {
             "observedAppVersion": "notes-reconnecting",
             "databaseVersion": 1
@@ -987,7 +987,7 @@
           "action": "operation",
           "participant": "A",
           "status": "completed",
-          "durationMs": 1,
+          "durationMs": 2,
           "operation": {
             "name": "save",
             "expect": "success",
@@ -1000,14 +1000,14 @@
           "participant": "B",
           "note": "B requests native version 2 and the runner does not wait for it.",
           "status": "completed",
-          "durationMs": 47
+          "durationMs": 50
         },
         {
           "index": 3,
           "action": "wait-for",
           "participant": "A",
           "status": "completed",
-          "durationMs": 7,
+          "durationMs": 9,
           "matched": {
             "participant": "A",
             "seq": 9,
@@ -1032,7 +1032,7 @@
           "participant": "A",
           "note": "A reconnects before writing. The write is expected to succeed.",
           "status": "completed",
-          "durationMs": 1,
+          "durationMs": 2,
           "operation": {
             "name": "save",
             "expect": "success",
@@ -1043,7 +1043,7 @@
           "index": 6,
           "action": "oracle",
           "status": "completed",
-          "durationMs": 53,
+          "durationMs": 55,
           "checks": [
             {
               "name": "The independent oracle reads native version 2",
@@ -1239,7 +1239,7 @@
       "environment": {
         "browser": "chromium",
         "browserVersion": "156.0.8078.4",
-        "node": "v26.13.0",
+        "node": "v24.22.1",
         "platform": "darwin/arm64",
         "dependencies": {
           "@playwright/test": "1.64.1",
@@ -1251,7 +1251,7 @@
       },
       "limitations": [
         "PASS applies only to this executed script and its declared oracle checks.",
-        "Two documents of one origin share one disposable Chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
+        "Two documents of one origin share one disposable chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.",
         "Events are ordered only within one document. Order across participants is a protocol order from wait-for and await-open steps, never a global browser order.",
         "The observer sees IndexedDB open requests, connections and the declared adapter signals. It does not see every internal browser or application action.",
         "A deadline or a missing event does not prove that the event cannot occur, and it is not evidence of data loss.",

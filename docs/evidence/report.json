@@ -6,9 +6,9 @@
       "toolVersion": "0.3.0",
       "history": "dexie-upgrade-original",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:60244",
-      "startedAt": "2026-11-07T17:31:57.720Z",
-      "durationMs": 461,
+      "origin": "http://127.0.0.1:57705",
+      "startedAt": "2026-11-15T08:38:24.494Z",
+      "durationMs": 302,
       "verdict": "passed",
       "stages": [
         {
@@ -16,7 +16,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 372,
+          "durationMs": 208,
           "operations": [
             {
               "name": "save",
@@ -51,7 +51,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "passed",
-          "durationMs": 77,
+          "durationMs": 80,
           "operations": [],
           "checks": [
             {
@@ -102,7 +102,7 @@
       "environment": {
         "browser": "chromium",
         "browserVersion": "156.0.8078.4",
-        "node": "v26.13.0",
+        "node": "v24.22.1",
         "platform": "darwin/arm64",
         "dependencies": {
           "@playwright/test": "1.64.1",
@@ -124,9 +124,9 @@
       "toolVersion": "0.3.0",
       "history": "dexie-rollback-original",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:60244",
-      "startedAt": "2026-11-07T17:31:58.182Z",
-      "durationMs": 290,
+      "origin": "http://127.0.0.1:57705",
+      "startedAt": "2026-11-15T08:38:24.797Z",
+      "durationMs": 296,
       "verdict": "contract-violation",
       "stages": [
         {
@@ -134,7 +134,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 72,
+          "durationMs": 73,
           "operations": [
             {
               "name": "save",
@@ -169,7 +169,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "passed",
-          "durationMs": 73,
+          "durationMs": 74,
           "operations": [],
           "checks": [
             {
@@ -270,7 +270,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "contract-violation",
-          "durationMs": 69,
+          "durationMs": 72,
           "operations": [],
           "checks": [
             {
@@ -330,7 +330,7 @@
       "environment": {
         "browser": "chromium",
         "browserVersion": "156.0.8078.4",
-        "node": "v26.13.0",
+        "node": "v24.22.1",
         "platform": "darwin/arm64",
         "dependencies": {
           "@playwright/test": "1.64.1",
@@ -362,9 +362,9 @@
       "toolVersion": "0.3.0",
       "history": "dexie-rollback-repair",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:60244",
-      "startedAt": "2026-11-07T17:31:58.472Z",
-      "durationMs": 281,
+      "origin": "http://127.0.0.1:57705",
+      "startedAt": "2026-11-15T08:38:25.093Z",
+      "durationMs": 299,
       "verdict": "passed",
       "stages": [
         {
@@ -372,7 +372,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 67,
+          "durationMs": 74,
           "operations": [
             {
               "name": "save",
@@ -407,7 +407,7 @@
           "version": "B-repair",
           "appVersion": "B-repair",
           "status": "passed",
-          "durationMs": 71,
+          "durationMs": 75,
           "operations": [],
           "checks": [
             {
@@ -459,7 +459,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 68,
+          "durationMs": 72,
           "operations": [
             {
               "name": "save",
@@ -508,7 +508,7 @@
           "version": "B-repair",
           "appVersion": "B-repair",
           "status": "passed",
-          "durationMs": 73,
+          "durationMs": 75,
           "operations": [],
           "checks": [
             {
@@ -571,7 +571,7 @@
       "environment": {
         "browser": "chromium",
         "browserVersion": "156.0.8078.4",
-        "node": "v26.13.0",
+        "node": "v24.22.1",
         "platform": "darwin/arm64",
         "dependencies": {
           "@playwright/test": "1.64.1",
@@ -593,9 +593,9 @@
       "toolVersion": "0.3.0",
       "history": "native-ledger-upgrade",
       "databaseName": "idbshift-ledger",
-      "origin": "http://127.0.0.1:60244",
-      "startedAt": "2026-11-07T17:31:58.753Z",
-      "durationMs": 121,
+      "origin": "http://127.0.0.1:57705",
+      "startedAt": "2026-11-15T08:38:25.393Z",
+      "durationMs": 130,
       "verdict": "passed",
       "stages": [
         {
@@ -603,7 +603,7 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "passed",
-          "durationMs": 59,
+          "durationMs": 64,
           "operations": [
             {
               "name": "deposit",
@@ -648,7 +648,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 59,
+          "durationMs": 63,
           "operations": [],
           "checks": [
             {
@@ -689,7 +689,7 @@
       "environment": {
         "browser": "chromium",
         "browserVersion": "156.0.8078.4",
-        "node": "v26.13.0",
+        "node": "v24.22.1",
         "platform": "darwin/arm64",
         "dependencies": {
           "@playwright/test": "1.64.1",
@@ -711,9 +711,9 @@
       "toolVersion": "0.3.0",
       "history": "native-ledger-refusal",
       "databaseName": "idbshift-ledger",
-      "origin": "http://127.0.0.1:60244",
-      "startedAt": "2026-11-07T17:31:58.875Z",
-      "durationMs": 230,
+      "origin": "http://127.0.0.1:57705",
+      "startedAt": "2026-11-15T08:38:25.524Z",
+      "durationMs": 248,
       "verdict": "expected-refusal",
       "stages": [
         {
@@ -721,7 +721,7 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "passed",
-          "durationMs": 57,
+          "durationMs": 63,
           "operations": [
             {
               "name": "deposit",
@@ -766,7 +766,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 58,
+          "durationMs": 62,
           "operations": [],
           "checks": [
             {
@@ -808,7 +808,7 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "open-refused",
-          "durationMs": 56,
+          "durationMs": 59,
           "operations": [],
           "checks": [],
           "observedAppVersion": "ledger-A",
@@ -826,7 +826,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 57,
+          "durationMs": 61,
           "operations": [],
           "checks": [
             {
@@ -867,7 +867,7 @@
       "environment": {
         "browser": "chromium",
         "browserVersion": "156.0.8078.4",
-        "node": "v26.13.0",
+        "node": "v24.22.1",
         "platform": "darwin/arm64",
         "dependencies": {
           "@playwright/test": "1.64.1",
@@ -889,9 +889,9 @@
       "toolVersion": "0.3.0",
       "history": "native-aborted-migration-recovery",
       "databaseName": "idbshift-recovery",
-      "origin": "http://127.0.0.1:60244",
-      "startedAt": "2026-11-07T17:31:59.105Z",
-      "durationMs": 247,
+      "origin": "http://127.0.0.1:57705",
+      "startedAt": "2026-11-15T08:38:25.773Z",
+      "durationMs": 258,
       "verdict": "passed",
       "stages": [
         {
@@ -899,7 +899,7 @@
           "version": "A",
           "appVersion": "recovery-A",
           "status": "passed",
-          "durationMs": 59,
+          "durationMs": 64,
           "operations": [
             {
               "name": "put",
@@ -962,7 +962,7 @@
           "version": "B-abort",
           "appVersion": "recovery-B-abort",
           "status": "expected-open-error",
-          "durationMs": 60,
+          "durationMs": 66,
           "operations": [],
           "checks": [],
           "observedAppVersion": "recovery-B-abort",
@@ -984,7 +984,7 @@
           "version": "A",
           "appVersion": "recovery-A",
           "status": "passed",
-          "durationMs": 60,
+          "durationMs": 62,
           "operations": [],
           "checks": [
             {
@@ -1215,7 +1215,7 @@
       "environment": {
         "browser": "chromium",
         "browserVersion": "156.0.8078.4",
-        "node": "v26.13.0",
+        "node": "v24.22.1",
         "platform": "darwin/arm64",
         "dependencies": {
           "@playwright/test": "1.64.1",

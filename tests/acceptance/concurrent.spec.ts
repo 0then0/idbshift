@@ -101,10 +101,18 @@ const types = (list: ParticipantEvent[]) => list.map((event) => event.type);
 const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 test('A. A holds its connection: versionchange reaches A, blocked reaches B, upgrade follows an explicit release', async ({
+  browser,
+  browserName,
   idbshift,
 }) => {
   const report = await idbshift(heldConnection);
   expect(report.verdict).toBe('passed');
+  // The fixture runs in the project's browser, not in a separately launched one.
+  expect(report.environment).toMatchObject({
+    browser: browserName,
+    browserVersion: browser.version(),
+  });
+  expect(report.limitations[1]).toContain(`one disposable ${browserName} context`);
   const a = events(report, 'A');
   const b = events(report, 'B');
   expect(a.find((event) => event.type === 'versionchange')).toMatchObject({

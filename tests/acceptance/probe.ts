@@ -94,7 +94,8 @@ export default defineAdapter({
           await write(null);
         },
         navigate: async () => {
-          location.href = 'http://127.0.0.1:1/';
+          // Port 1 is on the banned-port list: Firefox and WebKit refuse it before request interception.
+          location.href = 'http://127.0.0.1:4999/';
           await new Promise((r) => setTimeout(r, 200));
         },
       },

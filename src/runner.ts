@@ -179,11 +179,6 @@ export async function runHistory(
       result.limitations.push(
         'An expected open error is a declared outcome, not evidence of recovery. Only the checks of later stages establish it.',
       );
-    if (browser.browserType().name() !== 'chromium')
-      throw new RunFailure(
-        'configuration',
-        'IDBShift has only been acceptance-tested with Chromium',
-      );
     context = await browser.newContext({ serviceWorkers: 'block', acceptDownloads: false });
     await installGuards(context, history.databaseName);
     let networkViolation: string | undefined;

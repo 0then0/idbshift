@@ -1,5 +1,24 @@
 # Changelog
 
+## Unreleased
+
+### Features
+
+- Sequential and concurrent histories run in Playwright's Chromium, Firefox and WebKit. `runHistory` and `runConcurrentHistory` no longer reject non-Chromium browsers; the engine is the `Browser` the caller passes.
+- CLI option `--browser chromium|firefox|webkit`. One run uses one engine. An unknown name is rejected before the scenario loads; a missing binary stops with `BrowserLaunchError`, the engine name and the `npx playwright install` command. Both exit 2 and write no report. There is no fallback engine and no retry.
+- Without `--out`, Firefox and WebKit write to `reports/firefox/` and `reports/webkit/`, so their reports and traces do not overwrite Chromium's.
+- The CLI prints the launched engine and version. `scripts/evidence.mjs record` accepts `--browser`.
+- `playwright.config.ts` defines `chromium`, `firefox` and `webkit` projects. The `idbshift/playwright` fixture uses the project's browser.
+- CI runs the static checks once and acceptance in a limited matrix: Chromium on Ubuntu and macOS, Firefox on Ubuntu, WebKit on macOS.
+- Recorded example results for Firefox and WebKit in `docs/evidence/firefox/` and `docs/evidence/webkit/`.
+
+### Compatibility
+
+- Without `--browser`, the CLI still uses Chromium and `reports/`. Verdicts, exit codes and report schema 1 are unchanged. `environment.browser` and `environment.browserVersion` already identified the engine and now take the values `firefox` and `webkit` as well.
+- The concurrent limitation text names the engine that ran the history instead of always saying Chromium.
+- The origin-escape test probes use a routable port. Firefox and WebKit refuse the banned port 1 before Playwright's request interception, so that attempt never reached the origin guard.
+- The Chromium example evidence was re-recorded because the pinned input manifest changed; its outcomes are unchanged.
+
 ## [0.3.0](https://github.com/0then0/idbshift/releases/tag/v0.3.0) — 2026-11-07
 
 ### Features

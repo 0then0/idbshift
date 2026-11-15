@@ -8,14 +8,10 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  verify:
-    name: Chromium / ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-15, ubuntu-24.04]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
+  static:
+    name: Static checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -25,12 +21,43 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npm run check
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:unit
+      - run: npm run build
+      - run: npm run licenses
+      - run: npm run evidence:check
+  acceptance:
+    # A limited engine/platform matrix, not every combination. WebKit runs on macOS, where the
+    # Playwright build is closest to Safari; it is still not Safari.
+    name: ${{ matrix.browser }} / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { browser: chromium, os: ubuntu-24.04 }
+          - { browser: chromium, os: macos-15 }
+          - { browser: firefox, os: ubuntu-24.04 }
+          - { browser: webkit, os: macos-15 }
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # Installs only the binary that matches the pinned Playwright for this job's engine.
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - run: npm run test:acceptance -- --project ${{ matrix.browser }}
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
-          name: diagnostics-${{ matrix.os }}
+          name: diagnostics-${{ matrix.browser }}-${{ matrix.os }}
           path: |
             test-results/
             playwright-report/

@@ -1,0 +1,1237 @@
+{
+  "schemaVersion": "1",
+  "histories": [
+    {
+      "schemaVersion": "1",
+      "toolVersion": "0.3.0",
+      "history": "dexie-upgrade-original",
+      "databaseName": "idbshift-people",
+      "origin": "http://127.0.0.1:57752",
+      "startedAt": "2026-11-15T08:38:28.812Z",
+      "durationMs": 1130,
+      "verdict": "passed",
+      "stages": [
+        {
+          "id": "seed-A",
+          "version": "A",
+          "appVersion": "A",
+          "status": "passed",
+          "durationMs": 636,
+          "operations": [
+            {
+              "name": "save",
+              "status": "completed"
+            }
+          ],
+          "checks": [
+            {
+              "name": "A public read preserves initial data",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": null
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": null
+                }
+              ]
+            }
+          ],
+          "observedAppVersion": "A",
+          "databaseVersion": 10
+        },
+        {
+          "id": "first-B",
+          "version": "B",
+          "appVersion": "B",
+          "status": "passed",
+          "durationMs": 336,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Stored names and computed normalization match source",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": "alice"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": "alice"
+                }
+              ]
+            },
+            {
+              "name": "Public index query returns every expected key",
+              "status": "passed",
+              "expected": [
+                1
+              ],
+              "actual": [
+                1
+              ]
+            },
+            {
+              "name": "Upgrade and repair execution in this document",
+              "status": "passed",
+              "expected": {
+                "upgrades": 1,
+                "repairs": 0
+              },
+              "actual": {
+                "upgrades": 1,
+                "repairs": 0
+              }
+            }
+          ],
+          "observedAppVersion": "B",
+          "databaseVersion": 20
+        }
+      ],
+      "environment": {
+        "browser": "firefox",
+        "browserVersion": "157.0",
+        "node": "v24.22.1",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed history and its declared checks.",
+        "Sequential documents only. No multi-tab, service worker, crash, quota or eviction testing.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON.",
+        "A trace supplements semantic assertions; it does not establish data correctness."
+      ]
+    },
+    {
+      "schemaVersion": "1",
+      "toolVersion": "0.3.0",
+      "history": "dexie-rollback-original",
+      "databaseName": "idbshift-people",
+      "origin": "http://127.0.0.1:57752",
+      "startedAt": "2026-11-15T08:38:29.943Z",
+      "durationMs": 764,
+      "verdict": "contract-violation",
+      "stages": [
+        {
+          "id": "seed-A",
+          "version": "A",
+          "appVersion": "A",
+          "status": "passed",
+          "durationMs": 197,
+          "operations": [
+            {
+              "name": "save",
+              "status": "completed"
+            }
+          ],
+          "checks": [
+            {
+              "name": "A public read preserves initial data",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": null
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": null
+                }
+              ]
+            }
+          ],
+          "observedAppVersion": "A",
+          "databaseVersion": 10
+        },
+        {
+          "id": "first-B",
+          "version": "B",
+          "appVersion": "B",
+          "status": "passed",
+          "durationMs": 189,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Stored names and computed normalization match source",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": "alice"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": "alice"
+                }
+              ]
+            },
+            {
+              "name": "Public index query returns every expected key",
+              "status": "passed",
+              "expected": [
+                1
+              ],
+              "actual": [
+                1
+              ]
+            },
+            {
+              "name": "Upgrade and repair execution in this document",
+              "status": "passed",
+              "expected": {
+                "upgrades": 1,
+                "repairs": 0
+              },
+              "actual": {
+                "upgrades": 1,
+                "repairs": 0
+              }
+            }
+          ],
+          "observedAppVersion": "B",
+          "databaseVersion": 20
+        },
+        {
+          "id": "rollback-A-write",
+          "version": "A",
+          "appVersion": "A",
+          "status": "passed",
+          "durationMs": 184,
+          "operations": [
+            {
+              "name": "save",
+              "status": "completed"
+            },
+            {
+              "name": "save",
+              "status": "completed"
+            }
+          ],
+          "checks": [
+            {
+              "name": "A writes through its public API",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "name": " ALICE UPDATED ",
+                  "normalizedName": null
+                },
+                {
+                  "id": 2,
+                  "name": " Bob ",
+                  "normalizedName": null
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "name": " ALICE UPDATED ",
+                  "normalizedName": null
+                },
+                {
+                  "id": 2,
+                  "name": " Bob ",
+                  "normalizedName": null
+                }
+              ]
+            }
+          ],
+          "observedAppVersion": "A",
+          "databaseVersion": 20
+        },
+        {
+          "id": "reopen-B",
+          "version": "B",
+          "appVersion": "B",
+          "status": "contract-violation",
+          "durationMs": 184,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Stored names and computed normalization match source",
+              "status": "failed",
+              "expected": [
+                {
+                  "id": 1,
+                  "name": " ALICE UPDATED ",
+                  "normalizedName": "alice updated"
+                },
+                {
+                  "id": 2,
+                  "name": " Bob ",
+                  "normalizedName": "bob"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "name": " ALICE UPDATED ",
+                  "normalizedName": null
+                },
+                {
+                  "id": 2,
+                  "name": " Bob ",
+                  "normalizedName": null
+                }
+              ]
+            },
+            {
+              "name": "Public index query returns every expected key",
+              "status": "failed",
+              "expected": [
+                1,
+                2
+              ],
+              "actual": []
+            },
+            {
+              "name": "Upgrade and repair execution in this document",
+              "status": "passed",
+              "expected": {
+                "upgrades": 0,
+                "repairs": 0
+              },
+              "actual": {
+                "upgrades": 0,
+                "repairs": 0
+              }
+            }
+          ],
+          "observedAppVersion": "B",
+          "databaseVersion": 20
+        }
+      ],
+      "environment": {
+        "browser": "firefox",
+        "browserVersion": "157.0",
+        "node": "v24.22.1",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed history and its declared checks.",
+        "Sequential documents only. No multi-tab, service worker, crash, quota or eviction testing.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON.",
+        "A trace supplements semantic assertions; it does not establish data correctness."
+      ],
+      "firstProblem": {
+        "stage": "reopen-B",
+        "check": "Stored names and computed normalization match source",
+        "message": "Expected and actual values differ"
+      },
+      "firstViolation": {
+        "stage": "reopen-B",
+        "check": "Stored names and computed normalization match source",
+        "message": "Expected and actual values differ"
+      }
+    },
+    {
+      "schemaVersion": "1",
+      "toolVersion": "0.3.0",
+      "history": "dexie-rollback-repair",
+      "databaseName": "idbshift-people",
+      "origin": "http://127.0.0.1:57752",
+      "startedAt": "2026-11-15T08:38:30.708Z",
+      "durationMs": 793,
+      "verdict": "passed",
+      "stages": [
+        {
+          "id": "seed-A",
+          "version": "A",
+          "appVersion": "A",
+          "status": "passed",
+          "durationMs": 184,
+          "operations": [
+            {
+              "name": "save",
+              "status": "completed"
+            }
+          ],
+          "checks": [
+            {
+              "name": "A public read preserves initial data",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": null
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": null
+                }
+              ]
+            }
+          ],
+          "observedAppVersion": "A",
+          "databaseVersion": 10
+        },
+        {
+          "id": "first-B",
+          "version": "B-repair",
+          "appVersion": "B-repair",
+          "status": "passed",
+          "durationMs": 208,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Stored names and computed normalization match source",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": "alice"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "name": " Alice ",
+                  "normalizedName": "alice"
+                }
+              ]
+            },
+            {
+              "name": "Public index query returns every expected key",
+              "status": "passed",
+              "expected": [
+                1
+              ],
+              "actual": [
+                1
+              ]
+            },
+            {
+              "name": "Upgrade and repair execution in this document",
+              "status": "passed",
+              "expected": {
+                "upgrades": 1,
+                "repairs": 0
+              },
+              "actual": {
+                "upgrades": 1,
+                "repairs": 0
+              }
+            }
+          ],
+          "observedAppVersion": "B-repair",
+          "databaseVersion": 20
+        },
+        {
+          "id": "rollback-A-write",
+          "version": "A",
+          "appVersion": "A",
+          "status": "passed",
+          "durationMs": 192,
+          "operations": [
+            {
+              "name": "save",
+              "status": "completed"
+            },
+            {
+              "name": "save",
+              "status": "completed"
+            }
+          ],
+          "checks": [
+            {
+              "name": "A writes through its public API",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "name": " ALICE UPDATED ",
+                  "normalizedName": null
+                },
+                {
+                  "id": 2,
+                  "name": " Bob ",
+                  "normalizedName": null
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "name": " ALICE UPDATED ",
+                  "normalizedName": null
+                },
+                {
+                  "id": 2,
+                  "name": " Bob ",
+                  "normalizedName": null
+                }
+              ]
+            }
+          ],
+          "observedAppVersion": "A",
+          "databaseVersion": 20
+        },
+        {
+          "id": "reopen-B",
+          "version": "B-repair",
+          "appVersion": "B-repair",
+          "status": "passed",
+          "durationMs": 200,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Stored names and computed normalization match source",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "name": " ALICE UPDATED ",
+                  "normalizedName": "alice updated"
+                },
+                {
+                  "id": 2,
+                  "name": " Bob ",
+                  "normalizedName": "bob"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "name": " ALICE UPDATED ",
+                  "normalizedName": "alice updated"
+                },
+                {
+                  "id": 2,
+                  "name": " Bob ",
+                  "normalizedName": "bob"
+                }
+              ]
+            },
+            {
+              "name": "Public index query returns every expected key",
+              "status": "passed",
+              "expected": [
+                1,
+                2
+              ],
+              "actual": [
+                1,
+                2
+              ]
+            },
+            {
+              "name": "Upgrade and repair execution in this document",
+              "status": "passed",
+              "expected": {
+                "upgrades": 0,
+                "repairs": 2
+              },
+              "actual": {
+                "upgrades": 0,
+                "repairs": 2
+              }
+            }
+          ],
+          "observedAppVersion": "B-repair",
+          "databaseVersion": 20
+        }
+      ],
+      "environment": {
+        "browser": "firefox",
+        "browserVersion": "157.0",
+        "node": "v24.22.1",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed history and its declared checks.",
+        "Sequential documents only. No multi-tab, service worker, crash, quota or eviction testing.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON.",
+        "A trace supplements semantic assertions; it does not establish data correctness."
+      ]
+    },
+    {
+      "schemaVersion": "1",
+      "toolVersion": "0.3.0",
+      "history": "native-ledger-upgrade",
+      "databaseName": "idbshift-ledger",
+      "origin": "http://127.0.0.1:57752",
+      "startedAt": "2026-11-15T08:38:31.502Z",
+      "durationMs": 410,
+      "verdict": "passed",
+      "stages": [
+        {
+          "id": "seed-ledger-A",
+          "version": "A",
+          "appVersion": "ledger-A",
+          "status": "passed",
+          "durationMs": 228,
+          "operations": [
+            {
+              "name": "deposit",
+              "status": "completed"
+            },
+            {
+              "name": "deposit",
+              "status": "completed"
+            }
+          ],
+          "checks": [
+            {
+              "name": "Ledger public API preserves signed amounts",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ]
+            }
+          ],
+          "observedAppVersion": "ledger-A",
+          "databaseVersion": 1
+        },
+        {
+          "id": "upgrade-ledger-B",
+          "version": "B",
+          "appVersion": "ledger-B",
+          "status": "passed",
+          "durationMs": 174,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Original ledger entries preserved",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ]
+            },
+            {
+              "name": "Materialized balance equals sum of signed cents",
+              "status": "passed",
+              "expected": 900,
+              "actual": 900
+            }
+          ],
+          "observedAppVersion": "ledger-B",
+          "databaseVersion": 2
+        }
+      ],
+      "environment": {
+        "browser": "firefox",
+        "browserVersion": "157.0",
+        "node": "v24.22.1",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed history and its declared checks.",
+        "Sequential documents only. No multi-tab, service worker, crash, quota or eviction testing.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON.",
+        "A trace supplements semantic assertions; it does not establish data correctness."
+      ]
+    },
+    {
+      "schemaVersion": "1",
+      "toolVersion": "0.3.0",
+      "history": "native-ledger-refusal",
+      "databaseName": "idbshift-ledger",
+      "origin": "http://127.0.0.1:57752",
+      "startedAt": "2026-11-15T08:38:31.913Z",
+      "durationMs": 781,
+      "verdict": "expected-refusal",
+      "stages": [
+        {
+          "id": "seed-ledger-A",
+          "version": "A",
+          "appVersion": "ledger-A",
+          "status": "passed",
+          "durationMs": 239,
+          "operations": [
+            {
+              "name": "deposit",
+              "status": "completed"
+            },
+            {
+              "name": "deposit",
+              "status": "completed"
+            }
+          ],
+          "checks": [
+            {
+              "name": "Ledger public API preserves signed amounts",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ]
+            }
+          ],
+          "observedAppVersion": "ledger-A",
+          "databaseVersion": 1
+        },
+        {
+          "id": "upgrade-ledger-B",
+          "version": "B",
+          "appVersion": "ledger-B",
+          "status": "passed",
+          "durationMs": 195,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Original ledger entries preserved",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ]
+            },
+            {
+              "name": "Materialized balance equals sum of signed cents",
+              "status": "passed",
+              "expected": 900,
+              "actual": 900
+            }
+          ],
+          "observedAppVersion": "ledger-B",
+          "databaseVersion": 2
+        },
+        {
+          "id": "refuse-ledger-A",
+          "version": "A",
+          "appVersion": "ledger-A",
+          "status": "open-refused",
+          "durationMs": 167,
+          "operations": [],
+          "checks": [],
+          "observedAppVersion": "ledger-A",
+          "refusalExpected": true,
+          "policyReason": "Native version 1 refuses a version 2 database. No rollback writes occur.",
+          "error": {
+            "kind": "VersionError",
+            "message": "The operation failed because the stored database is a higher version than the version requested.",
+            "phase": "open"
+          },
+          "databaseVersion": 2
+        },
+        {
+          "id": "reopen-ledger-B",
+          "version": "B",
+          "appVersion": "ledger-B",
+          "status": "passed",
+          "durationMs": 172,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Original ledger entries preserved",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ]
+            },
+            {
+              "name": "Materialized balance equals sum of signed cents",
+              "status": "passed",
+              "expected": 900,
+              "actual": 900
+            }
+          ],
+          "observedAppVersion": "ledger-B",
+          "databaseVersion": 2
+        }
+      ],
+      "environment": {
+        "browser": "firefox",
+        "browserVersion": "157.0",
+        "node": "v24.22.1",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed history and its declared checks.",
+        "Sequential documents only. No multi-tab, service worker, crash, quota or eviction testing.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON.",
+        "A trace supplements semantic assertions; it does not establish data correctness."
+      ]
+    },
+    {
+      "schemaVersion": "1",
+      "toolVersion": "0.3.0",
+      "history": "native-aborted-migration-recovery",
+      "databaseName": "idbshift-recovery",
+      "origin": "http://127.0.0.1:57752",
+      "startedAt": "2026-11-15T08:38:32.695Z",
+      "durationMs": 695,
+      "verdict": "passed",
+      "stages": [
+        {
+          "id": "seed-A",
+          "version": "A",
+          "appVersion": "recovery-A",
+          "status": "passed",
+          "durationMs": 176,
+          "operations": [
+            {
+              "name": "put",
+              "status": "completed"
+            },
+            {
+              "name": "put",
+              "status": "completed"
+            },
+            {
+              "name": "put",
+              "status": "completed"
+            }
+          ],
+          "checks": [
+            {
+              "name": "A stores the original records",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "final"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "final"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                }
+              ]
+            }
+          ],
+          "observedAppVersion": "recovery-A",
+          "databaseVersion": 1
+        },
+        {
+          "id": "abort-B",
+          "version": "B-abort",
+          "appVersion": "recovery-B-abort",
+          "status": "expected-open-error",
+          "durationMs": 167,
+          "operations": [],
+          "checks": [],
+          "observedAppVersion": "recovery-B-abort",
+          "databaseVersion": 1,
+          "openError": {
+            "expected": {
+              "name": "AbortError",
+              "reason": "B-abort completes its v2 writes, then aborts its own upgrade transaction. The browser must reject the open request with AbortError and roll everything back."
+            },
+            "actual": {
+              "name": "AbortError",
+              "message": "A request was aborted, for example through a call to IDBTransaction.abort."
+            },
+            "outcome": "expected"
+          }
+        },
+        {
+          "id": "check-A-after-abort",
+          "version": "A",
+          "appVersion": "recovery-A",
+          "status": "passed",
+          "durationMs": 171,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Native version is still 1",
+              "status": "passed",
+              "expected": 1,
+              "actual": 1
+            },
+            {
+              "name": "Original records are exact",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "final"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "final"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                }
+              ]
+            },
+            {
+              "name": "Record added by the aborted upgrade is absent",
+              "status": "passed",
+              "expected": null,
+              "actual": null
+            },
+            {
+              "name": "Index created by the aborted upgrade is absent",
+              "status": "passed",
+              "expected": {
+                "notes": {
+                  "keyPath": "id",
+                  "indexes": []
+                }
+              },
+              "actual": {
+                "notes": {
+                  "keyPath": "id",
+                  "indexes": []
+                }
+              }
+            },
+            {
+              "name": "Reopening A ran no upgrade",
+              "status": "passed",
+              "expected": {
+                "upgradeEvents": 0,
+                "oldVersion": null,
+                "newVersion": null
+              },
+              "actual": {
+                "upgradeEvents": 0,
+                "oldVersion": null,
+                "newVersion": null
+              }
+            }
+          ],
+          "observedAppVersion": "recovery-A",
+          "databaseVersion": 1
+        },
+        {
+          "id": "retry-B",
+          "version": "B",
+          "appVersion": "recovery-B",
+          "status": "passed",
+          "durationMs": 171,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Migration ran again, from version 1 to 2",
+              "status": "passed",
+              "expected": {
+                "upgradeEvents": 1,
+                "oldVersion": 1,
+                "newVersion": 2
+              },
+              "actual": {
+                "upgradeEvents": 1,
+                "oldVersion": 1,
+                "newVersion": 2
+              }
+            },
+            {
+              "name": "Final records are exact",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "archived"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                },
+                {
+                  "id": 4,
+                  "title": "Delta",
+                  "tag": "migrated"
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "title": "Alpha",
+                  "tag": "draft"
+                },
+                {
+                  "id": 2,
+                  "title": "Beta",
+                  "tag": "archived"
+                },
+                {
+                  "id": 3,
+                  "title": "Gamma",
+                  "tag": "draft"
+                },
+                {
+                  "id": 4,
+                  "title": "Delta",
+                  "tag": "migrated"
+                }
+              ]
+            },
+            {
+              "name": "Schema has the by-tag index at version 2",
+              "status": "passed",
+              "expected": {
+                "version": 2,
+                "stores": {
+                  "notes": {
+                    "keyPath": "id",
+                    "indexes": [
+                      {
+                        "name": "by-tag",
+                        "keyPath": "tag",
+                        "unique": false,
+                        "multiEntry": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "actual": {
+                "version": 2,
+                "stores": {
+                  "notes": {
+                    "keyPath": "id",
+                    "indexes": [
+                      {
+                        "name": "by-tag",
+                        "keyPath": "tag",
+                        "unique": false,
+                        "multiEntry": false
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "name": "Data is reachable through the by-tag index",
+              "status": "passed",
+              "expected": {
+                "draft": [
+                  1,
+                  3
+                ],
+                "final": [],
+                "archived": [
+                  2
+                ],
+                "migrated": [
+                  4
+                ]
+              },
+              "actual": {
+                "draft": [
+                  1,
+                  3
+                ],
+                "final": [],
+                "archived": [
+                  2
+                ],
+                "migrated": [
+                  4
+                ]
+              }
+            }
+          ],
+          "observedAppVersion": "recovery-B",
+          "databaseVersion": 2
+        }
+      ],
+      "environment": {
+        "browser": "firefox",
+        "browserVersion": "157.0",
+        "node": "v24.22.1",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed history and its declared checks.",
+        "Sequential documents only. No multi-tab, service worker, crash, quota or eviction testing.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON.",
+        "A trace supplements semantic assertions; it does not establish data correctness.",
+        "An expected open error is a declared outcome, not evidence of recovery. Only the checks of later stages establish it."
+      ]
+    }
+  ]
+}

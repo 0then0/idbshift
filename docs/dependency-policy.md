@@ -14,7 +14,7 @@ The version-update exclusion does not disable security fixes: its `version-updat
 
 Dependabot checks npm and GitHub Actions monthly, with at most three npm and two Actions version-update PRs open. Related Playwright minor/patch changes are grouped; remaining toolchain minor/patch changes form another group. Major updates stay separate. There is no automerge.
 
-Keep `@playwright/test`, transitive `playwright`/`playwright-core`, and the installed browser revision aligned. After changing Playwright, run `npx playwright install chromium` and the full acceptance suite. Use the browser supplied by the locked installer rather than substituting system Chrome. The pin regression test checks package alignment.
+Keep `@playwright/test`, transitive `playwright`/`playwright-core`, and the installed browser revision aligned. After changing Playwright, run `npx playwright install chromium firefox webkit` and the full acceptance suite in all three projects, then record the new browser versions in the verification guide. Use the browsers supplied by the locked installer rather than substituting system Chrome, Firefox or Safari. The pin regression test checks package alignment.
 
 Actions use full commit SHAs with version comments. Review permission/runtime changes when updating them. CI uses `contents: read` and does not publish packages or releases. Repository owners should enable GitHub dependency alerts and security updates in repository settings.
 

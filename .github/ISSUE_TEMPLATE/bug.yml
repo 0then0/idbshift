@@ -12,7 +12,7 @@ body:
     id: environment
     attributes:
       label: Environment and observed result
-      description: OS, Node, Playwright, Chromium, expected result, actual verdict and first failing check.
+      description: OS, Node, Playwright, browser engine and version (environment.browser and browserVersion in report.json), expected result, actual verdict and first failing check.
     validations:
       required: true
   - type: textarea

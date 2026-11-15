@@ -226,9 +226,9 @@ type RunningParticipant = {
   drainBroken: boolean;
 };
 
-const limitations = [
+const limitations = (engine: string) => [
   'PASS applies only to this executed script and its declared oracle checks.',
-  'Two documents of one origin share one disposable Chromium context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.',
+  `Two documents of one origin share one disposable ${engine} context and one database. Other engines, origins, databases, workers, crashes, quota and throttling are not covered.`,
   'Events are ordered only within one document. Order across participants is a protocol order from wait-for and await-open steps, never a global browser order.',
   'The observer sees IndexedDB open requests, connections and the declared adapter signals. It does not see every internal browser or application action.',
   'A deadline or a missing event does not prove that the event cannot occur, and it is not evidence of data loss.',
@@ -270,7 +270,7 @@ export async function runConcurrentHistory(
       platform: `${process.platform}/${process.arch}`,
       dependencies,
     },
-    limitations: [...limitations],
+    limitations: limitations(browser.browserType().name()),
   };
   const world: Record<ParticipantId, RunningParticipant> = {
     A: { cursor: 0, consumed: [], lastSeq: 0, drainBroken: false },
@@ -703,11 +703,6 @@ export async function runConcurrentHistory(
     validateConcurrentHistory(history, options.origin);
     for (const id of participantIds) result.participants[id].appVersion = entryOf(id).appVersion;
     result.participants.A.policy = history.participants.A.policy;
-    if (browser.browserType().name() !== 'chromium')
-      throw new RunFailure(
-        'configuration',
-        'Concurrent histories have only been acceptance-tested with Chromium',
-      );
     context = await browser.newContext({ serviceWorkers: 'block', acceptDownloads: false });
     await installGuards(context, history.databaseName, true);
     await context.route('**/*', (route) => {

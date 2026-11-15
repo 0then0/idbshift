@@ -4,12 +4,12 @@
 
 Test whether your IndexedDB data still makes sense after an application upgrade, rollback, and second upgrade.
 
-IDBShift runs your old and new storage code in real Chromium documents, preserves the database between stages, and checks the data contract you declare. Since v0.2 it can also keep the old application open while the new one upgrades the same database. It produces a text summary, JSON diagnostics, and an HTML report that opens offline.
+IDBShift runs your old and new storage code in real browser documents (Chromium, Firefox or WebKit through Playwright), preserves the database between stages, and checks the data contract you declare. Since v0.2 it can also keep the old application open while the new one upgrades the same database. It produces a text summary, JSON diagnostics, and an HTML report that opens offline.
 
 [![CI](https://img.shields.io/github/actions/workflow/status/0then0/idbshift/ci.yml?branch=main&label=CI)](https://github.com/0then0/idbshift/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/0then0/idbshift)](https://github.com/0then0/idbshift/releases/latest)
 [![Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
-[![Verified: macOS arm64 / Chromium](https://img.shields.io/badge/verified-macOS%20arm64%20%2F%20Chromium-16704a)](docs/verification.md)
+[![Verified: macOS arm64 / Chromium, Firefox, WebKit](https://img.shields.io/badge/verified-macOS%20arm64%20%2F%20Chromium%2C%20Firefox%2C%20WebKit-16704a)](docs/verification.md)
 
 ## Why test rollback?
 
@@ -21,7 +21,7 @@ The included Dexie example adapts the application compatibility risk described i
 
 ## Get started
 
-Requirements: Node **24.22.1 LTS**, npm **11.19.1**, and Playwright's Chromium. IDBShift currently runs from a source checkout; it is not published to npm.
+Requirements: Node **24.22.1 LTS**, npm **11.19.1**, and at least one Playwright browser (Chromium by default). IDBShift currently runs from a source checkout; it is not published to npm.
 
 ```sh
 git clone https://github.com/0then0/idbshift.git
@@ -32,6 +32,22 @@ npm run experiment
 ```
 
 On Linux, use `npx playwright install --with-deps chromium` to install browser prerequisites.
+
+### Choose a browser engine
+
+One run executes the scenario in one engine. Chromium stays the default, so existing commands are unchanged. Install the other binaries with the locked Playwright and select one with `--browser`:
+
+```sh
+npx playwright install firefox webkit
+npm run experiment -- --browser firefox
+npm run experiment -- --browser webkit
+```
+
+`npx playwright install` downloads the browser revisions that belong to the pinned Playwright 1.64.1; do not substitute a system browser. Without `--out`, Chromium writes to `reports/` and the other engines to `reports/firefox/` and `reports/webkit/`, so their reports and traces do not overwrite each other. An explicit `--out` is used as given, so choose a separate directory per engine. `npm run experiment:concurrent` already passes `--out reports/concurrent`; for another engine add your own `--out`, which takes precedence, for example `npm run experiment:concurrent -- --browser webkit --out reports/concurrent-webkit`.
+
+Every run starts with an empty database built from the same scenario; nothing is carried between engines. Each result records the engine and its version in `environment.browser` and `environment.browserVersion`. An unknown engine name, or an engine whose binary is not installed, stops the CLI with exit **2** before any history runs; the message names the engine and the install command. IDBShift does not fall back to another engine or retry.
+
+The WebKit engine is Playwright's WebKit build. It is close to Safari's engine, especially on macOS, but it is not Safari, and desktop WebKit or a mobile viewport is not Safari on iPhone. See [testing and compatibility](docs/verification.md#browser-engines).
 
 Open **`reports/report.html`** in your browser. You can inspect the timeline, expand expected/actual values, and download the JSON without starting a web server. `report.json` and `report.txt` are also saved in the same directory.
 
@@ -143,7 +159,7 @@ Vite serves these local entrypoints and their imports. IDBShift does not automat
 
 Stages skipped after an operational failure are marked `not-run`. Reports show operations, application and native database versions, durations, selected expected/actual values, and failure reasons. Diagnostic values are captured when each check completes.
 
-Exit codes are **0** for passed histories or accepted refusal policies, **1** for an unsuccessful history, **2** for CLI setup/export errors, and **130** for cancellation. See the [report format](docs/report-format.md) for the JSON contract and verdict precedence.
+Exit codes are **0** for passed histories or accepted refusal policies, **1** for an unsuccessful history, **2** for CLI setup/export errors (including an unknown or uninstalled browser engine), and **130** for cancellation. See the [report format](docs/report-format.md) for the JSON contract and verdict precedence.
 
 ## Use Playwright Test
 
@@ -159,7 +175,7 @@ test('storage compatibility', async ({ idbshift }) => {
 });
 ```
 
-The fixture manages the local host and contexts, adds named Playwright steps, and attaches all three reports. It returns the verdict so your test can assert a passing history, an expected violation, or a refusal policy. Set the outer test timeout above the sum of stage deadlines and shutdown allowances. The same fixture accepts a concurrent history and returns its `ConcurrentHistoryResult`; set the timeout above the sum of its step deadlines.
+The fixture runs the history in the browser of the current Playwright project; it never launches another browser. Define one project per engine (`browserName: 'chromium' | 'firefox' | 'webkit'`), as in this repository's [playwright.config.ts](playwright.config.ts), and select it with `--project`. The fixture manages the local host and contexts, adds named Playwright steps, and attaches all three reports. It returns the verdict so your test can assert a passing history, an expected violation, or a refusal policy. Set the outer test timeout above the sum of stage deadlines and shutdown allowances. The same fixture accepts a concurrent history and returns its `ConcurrentHistoryResult`; set the timeout above the sum of its step deadlines.
 
 ## Old and new tabs at the same time
 
@@ -204,9 +220,9 @@ A migration runner applies schema changes. IDBShift tests old and new applicatio
 
 ## Scope
 
-v0.2 runs sequential single-database histories and the bounded two-document concurrent histories above in Chromium. See [testing and compatibility](docs/verification.md) for verified environments and CI targets.
+Sequential single-database histories and the bounded two-document concurrent histories above run in Playwright's Chromium, Firefox and WebKit. See [testing and compatibility](docs/verification.md) for verified environments and CI targets.
 
-There is no web application for editing or launching scenarios. The user interface is the generated offline report. Service workers, Cache Storage, OPFS, SQLite WASM, cloud sync, CRDT, crash/power-loss testing, quota/eviction, more than two participants or arbitrary interleavings, background throttling, multiple databases or origins, browser extensions, and automatic migration repair are outside the current scope. There is no hosted service or telemetry.
+There is no web application for editing or launching scenarios. The user interface is the generated offline report. Real mobile devices, Safari itself, browser upgrades between stages, background suspension, service workers, Cache Storage, OPFS, SQLite WASM, cloud sync, CRDT, crash/power-loss testing, quota/eviction, more than two participants or arbitrary interleavings, background throttling, multiple databases or origins, browser extensions, and automatic migration repair are outside the current scope. There is no hosted service or telemetry.
 
 Run trusted adapters with disposable data. Reports contain selected diagnostics, not a database dump. `--trace` explicitly enables separate Playwright traces, which may contain sensitive browser details and must be reviewed before sharing. A trace supplements assertions; it does not prove semantic correctness. Read the [security policy](SECURITY.md) before sharing artifacts.
 

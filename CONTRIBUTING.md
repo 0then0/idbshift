@@ -4,17 +4,17 @@ Bug reports, documentation improvements, regression tests, and small storage exa
 
 ## Development setup
 
-Use Node 24.22.1 and npm 11.19.1, then install the locked dependencies and Chromium:
+Use Node 24.22.1 and npm 11.19.1, then install the locked dependencies and the three Playwright browsers:
 
 ```sh
 npm ci
-npx playwright install chromium
+npx playwright install chromium firefox webkit
 npm run check
 ```
 
-On Linux, install browser prerequisites with `npx playwright install --with-deps chromium`.
+On Linux, install browser prerequisites with `npx playwright install --with-deps chromium firefox webkit`.
 
-`npm run format` applies formatting. `npm run typecheck`, `npm run test:unit`, and `npm run test:acceptance` run focused checks. `npm run build` compiles the library into `dist/lib` and builds the adapter host into `dist/host`; experiments serve browser adapters through Vite from source.
+`npm run format` applies formatting. `npm run typecheck`, `npm run test:unit`, and `npm run test:acceptance` run focused checks; `npm run test:acceptance -- --project webkit` runs the browser suite in one engine. `npm run build` compiles the library into `dist/lib` and builds the adapter host into `dist/host`; experiments serve browser adapters through Vite from source.
 
 ## Changes and tests
 

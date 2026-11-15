@@ -80,7 +80,7 @@ A data mismatch allows subsequent stages to run. An operational error, unexpecte
 
 The CLI resolves `--scenario` relative to the working directory and uses `--root` as the Vite root. Keep adapters and imports in that root with a host `index.html` and a resolvable `idbshift/browser` export. No registry, production URL connector, or automatic production-bundle integration is provided.
 
-v0.1 and v0.2 accept Chromium. Other engines are rejected until their lifecycle and acceptance behavior are verified.
+Histories run in Chromium, Firefox and WebKit, selected by the caller's Playwright `Browser` (the CLI's `--browser` or the Playwright project). The runner never chooses or falls back to another engine. Expectations match error names, because engines word their messages differently. See [browser engines](verification.md#browser-engines).
 
 ## Concurrent histories
 
@@ -133,7 +133,7 @@ The observer records, per document and with a local `seq`: `open-requested`, `op
 
 `open-blocked` is the native IndexedDB `blocked` event on an open request. It is different from the run outcome `blocked`, which means a deadline or cancellation. Request and connection ids (`r1`, `c1`) are local to one document; the report qualifies them with the participant.
 
-The observer works through `addEventListener` and through wrappers for `IDBFactory.prototype.open` and `IDBDatabase.prototype.close` that keep receiver, arguments, result and exceptions. It never replaces `on*` handlers, suppresses events or errors, closes connections, retries or invalidates application caches. The wrappers keep `name` and `length` but not the native `toString()`. It does not see connections made in workers or frames, and it does not see actions inside the browser that raise no event. Acceptance tests check wrapper transparency in Chromium.
+The observer works through `addEventListener` and through wrappers for `IDBFactory.prototype.open` and `IDBDatabase.prototype.close` that keep receiver, arguments, result and exceptions. It never replaces `on*` handlers, suppresses events or errors, closes connections, retries or invalidates application caches. The wrappers keep `name` and `length` but not the native `toString()`. It does not see connections made in workers or frames, and it does not see actions inside the browser that raise no event. Acceptance tests check wrapper transparency in Chromium, Firefox and WebKit.
 
 ### Signals
 

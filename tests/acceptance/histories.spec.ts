@@ -19,9 +19,14 @@ function probe(mode = ''): History {
   };
 }
 
-test('Dexie A → B upgrades actual data and indexes', async ({ idbshift }) => {
+test('Dexie A → B upgrades actual data and indexes', async ({ browser, browserName, idbshift }) => {
   const report = await idbshift(dexieHistory(false, false));
   expect(report.verdict).toBe('passed');
+  // The fixture runs in the project's browser, not in a separately launched one.
+  expect(report.environment).toMatchObject({
+    browser: browserName,
+    browserVersion: browser.version(),
+  });
   expect(report.stages.map((s) => s.databaseVersion)).toEqual([10, 20]);
 });
 
