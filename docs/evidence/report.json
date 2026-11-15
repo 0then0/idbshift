@@ -3,12 +3,12 @@
   "histories": [
     {
       "schemaVersion": "1",
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.4.0",
       "history": "dexie-upgrade-original",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:57705",
-      "startedAt": "2026-11-15T08:38:24.494Z",
-      "durationMs": 302,
+      "origin": "http://127.0.0.1:60120",
+      "startedAt": "2026-11-15T09:12:59.531Z",
+      "durationMs": 464,
       "verdict": "passed",
       "stages": [
         {
@@ -16,7 +16,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 208,
+          "durationMs": 362,
           "operations": [
             {
               "name": "save",
@@ -51,7 +51,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "passed",
-          "durationMs": 80,
+          "durationMs": 81,
           "operations": [],
           "checks": [
             {
@@ -121,12 +121,12 @@
     },
     {
       "schemaVersion": "1",
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.4.0",
       "history": "dexie-rollback-original",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:57705",
-      "startedAt": "2026-11-15T08:38:24.797Z",
-      "durationMs": 296,
+      "origin": "http://127.0.0.1:60120",
+      "startedAt": "2026-11-15T09:12:59.996Z",
+      "durationMs": 297,
       "verdict": "contract-violation",
       "stages": [
         {
@@ -134,7 +134,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 73,
+          "durationMs": 78,
           "operations": [
             {
               "name": "save",
@@ -169,7 +169,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "passed",
-          "durationMs": 74,
+          "durationMs": 75,
           "operations": [],
           "checks": [
             {
@@ -221,7 +221,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 73,
+          "durationMs": 71,
           "operations": [
             {
               "name": "save",
@@ -270,7 +270,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "contract-violation",
-          "durationMs": 72,
+          "durationMs": 70,
           "operations": [],
           "checks": [
             {
@@ -359,12 +359,12 @@
     },
     {
       "schemaVersion": "1",
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.4.0",
       "history": "dexie-rollback-repair",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:57705",
-      "startedAt": "2026-11-15T08:38:25.093Z",
-      "durationMs": 299,
+      "origin": "http://127.0.0.1:60120",
+      "startedAt": "2026-11-15T09:13:00.294Z",
+      "durationMs": 290,
       "verdict": "passed",
       "stages": [
         {
@@ -372,7 +372,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 74,
+          "durationMs": 70,
           "operations": [
             {
               "name": "save",
@@ -407,7 +407,7 @@
           "version": "B-repair",
           "appVersion": "B-repair",
           "status": "passed",
-          "durationMs": 75,
+          "durationMs": 76,
           "operations": [],
           "checks": [
             {
@@ -459,7 +459,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 72,
+          "durationMs": 71,
           "operations": [
             {
               "name": "save",
@@ -508,7 +508,7 @@
           "version": "B-repair",
           "appVersion": "B-repair",
           "status": "passed",
-          "durationMs": 75,
+          "durationMs": 71,
           "operations": [],
           "checks": [
             {
@@ -590,12 +590,12 @@
     },
     {
       "schemaVersion": "1",
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.4.0",
       "history": "native-ledger-upgrade",
       "databaseName": "idbshift-ledger",
-      "origin": "http://127.0.0.1:57705",
-      "startedAt": "2026-11-15T08:38:25.393Z",
-      "durationMs": 130,
+      "origin": "http://127.0.0.1:60120",
+      "startedAt": "2026-11-15T09:13:00.584Z",
+      "durationMs": 129,
       "verdict": "passed",
       "stages": [
         {
@@ -603,7 +603,7 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "passed",
-          "durationMs": 64,
+          "durationMs": 65,
           "operations": [
             {
               "name": "deposit",
@@ -645,184 +645,6 @@
         },
         {
           "id": "upgrade-ledger-B",
-          "version": "B",
-          "appVersion": "ledger-B",
-          "status": "passed",
-          "durationMs": 63,
-          "operations": [],
-          "checks": [
-            {
-              "name": "Original ledger entries preserved",
-              "status": "passed",
-              "expected": [
-                {
-                  "id": 1,
-                  "cents": 1250
-                },
-                {
-                  "id": 2,
-                  "cents": -350
-                }
-              ],
-              "actual": [
-                {
-                  "id": 1,
-                  "cents": 1250
-                },
-                {
-                  "id": 2,
-                  "cents": -350
-                }
-              ]
-            },
-            {
-              "name": "Materialized balance equals sum of signed cents",
-              "status": "passed",
-              "expected": 900,
-              "actual": 900
-            }
-          ],
-          "observedAppVersion": "ledger-B",
-          "databaseVersion": 2
-        }
-      ],
-      "environment": {
-        "browser": "chromium",
-        "browserVersion": "156.0.8078.4",
-        "node": "v24.22.1",
-        "platform": "darwin/arm64",
-        "dependencies": {
-          "@playwright/test": "1.64.1",
-          "playwright": "1.64.1",
-          "playwright-core": "1.64.1",
-          "vite": "8.3.5",
-          "dexie": "4.4.7"
-        }
-      },
-      "limitations": [
-        "PASS applies only to this executed history and its declared checks.",
-        "Sequential documents only. No multi-tab, service worker, crash, quota or eviction testing.",
-        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON.",
-        "A trace supplements semantic assertions; it does not establish data correctness."
-      ]
-    },
-    {
-      "schemaVersion": "1",
-      "toolVersion": "0.3.0",
-      "history": "native-ledger-refusal",
-      "databaseName": "idbshift-ledger",
-      "origin": "http://127.0.0.1:57705",
-      "startedAt": "2026-11-15T08:38:25.524Z",
-      "durationMs": 248,
-      "verdict": "expected-refusal",
-      "stages": [
-        {
-          "id": "seed-ledger-A",
-          "version": "A",
-          "appVersion": "ledger-A",
-          "status": "passed",
-          "durationMs": 63,
-          "operations": [
-            {
-              "name": "deposit",
-              "status": "completed"
-            },
-            {
-              "name": "deposit",
-              "status": "completed"
-            }
-          ],
-          "checks": [
-            {
-              "name": "Ledger public API preserves signed amounts",
-              "status": "passed",
-              "expected": [
-                {
-                  "id": 1,
-                  "cents": 1250
-                },
-                {
-                  "id": 2,
-                  "cents": -350
-                }
-              ],
-              "actual": [
-                {
-                  "id": 1,
-                  "cents": 1250
-                },
-                {
-                  "id": 2,
-                  "cents": -350
-                }
-              ]
-            }
-          ],
-          "observedAppVersion": "ledger-A",
-          "databaseVersion": 1
-        },
-        {
-          "id": "upgrade-ledger-B",
-          "version": "B",
-          "appVersion": "ledger-B",
-          "status": "passed",
-          "durationMs": 62,
-          "operations": [],
-          "checks": [
-            {
-              "name": "Original ledger entries preserved",
-              "status": "passed",
-              "expected": [
-                {
-                  "id": 1,
-                  "cents": 1250
-                },
-                {
-                  "id": 2,
-                  "cents": -350
-                }
-              ],
-              "actual": [
-                {
-                  "id": 1,
-                  "cents": 1250
-                },
-                {
-                  "id": 2,
-                  "cents": -350
-                }
-              ]
-            },
-            {
-              "name": "Materialized balance equals sum of signed cents",
-              "status": "passed",
-              "expected": 900,
-              "actual": 900
-            }
-          ],
-          "observedAppVersion": "ledger-B",
-          "databaseVersion": 2
-        },
-        {
-          "id": "refuse-ledger-A",
-          "version": "A",
-          "appVersion": "ledger-A",
-          "status": "open-refused",
-          "durationMs": 59,
-          "operations": [],
-          "checks": [],
-          "observedAppVersion": "ledger-A",
-          "refusalExpected": true,
-          "policyReason": "Native version 1 refuses a version 2 database. No rollback writes occur.",
-          "error": {
-            "kind": "VersionError",
-            "message": "The requested version (1) is less than the existing version (2).",
-            "phase": "open"
-          },
-          "databaseVersion": 2
-        },
-        {
-          "id": "reopen-ledger-B",
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
@@ -886,11 +708,189 @@
     },
     {
       "schemaVersion": "1",
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.4.0",
+      "history": "native-ledger-refusal",
+      "databaseName": "idbshift-ledger",
+      "origin": "http://127.0.0.1:60120",
+      "startedAt": "2026-11-15T09:13:00.714Z",
+      "durationMs": 239,
+      "verdict": "expected-refusal",
+      "stages": [
+        {
+          "id": "seed-ledger-A",
+          "version": "A",
+          "appVersion": "ledger-A",
+          "status": "passed",
+          "durationMs": 61,
+          "operations": [
+            {
+              "name": "deposit",
+              "status": "completed"
+            },
+            {
+              "name": "deposit",
+              "status": "completed"
+            }
+          ],
+          "checks": [
+            {
+              "name": "Ledger public API preserves signed amounts",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ]
+            }
+          ],
+          "observedAppVersion": "ledger-A",
+          "databaseVersion": 1
+        },
+        {
+          "id": "upgrade-ledger-B",
+          "version": "B",
+          "appVersion": "ledger-B",
+          "status": "passed",
+          "durationMs": 60,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Original ledger entries preserved",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ]
+            },
+            {
+              "name": "Materialized balance equals sum of signed cents",
+              "status": "passed",
+              "expected": 900,
+              "actual": 900
+            }
+          ],
+          "observedAppVersion": "ledger-B",
+          "databaseVersion": 2
+        },
+        {
+          "id": "refuse-ledger-A",
+          "version": "A",
+          "appVersion": "ledger-A",
+          "status": "open-refused",
+          "durationMs": 57,
+          "operations": [],
+          "checks": [],
+          "observedAppVersion": "ledger-A",
+          "refusalExpected": true,
+          "policyReason": "Native version 1 refuses a version 2 database. No rollback writes occur.",
+          "error": {
+            "kind": "VersionError",
+            "message": "The requested version (1) is less than the existing version (2).",
+            "phase": "open"
+          },
+          "databaseVersion": 2
+        },
+        {
+          "id": "reopen-ledger-B",
+          "version": "B",
+          "appVersion": "ledger-B",
+          "status": "passed",
+          "durationMs": 59,
+          "operations": [],
+          "checks": [
+            {
+              "name": "Original ledger entries preserved",
+              "status": "passed",
+              "expected": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ],
+              "actual": [
+                {
+                  "id": 1,
+                  "cents": 1250
+                },
+                {
+                  "id": 2,
+                  "cents": -350
+                }
+              ]
+            },
+            {
+              "name": "Materialized balance equals sum of signed cents",
+              "status": "passed",
+              "expected": 900,
+              "actual": 900
+            }
+          ],
+          "observedAppVersion": "ledger-B",
+          "databaseVersion": 2
+        }
+      ],
+      "environment": {
+        "browser": "chromium",
+        "browserVersion": "156.0.8078.4",
+        "node": "v24.22.1",
+        "platform": "darwin/arm64",
+        "dependencies": {
+          "@playwright/test": "1.64.1",
+          "playwright": "1.64.1",
+          "playwright-core": "1.64.1",
+          "vite": "8.3.5",
+          "dexie": "4.4.7"
+        }
+      },
+      "limitations": [
+        "PASS applies only to this executed history and its declared checks.",
+        "Sequential documents only. No multi-tab, service worker, crash, quota or eviction testing.",
+        "Adapters and read-only queries are trusted test code. Diagnostic values are explicitly selected JSON.",
+        "A trace supplements semantic assertions; it does not establish data correctness."
+      ]
+    },
+    {
+      "schemaVersion": "1",
+      "toolVersion": "0.4.0",
       "history": "native-aborted-migration-recovery",
       "databaseName": "idbshift-recovery",
-      "origin": "http://127.0.0.1:57705",
-      "startedAt": "2026-11-15T08:38:25.773Z",
+      "origin": "http://127.0.0.1:60120",
+      "startedAt": "2026-11-15T09:13:00.954Z",
       "durationMs": 258,
       "verdict": "passed",
       "stages": [
@@ -899,7 +899,7 @@
           "version": "A",
           "appVersion": "recovery-A",
           "status": "passed",
-          "durationMs": 64,
+          "durationMs": 62,
           "operations": [
             {
               "name": "put",
@@ -962,7 +962,7 @@
           "version": "B-abort",
           "appVersion": "recovery-B-abort",
           "status": "expected-open-error",
-          "durationMs": 66,
+          "durationMs": 62,
           "operations": [],
           "checks": [],
           "observedAppVersion": "recovery-B-abort",
@@ -1076,7 +1076,7 @@
           "version": "B",
           "appVersion": "recovery-B",
           "status": "passed",
-          "durationMs": 64,
+          "durationMs": 69,
           "operations": [],
           "checks": [
             {

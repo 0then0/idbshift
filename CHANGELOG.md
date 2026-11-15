@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [0.4.0](https://github.com/0then0/idbshift/releases/tag/v0.4.0) — 2026-11-15
 
 ### Features
 

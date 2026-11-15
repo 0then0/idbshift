@@ -1,10 +1,10 @@
-PASSED dexie-upgrade-original (1130 ms)
-CONTRACT-VIOLATION dexie-rollback-original (764 ms)
+PASSED dexie-upgrade-original (1502 ms)
+CONTRACT-VIOLATION dexie-rollback-original (897 ms)
   First violation: reopen-B / Stored names and computed normalization match source: Expected and actual values differ
-PASSED dexie-rollback-repair (793 ms)
+PASSED dexie-rollback-repair (796 ms)
 PASSED native-ledger-upgrade (410 ms)
-EXPECTED-REFUSAL native-ledger-refusal (781 ms)
-PASSED native-aborted-migration-recovery (695 ms)
+EXPECTED-REFUSAL native-ledger-refusal (837 ms)
+PASSED native-aborted-migration-recovery (749 ms)
   Expected open error at abort-B: expected AbortError, observed AbortError: A request was aborted, for example through a call to IDBTransaction.abort. (expected)
     Reason: B-abort completes its v2 writes, then aborts its own upgrade transaction. The browser must reject the open request with AbortError and roll everything back.
     The error alone does not establish recovery. Later stages must:

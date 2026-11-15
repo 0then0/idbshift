@@ -3,12 +3,12 @@
   "histories": [
     {
       "schemaVersion": "1",
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.4.0",
       "history": "dexie-upgrade-original",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:57789",
-      "startedAt": "2026-11-15T08:38:38.800Z",
-      "durationMs": 703,
+      "origin": "http://127.0.0.1:60270",
+      "startedAt": "2026-11-15T09:13:16.555Z",
+      "durationMs": 1113,
       "verdict": "passed",
       "stages": [
         {
@@ -16,7 +16,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 423,
+          "durationMs": 781,
           "operations": [
             {
               "name": "save",
@@ -51,7 +51,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "passed",
-          "durationMs": 214,
+          "durationMs": 241,
           "operations": [],
           "checks": [
             {
@@ -121,12 +121,12 @@
     },
     {
       "schemaVersion": "1",
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.4.0",
       "history": "dexie-rollback-original",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:57789",
-      "startedAt": "2026-11-15T08:38:39.505Z",
-      "durationMs": 829,
+      "origin": "http://127.0.0.1:60270",
+      "startedAt": "2026-11-15T09:13:17.670Z",
+      "durationMs": 851,
       "verdict": "contract-violation",
       "stages": [
         {
@@ -134,7 +134,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 216,
+          "durationMs": 227,
           "operations": [
             {
               "name": "save",
@@ -221,7 +221,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 201,
+          "durationMs": 208,
           "operations": [
             {
               "name": "save",
@@ -270,7 +270,7 @@
           "version": "B",
           "appVersion": "B",
           "status": "contract-violation",
-          "durationMs": 200,
+          "durationMs": 205,
           "operations": [],
           "checks": [
             {
@@ -359,12 +359,12 @@
     },
     {
       "schemaVersion": "1",
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.4.0",
       "history": "dexie-rollback-repair",
       "databaseName": "idbshift-people",
-      "origin": "http://127.0.0.1:57789",
-      "startedAt": "2026-11-15T08:38:40.335Z",
-      "durationMs": 811,
+      "origin": "http://127.0.0.1:60270",
+      "startedAt": "2026-11-15T09:13:18.522Z",
+      "durationMs": 823,
       "verdict": "passed",
       "stages": [
         {
@@ -372,7 +372,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 202,
+          "durationMs": 201,
           "operations": [
             {
               "name": "save",
@@ -407,7 +407,7 @@
           "version": "B-repair",
           "appVersion": "B-repair",
           "status": "passed",
-          "durationMs": 206,
+          "durationMs": 211,
           "operations": [],
           "checks": [
             {
@@ -459,7 +459,7 @@
           "version": "A",
           "appVersion": "A",
           "status": "passed",
-          "durationMs": 199,
+          "durationMs": 200,
           "operations": [
             {
               "name": "save",
@@ -508,7 +508,7 @@
           "version": "B-repair",
           "appVersion": "B-repair",
           "status": "passed",
-          "durationMs": 201,
+          "durationMs": 205,
           "operations": [],
           "checks": [
             {
@@ -590,12 +590,12 @@
     },
     {
       "schemaVersion": "1",
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.4.0",
       "history": "native-ledger-upgrade",
       "databaseName": "idbshift-ledger",
-      "origin": "http://127.0.0.1:57789",
-      "startedAt": "2026-11-15T08:38:41.148Z",
-      "durationMs": 387,
+      "origin": "http://127.0.0.1:60270",
+      "startedAt": "2026-11-15T09:13:19.346Z",
+      "durationMs": 379,
       "verdict": "passed",
       "stages": [
         {
@@ -603,7 +603,7 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "passed",
-          "durationMs": 191,
+          "durationMs": 189,
           "operations": [
             {
               "name": "deposit",
@@ -648,7 +648,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 193,
+          "durationMs": 187,
           "operations": [],
           "checks": [
             {
@@ -708,12 +708,12 @@
     },
     {
       "schemaVersion": "1",
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.4.0",
       "history": "native-ledger-refusal",
       "databaseName": "idbshift-ledger",
-      "origin": "http://127.0.0.1:57789",
-      "startedAt": "2026-11-15T08:38:41.536Z",
-      "durationMs": 758,
+      "origin": "http://127.0.0.1:60270",
+      "startedAt": "2026-11-15T09:13:19.726Z",
+      "durationMs": 754,
       "verdict": "expected-refusal",
       "stages": [
         {
@@ -721,7 +721,7 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "passed",
-          "durationMs": 191,
+          "durationMs": 189,
           "operations": [
             {
               "name": "deposit",
@@ -766,7 +766,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 188,
+          "durationMs": 190,
           "operations": [],
           "checks": [
             {
@@ -808,7 +808,7 @@
           "version": "A",
           "appVersion": "ledger-A",
           "status": "open-refused",
-          "durationMs": 187,
+          "durationMs": 184,
           "operations": [],
           "checks": [],
           "observedAppVersion": "ledger-A",
@@ -826,7 +826,7 @@
           "version": "B",
           "appVersion": "ledger-B",
           "status": "passed",
-          "durationMs": 189,
+          "durationMs": 188,
           "operations": [],
           "checks": [
             {
@@ -886,12 +886,12 @@
     },
     {
       "schemaVersion": "1",
-      "toolVersion": "0.3.0",
+      "toolVersion": "0.4.0",
       "history": "native-aborted-migration-recovery",
       "databaseName": "idbshift-recovery",
-      "origin": "http://127.0.0.1:57789",
-      "startedAt": "2026-11-15T08:38:42.296Z",
-      "durationMs": 771,
+      "origin": "http://127.0.0.1:60270",
+      "startedAt": "2026-11-15T09:13:20.481Z",
+      "durationMs": 780,
       "verdict": "passed",
       "stages": [
         {
@@ -899,7 +899,7 @@
           "version": "A",
           "appVersion": "recovery-A",
           "status": "passed",
-          "durationMs": 192,
+          "durationMs": 193,
           "operations": [
             {
               "name": "put",
@@ -962,7 +962,7 @@
           "version": "B-abort",
           "appVersion": "recovery-B-abort",
           "status": "expected-open-error",
-          "durationMs": 193,
+          "durationMs": 189,
           "operations": [],
           "checks": [],
           "observedAppVersion": "recovery-B-abort",
@@ -984,7 +984,7 @@
           "version": "A",
           "appVersion": "recovery-A",
           "status": "passed",
-          "durationMs": 189,
+          "durationMs": 202,
           "operations": [],
           "checks": [
             {
@@ -1076,7 +1076,7 @@
           "version": "B",
           "appVersion": "recovery-B",
           "status": "passed",
-          "durationMs": 194,
+          "durationMs": 192,
           "operations": [],
           "checks": [
             {
